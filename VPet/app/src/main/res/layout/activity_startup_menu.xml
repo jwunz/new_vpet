@@ -27,11 +27,12 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
+
         <RelativeLayout
             android:id="@+id/fullscreen_content_controls"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="fill"
+            android:layout_gravity="center"
             android:orientation="vertical"
             android:weightSum="1"
             tools:ignore="UselessParent">
@@ -59,7 +60,7 @@
                     android:layout_width="90dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:onClick="onToggle"
+                    android:onClick="toggleHandMenu"
                     android:text="Hand"
                     android:textOff="Hand"
                     android:textOn="Hand" />
@@ -79,14 +80,108 @@
                     android:layout_width="90dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:onClick="onToggle"
+                    android:onClick="toggleGameMenu"
                     android:text="Games"
                     android:textOff="Games"
                     android:textOn="Games" />
 
             </RadioGroup>
 
+
             <LinearLayout
+                android:id="@+id/hand_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/menu_group"
+                android:layout_column="1"
+                android:layout_row="24"
+                android:gravity="bottom|left|center_horizontal"
+                android:onClick="toggleHandMenu"
+                android:orientation="horizontal"
+                android:paddingTop="0dp"
+                android:visibility="invisible">
+
+                <Button
+                    android:id="@+id/praise_button"
+                    android:layout_width="95dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Praise" />
+
+                <Button
+                    android:id="@+id/scold_button"
+                    android:layout_width="95dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Scold" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/game_menu"
+                android:layout_width="155dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/menu_group"
+                android:layout_above="@+id/medicine_menu"
+                android:visibility="invisible">
+                <Button
+                    android:id="@+id/star_button"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Star Catcher" />
+
+                <Button
+                    android:id="@+id/dance_button"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Dance Dance Evolution" />
+
+                <Button
+                    android:id="@+id/sandbag_button"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Sandbag Punchout" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/medicine_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/linearLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_column="0"
+                android:layout_row="0"
+                android:gravity="bottom|right|center"
+                android:orientation="horizontal"
+                android:paddingTop="0dp"
+                android:visibility="invisible">
+
+                <Button
+                    android:id="@+id/medicine_button"
+                    android:layout_width="95dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Medicine" />
+
+                <Button
+                    android:id="@+id/bandage_button"
+                    android:layout_width="95dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Bandage" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -122,12 +217,14 @@
                     android:layout_width="90dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="toggleMedicineMenu"
                     android:text="Pill"
                     android:textOff="Pill"
                     android:textOn="Pill" />
             </LinearLayout>
-        </RelativeLayout>
 
+
+        </RelativeLayout>
     </FrameLayout>
 
 </FrameLayout>

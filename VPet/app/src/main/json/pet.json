@@ -1,0 +1,202 @@
+{
+	1Aquatic1: {
+		"stats": [
+			"power": "32",
+			"speed": "30",
+			"agility": "38"
+		],
+		"spritePath": "images/1aqua1.png"
+	},
+	1Forest1: {
+		"stats": [
+			"power": "30",
+			"speed": "32",
+			"agility": "38"
+		],
+		"spritePath": "images/1forest1.png"
+	},
+	1Desert1: {
+		"stats": [
+			"power": "38",
+			"speed": "30",
+			"agility": "32"
+		],
+		"spritePath": "images/1desert1.png"
+	},
+	1Bad1: {
+		"stats": [
+			"power": "33",
+			"speed": "33",
+			"agility": "34"
+		],
+		"spritePath": "images/1bad1.png"
+	},
+	2Aquatic1: {
+		"stats": [
+			"power": 65,
+			"speed": 40,
+			"agility": 45
+		],
+		"spritePath": "images/2aqua1.png"
+	},
+	2Aquatic2: {
+		"stats": [
+			"power": 40,
+			"speed": 45,
+			"agility": 65
+		],
+		"spritePath": "images/2aqua2.png"
+	},
+	2Aquatic3: {
+		"stats": [
+			"power": 45,
+			"speed": 65,
+			"agility": 40
+		],
+		"spritePath": "images/2aqua3.png"
+	},
+	2Bad1: {
+		"stats": [
+			"power": 52,
+			"speed": 50,
+			"agility": 48
+		],
+		"spritePath": "images/2bad1.png"
+	},
+	2Forest1: {
+		"stats": [
+			"power": 55,
+			"speed": 50,
+			"agility": 45
+		],
+		"spritePath": "images/2forest1.png"
+	},
+	2Forest2: {
+		"stats": [
+			"power": 50,
+			"speed": 45,
+			"agility": 55
+		],
+		"spritePath": "images/2forest2.png"
+	},
+	2Forest3: {
+		"stats": [
+			"power": 45,
+			"speed": 55,
+			"agility": 50
+		],
+		"spritePath": "images/2forest3.png"
+	},
+	2Bad2: {
+		"stats": [
+			"power": 50,
+			"speed": 48,
+			"agility": 52
+		],
+		"spritePath": "images/2bad2.png"
+	},
+	2Desert1: {
+		"stats": [
+			"power": 57,
+			"speed": 50,
+			"agility": 43
+		],
+		"spritePath": "images/2desert1.png"
+	},
+	2Desert2: {
+		"stats": [
+			"power": 50,
+			"speed": 43,
+			"agility": 57
+		],
+		"spritePath": "images/2desert2.png"
+	},
+	2Desert3: {
+		"stats": [
+			"power": 43,
+			"speed": 57,
+			"agility": 50
+		],
+		"spritePath": "images/2desert3.png"
+	},
+	2Bad3: {
+		"stats": [
+			"power": 48,
+			"speed": 52,
+			"agility": 50
+		],
+		"spritePath": "images/2bad3.png"
+	},
+	3Aquatic1: {
+		"stats": [
+			"power": 75,
+			"speed": 62,
+			"agility": 63
+		],
+		"spritePath": "images/3aqua1.png"
+	},
+	3Aquatic2: {
+		"stats": [
+			"power": 62,
+			"speed": 63,
+			"agility": 75
+		],
+		"spritePath": "images/3aqua2.png"
+	},
+	3Bad1: {
+		"stats": [
+			"power": 68,
+			"speed": 66,
+			"agility": 66
+		],
+		"spritePath": "images/3bad1.png"
+	},
+	3Forest1: {
+		"stats": [
+			"power": 73,
+			"speed": 63,
+			"agility": 64
+		],
+		"spritePath": "images/3forest1.png"
+	},
+	3Forest2: {
+		"stats": [
+			"power": 64,
+			"speed": 63,
+			"agility": 73
+		],
+		"spritePath": "images/3forest2.png"
+	},
+	3Bad2: {
+		"stats": [
+			"power": 65,
+			"speed": 66,
+			"agility": 68
+		],
+		"spritePath": "images/3bad2.png"
+	},
+	3Desert1: {
+		"stats": [
+			"power": 71,
+			"speed": 66,
+			"agility": 63
+		],
+		"spritePath": "images/3desert1.png"
+	},
+	3Desert2: {
+		"stats": [
+			"power": 66,
+			"speed": 63,
+			"agility": 71
+		],
+		"spritePath": "images/3deset2.png"
+	},
+	3Bad3: {
+		"stats": [
+			"power": 66,
+			"speed": 69,
+			"agility": 65
+		],
+		"spritePath": "images/3bad3.png"
+	},
+}
