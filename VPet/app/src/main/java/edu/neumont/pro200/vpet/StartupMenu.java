@@ -88,7 +88,6 @@ public class StartupMenu extends AppCompatActivity {
 
         setContentView(R.layout.activity_startup_menu);
         ((RadioGroup) findViewById(R.id.menu_group)).setOnCheckedChangeListener(ToggleListener);
-//        ((ToggleButton) findViewById(R.id.pill_button)).setOnCheckedChangeListener(togglePillMenu);
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
@@ -125,6 +124,7 @@ public class StartupMenu extends AppCompatActivity {
             findViewById(R.id.medicine_menu).setVisibility(View.INVISIBLE);
         }
     }
+
     public void toggleHandMenu(View view) {
         toggleAllMenusOff(view);
         ((RadioGroup)view.getParent()).check(view.getId());
