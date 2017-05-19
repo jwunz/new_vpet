@@ -1,7 +1,6 @@
 package edu.neumont.pro200.vpet;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.IdRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -88,8 +87,8 @@ public class StartupMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_startup_menu);
-
         ((RadioGroup) findViewById(R.id.menu_group)).setOnCheckedChangeListener(ToggleListener);
+//        ((ToggleButton) findViewById(R.id.pill_button)).setOnCheckedChangeListener(togglePillMenu);
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
@@ -100,29 +99,53 @@ public class StartupMenu extends AppCompatActivity {
         @Override
         public void onCheckedChanged(final RadioGroup group, final int i) {
             for (int j = 0; j < group.getChildCount(); j++) {
-                final ToggleButton button = (ToggleButton) group.getChildAt(j);
-                button.setChecked(button.getId() == i);
+                final ToggleButton view = (ToggleButton) group.getChildAt(j);
+                view.setChecked(view.getId() == i);
             }
         }
     };
 
-    public void onToggle(View view) {
-        ((RadioGroup)view.getParent()).check(view.getId());
+    public void toggleAllMenusOff(View view){
+        findViewById(R.id.hand_menu).setVisibility(View.INVISIBLE);
+        findViewById(R.id.game_menu).setVisibility(View.INVISIBLE);
     }
 
-//    static final ToggleButton.OnClickListener StatToggleListener = new ToggleButton.OnClickListener() {
-//
-//    }
+    public void onToggle(View view){
+        ((RadioGroup)view.getParent()).check(view.getId());
+        toggleHandMenu(view);
+        toggleGameMenu(view);
+    }
 
-//    @Override
-//    protected void onPostCreate(Bundle savedInstanceState) {
-//        super.onPostCreate(savedInstanceState);
-//
-//        // Trigger the initial hide() shortly after the activity has been
-//        // created, to briefly hint to the user that UI controls
-//        // are available.
-//        delayedHide(100);
-//    }
+    public void toggleMedicineMenu(View view){
+        toggleAllMenusOff(view);
+        ToggleButton pill_button = (ToggleButton) findViewById(R.id.pill_button);
+        if(pill_button.isChecked()){
+            findViewById(R.id.medicine_menu).setVisibility(View.VISIBLE);
+        }else{
+            findViewById(R.id.medicine_menu).setVisibility(View.INVISIBLE);
+        }
+    }
+    public void toggleHandMenu(View view) {
+        toggleAllMenusOff(view);
+        ((RadioGroup)view.getParent()).check(view.getId());
+        ToggleButton hand_button = (ToggleButton) findViewById(R.id.hand_button);
+        if(hand_button.isChecked()){
+            findViewById(R.id.hand_menu).setVisibility(View.VISIBLE);
+        }else{
+            findViewById(R.id.hand_menu).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void toggleGameMenu(View view) {
+        toggleAllMenusOff(view);
+        ((RadioGroup)view.getParent()).check(view.getId());
+        ToggleButton game_button = (ToggleButton) findViewById(R.id.games_button);
+        if(game_button.isChecked()){
+            findViewById(R.id.game_menu).setVisibility(View.VISIBLE);
+        }else{
+            findViewById(R.id.game_menu).setVisibility(View.INVISIBLE);
+        }
+    }
 
     private void hide() {
         // Hide UI first
