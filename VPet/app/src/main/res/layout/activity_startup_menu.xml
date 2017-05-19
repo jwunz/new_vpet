@@ -1,0 +1,133 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context="edu.neumont.pro200.vpet.StartupMenu">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+    <TextView
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:keepScreenOn="true"
+        android:textColor="#000000"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <RelativeLayout
+            android:id="@+id/fullscreen_content_controls"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="fill"
+            android:orientation="vertical"
+            android:weightSum="1"
+            tools:ignore="UselessParent">
+
+
+            <RadioGroup
+                android:id="@+id/menu_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <ToggleButton
+                    android:id="@+id/stats_button"
+                    android:layout_width="90dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:onClick="onToggle"
+                    android:text="Stats"
+                    android:textOff="Stats"
+                    android:textOn="Stats" />
+
+                <ToggleButton
+                    android:id="@+id/hand_button"
+                    android:layout_width="90dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:onClick="onToggle"
+                    android:text="Hand"
+                    android:textOff="Hand"
+                    android:textOn="Hand" />
+
+                <ToggleButton
+                    android:id="@+id/shop_button"
+                    android:layout_width="90dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:onClick="onToggle"
+                    android:text="Shop"
+                    android:textOff="Shop"
+                    android:textOn="Shop" />
+
+                <ToggleButton
+                    android:id="@+id/games_button"
+                    android:layout_width="90dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:onClick="onToggle"
+                    android:text="Games"
+                    android:textOff="Games"
+                    android:textOn="Games" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:gravity="bottom|center_horizontal"
+                android:orientation="horizontal"
+                android:paddingTop="0dp">
+
+                <Button
+                    android:id="@+id/light_button"
+                    android:layout_width="90dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Light" />
+
+                <Button
+                    android:id="@+id/soap_button"
+                    android:layout_width="90dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Soap" />
+
+                <Button
+                    android:id="@+id/food_button"
+                    android:layout_width="90dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Food" />
+
+                <ToggleButton
+                    android:id="@+id/pill_button"
+                    android:layout_width="90dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="Pill"
+                    android:textOff="Pill"
+                    android:textOn="Pill" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</FrameLayout>
