@@ -116,7 +116,6 @@ public class StartupMenu extends AppCompatActivity {
     }
 
     public void toggleMedicineMenu(View view){
-        toggleAllMenusOff(view);
         ToggleButton pill_button = (ToggleButton) findViewById(R.id.pill_button);
         if(pill_button.isChecked()){
             findViewById(R.id.medicine_menu).setVisibility(View.VISIBLE);
