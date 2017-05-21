@@ -1,9 +1,6 @@
-import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
+package edu.neumont.pro200.vpet;
 
 import java.util.List;
-
-import edu.neumont.pro200.vpet.R;
 
 /**
  * Created by JWunz on 5/13/17.
@@ -181,7 +178,7 @@ public class Pet extends Monster {
         return true;
     }
 
-    public Pet(int sprite, int power, int speed, int agility, List<Monster> evolutions) {
-        super(sprite, power, speed, agility, evolutions);
+    public Pet(int sprite, int power, int speed, int agility) {
+        super(sprite, power, speed, agility);
     }
 }

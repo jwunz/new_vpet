@@ -1,3 +1,5 @@
+package edu.neumont.pro200.vpet;
+
 import java.util.List;
 
 /**
@@ -51,11 +53,11 @@ public abstract class Monster {
         return true;
     }
 
-    public Monster(int sprite, int power, int speed, int agility, List<Monster> evolutions) {
+    public Monster(int sprite, int power, int speed, int agility) {
         this.sprite = sprite;
         this.power = power;
         this.speed = speed;
         this.agility = agility;
-        this.evolutions = evolutions;
+     //   this.evolutions = evolutions;
     }
 }
