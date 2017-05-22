@@ -66,6 +66,12 @@ public class StartupMenu extends AppCompatActivity {
         pet.setInjuredTime(0);
     };
 
+    public void IncreaseHungerBar() {
+        if (pet.getHunger() < 5) {
+            pet.setHunger(1);
+        }
+    }
+
     public void changeMenu(View view){
         findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
 
