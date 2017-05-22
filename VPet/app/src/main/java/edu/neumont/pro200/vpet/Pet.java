@@ -19,9 +19,11 @@ public class Pet extends Monster {
     private boolean isDirty;
     private boolean isTired;
     private boolean isSick;
+    private boolean isInjured;
     private int dirtyTime; // -
     private int tiredTime; // -These may be DateTimes or something of when the pet first became dirty/tired/sick by the end
     private int sickTime;  // -
+    private int injuredTime;
 
     public int getX() {
         return x;
@@ -131,6 +133,15 @@ public class Pet extends Monster {
         return true;
     }
 
+    public boolean isInjured() {
+        return isInjured;
+    }
+
+    public boolean setInjured(boolean injured) {
+        isInjured = injured;
+        return true;
+    }
+
     public int getDirtyTime() {
         return dirtyTime;
     }
@@ -155,6 +166,15 @@ public class Pet extends Monster {
 
     public boolean setSickTime(int sickTime) {
         this.sickTime = sickTime;
+        return true;
+    }
+
+    public int getInjuredTime() {
+        return injuredTime;
+    }
+
+    public boolean setInjuredTime(int injuredTime) {
+        this.injuredTime = injuredTime;
         return true;
     }
 
