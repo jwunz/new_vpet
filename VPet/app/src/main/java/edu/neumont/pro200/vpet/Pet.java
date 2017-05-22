@@ -57,7 +57,7 @@ public class Pet extends Monster {
     }
 
     public boolean setHunger(int hunger) {
-        this.hunger = hunger;
+        this.hunger += hunger;
         return true;
     }
 
