@@ -56,6 +56,16 @@ public class StartupMenu extends AppCompatActivity {
         }
     };
 
+    public void healSickness(View view){
+        pet.setSick(false);
+        pet.setSickTime(0);
+    };
+
+    public void healInjury(View view){
+        pet.setInjured(false);
+        pet.setInjuredTime(0);
+    };
+
     public void changeMenu(View view){
         findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
 

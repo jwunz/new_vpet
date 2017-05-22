@@ -163,6 +163,7 @@
                     android:layout_width="95dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="healSickness"
                     android:text="Medicine" />
 
                 <Button
@@ -170,6 +171,7 @@
                     android:layout_width="95dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="healInjury"
                     android:text="Bandage" />
 
             </LinearLayout>
