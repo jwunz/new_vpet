@@ -223,6 +223,16 @@
                     android:textOn="Pill" />
             </LinearLayout>
 
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="400px"
+                android:layout_height="400px"
+                app:srcCompat="@mipmap/ic_launcher"
+                android:layout_marginBottom="55dp"
+                android:layout_above="@+id/medicine_menu"
+                android:layout_toLeftOf="@+id/game_menu"
+                android:layout_toStartOf="@+id/game_menu" />
+
 
         </RelativeLayout>
     </FrameLayout>
