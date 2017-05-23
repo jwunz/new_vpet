@@ -1,9 +1,6 @@
-import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
+package edu.neumont.pro200.vpet;
 
 import java.util.List;
-
-import edu.neumont.pro200.vpet.R;
 
 /**
  * Created by JWunz on 5/13/17.
@@ -22,9 +19,11 @@ public class Pet extends Monster {
     private boolean isDirty;
     private boolean isTired;
     private boolean isSick;
+    private boolean isInjured;
     private int dirtyTime; // -
     private int tiredTime; // -These may be DateTimes or something of when the pet first became dirty/tired/sick by the end
     private int sickTime;  // -
+    private int injuredTime;
 
     public int getX() {
         return x;
@@ -58,7 +57,7 @@ public class Pet extends Monster {
     }
 
     public boolean setHunger(int hunger) {
-        this.hunger = hunger;
+        this.hunger += hunger;
         return true;
     }
 
@@ -134,6 +133,15 @@ public class Pet extends Monster {
         return true;
     }
 
+    public boolean isInjured() {
+        return isInjured;
+    }
+
+    public boolean setInjured(boolean injured) {
+        isInjured = injured;
+        return true;
+    }
+
     public int getDirtyTime() {
         return dirtyTime;
     }
@@ -161,6 +169,15 @@ public class Pet extends Monster {
         return true;
     }
 
+    public int getInjuredTime() {
+        return injuredTime;
+    }
+
+    public boolean setInjuredTime(int injuredTime) {
+        this.injuredTime = injuredTime;
+        return true;
+    }
+
     public boolean giveAlert() {
         return true;
     }
@@ -181,7 +198,7 @@ public class Pet extends Monster {
         return true;
     }
 
-    public Pet(int sprite, int power, int speed, int agility, List<Monster> evolutions) {
-        super(sprite, power, speed, agility, evolutions);
+    public Pet(int sprite, int power, int speed, int agility) {
+        super(sprite, power, speed, agility);
     }
 }

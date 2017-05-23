@@ -1,5 +1,4 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,22 +9,15 @@
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <TextView
-        android:id="@+id/fullscreen_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:textColor="#000000"
-        android:textSize="50sp"
-        android:textStyle="bold" />
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
     <FrameLayout
+        android:id="@+id/GameMenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        android:visibility="gone">
 
 
         <RelativeLayout
@@ -117,16 +109,18 @@
                     android:layout_marginTop="0dp"
                     android:text="Scold" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/game_menu"
                 android:layout_width="155dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/menu_group"
                 android:layout_above="@+id/medicine_menu"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/menu_group"
+                android:orientation="vertical"
                 android:visibility="invisible">
+
                 <Button
                     android:id="@+id/star_button"
                     android:layout_width="150dip"
@@ -169,6 +163,7 @@
                     android:layout_width="95dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="healSickness"
                     android:text="Medicine" />
 
                 <Button
@@ -176,6 +171,7 @@
                     android:layout_width="95dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="healInjury"
                     android:text="Bandage" />
 
             </LinearLayout>
@@ -210,6 +206,7 @@
                     android:layout_width="90dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="IncreaseHungerBar"
                     android:text="Food" />
 
                 <ToggleButton
@@ -224,17 +221,63 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/petSprite"
                 android:layout_width="400px"
                 android:layout_height="400px"
-                app:srcCompat="@mipmap/ic_launcher"
-                android:layout_marginBottom="55dp"
                 android:layout_above="@+id/medicine_menu"
-                android:layout_toLeftOf="@+id/game_menu"
-                android:layout_toStartOf="@+id/game_menu" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="47dp" />
 
 
         </RelativeLayout>
     </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/ChoosePetMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/ChoosePetText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="82dp"
+            android:text="Choose Pet"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="400px"
+            android:layout_height="400px"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/imageButton3"
+            android:onClick="chooseAquanPet"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/one_aquan_one" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="400px"
+            android:layout_height="400px"
+            android:layout_alignTop="@+id/imageButton"
+            android:layout_centerHorizontal="true"
+            android:onClick="chooseForestPet"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/one_forest_one" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="400px"
+            android:layout_height="400px"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:onClick="chooseDesertPet"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/one_desert_one" />
+    </RelativeLayout>
 
 </FrameLayout>
