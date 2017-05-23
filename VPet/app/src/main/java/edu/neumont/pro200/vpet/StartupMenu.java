@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.ToggleButton;
 
@@ -77,6 +80,10 @@ public class StartupMenu extends AppCompatActivity {
 
         findViewById(R.id.ChoosePetMenu).setVisibility(View.GONE);
         findViewById(R.id.GameMenu).setVisibility(View.VISIBLE);
+
+        ImageView img = (ImageView) findViewById(R.id.petSprite);
+        Animation walk = AnimationUtils.loadAnimation(this, R.anim.walking);
+        img.startAnimation(walk);
     }
 
     public void chooseAquanPet(View view){
