@@ -3,7 +3,7 @@
     android:shareInterpolator="false">
     <translate
         android:interpolator="@android:anim/accelerate_decelerate_interpolator"
-        android:fromXDelta="-100%"
+        android:fromXDelta="0%"
         android:toXDelta="100%"
         android:duration="1000"/>
 
@@ -15,6 +15,17 @@
             android:interpolator="@android:anim/accelerate_decelerate_interpolator"
             android:fromXDelta="100%"
             android:toXDelta="-100%"
+            android:duration="1000"/>
+    </set>
+
+    <set xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shareInterpolator="false"
+        android:startOffset="2000">
+
+        <translate
+            android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+            android:fromXDelta="-100%"
+            android:toXDelta="0%"
             android:duration="1000"/>
     </set>
 </set>
