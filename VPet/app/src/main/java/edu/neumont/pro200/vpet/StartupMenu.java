@@ -95,21 +95,23 @@ public class StartupMenu extends AppCompatActivity {
         walkright.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a){
             }
-            public void onAnimationRepeat(Animation a){}
-            public void onAnimationEnd(Animation a) {
+            public void onAnimationRepeat(Animation a){
                 img.setBackgroundResource(pet.getSprite());
+                incrementTime();
+            }
+            public void onAnimationEnd(Animation a) {
                 img.setRotationY(180);
                 img.startAnimation(walkleft);
-                incrementTime();
             }
         });
 
         walkleft.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a){
             }
-            public void onAnimationRepeat(Animation a){}
-            public void onAnimationEnd(Animation a) {
+            public void onAnimationRepeat(Animation a){
                 img.setBackgroundResource(pet.getSprite());
+            }
+            public void onAnimationEnd(Animation a) {
                 img.setRotationY(0);
                 img.startAnimation(walkright);
             }
@@ -142,25 +144,22 @@ public class StartupMenu extends AppCompatActivity {
     }
 
     public void chooseAquanPet(View view){
-        List<Monster> evolutions;
-        addEvolution("two_aquan_one");
+        String[] evolutions = new String[]{"2Aquan1", "2Aquan2", "2Aquan3"};
         this.pet = new Pet(R.drawable.one_aquan_one, 32, 30, 38, evolutions);
         changeMenu(view);
     }
 
     public void chooseForestPet(View view){
-        this.pet = new Pet(R.drawable.one_forest_one, 30, 32, 38);
+        String[] evolutions = new String[]{"2Aquan1", "2Aquan2", "2Aquan3"};
+        this.pet = new Pet(R.drawable.one_forest_one, 30, 32, 38, evolutions);
         changeMenu(view);
     }
 
     public void chooseDesertPet(View view){
-        this.pet = new Pet(R.drawable.one_desert_one, 38, 30, 32);
+        String[] evolutions = new String[]{"2Aquan1", "2Aquan2", "2Aquan3"};
+        this.pet = new Pet(R.drawable.one_desert_one, 38, 30, 32, evolutions);
         changeMenu(view);
 
-    }
-
-    public void addEvolution(String monsterName){
-        
     }
 
     @Override

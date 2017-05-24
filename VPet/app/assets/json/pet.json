@@ -1,43 +1,40 @@
 {
 	"1Aquan1": {
 		"stats": {
-			"power": "32",
-			"speed": "30",
-			"agility": "38"
+			"power": 32,
+			"speed": 30,
+			"agility": 38
 		},
-		"spritePath": "R.drawable.one_aquan_one"
+		"spritePath": "R.drawable.one_aquan_one",
+		"evolutions": ["2Aquan1", "2Aquan2", "2Aquan3", "2Bad1"]
 	},
 	"1Forest1": {
 		"stats": {
-			"power": "30",
-			"speed": "32",
-			"agility": "38"
+			"power": 30,
+			"speed": 32,
+			"agility": 38
 		},
-		"spritePath": "R.drawable.one_forest_one"
+		"spritePath": "R.drawable.one_forest_one",
+		"evolutions": ["2Forest1", "2Forest2", "2Forest3", "2Bad2"]
 	},
 	"1Desert1": {
 		"stats": {
-			"power": "38",
-			"speed": "30",
-			"agility": "32"
+			"power": 38,
+			"speed": 30,
+			"agility": 32
 		},
-		"spritePath": "R.drawable.one_desert_one"
+		"spritePath": "R.drawable.one_desert_one",
+		"evolutions": ["2Desert1", "2Desert2", "2Desert3", "2Bad3"]
 	},
-	"1Bad1": {
-		"stats": {
-			"power": "33",
-			"speed": "33",
-			"agility": "34"
-		},
-		"spritePath": "R.drawable.one_bad_one"
-	},
+
 	"2Aquan1": {
 		"stats": {
 			"power": 65,
 			"speed": 40,
 			"agility": 45
 		},
-		"spritePath": "R.drawable.two_aquan_one"
+		"spritePath": "R.drawable.two_aquan_one",
+		"evolutions": ["3Aquan2", "3Bad1"]
 	},
 	"2Aquan2": {
 		"stats": {
@@ -45,7 +42,8 @@
 			"speed": 45,
 			"agility": 65
 		},
-		"spritePath": "R.drawable.two_aquan_two"
+		"spritePath": "R.drawable.two_aquan_two",
+		"evolutions": ["3Aquan1", "3Bad1"]
 	},
 	"2Aquan3": {
 		"stats": {
@@ -53,7 +51,8 @@
 			"speed": 65,
 			"agility": 40
 		},
-		"spritePath": "R.drawable.two_aquan_three"
+		"spritePath": "R.drawable.two_aquan_three",
+		"evolutions": ["3Aquan2", "3Bad1"]
 	},
 	"2Bad1": {
 		"stats": {
@@ -61,7 +60,8 @@
 			"speed": 50,
 			"agility": 48
 		},
-		"spritePath": "R.drawable.two_bad_one"
+		"spritePath": "R.drawable.two_bad_one",
+		"evolutions": ["3Aquan1", "3Bad1"]
 	},
 	"2Forest1": {
 		"stats": {
@@ -69,7 +69,8 @@
 			"speed": 50,
 			"agility": 45
 		},
-		"spritePath": "R.drawable.two_forest_one"
+		"spritePath": "R.drawable.two_forest_one",
+		"evolutions": ["3Forest1", "3Bad2"]
 	},
 	"2Forest2": {
 		"stats": {
@@ -77,7 +78,8 @@
 			"speed": 45,
 			"agility": 55
 		},
-		"spritePath": "R.drawable.two_forest_two"
+		"spritePath": "R.drawable.two_forest_two",
+		"evolutions": ["3Forest1", "3Bad2"]
 	},
 	"2Forest3": {
 		"stats": {
@@ -85,7 +87,8 @@
 			"speed": 55,
 			"agility": 50
 		},
-		"spritePath": "R.drawable.two_aquan_three"
+		"spritePath": "R.drawable.two_forest_three",
+		"evolutions": ["3Forest2", "3Bad2"]
 	},
 	"2Bad2": {
 		"stats": {
@@ -93,7 +96,8 @@
 			"speed": 48,
 			"agility": 52
 		},
-		"spritePath": "R.drawable.two_bad_two"
+		"spritePath": "R.drawable.two_bad_two",
+		"evolutions": ["3Forest1", "3Bad2"]
 	},
 	"2Desert1": {
 		"stats": {
@@ -101,7 +105,8 @@
 			"speed": 50,
 			"agility": 43
 		},
-		"spritePath": "R.drawable.two_desert_one"
+		"spritePath": "R.drawable.two_desert_one",
+		"evolutions": ["3Desert1", "3Bad3"]
 	},
 	"2Desert2": {
 		"stats": {
@@ -109,7 +114,8 @@
 			"speed": 43,
 			"agility": 57
 		},
-		"spritePath": "R.drawable.two_desert_two"
+		"spritePath": "R.drawable.two_desert_two",
+		"evolutions": ["3Desert1", "3Bad3"]
 	},
 	"2Desert3": {
 		"stats": {
@@ -117,7 +123,8 @@
 			"speed": 57,
 			"agility": 50
 		},
-		"spritePath": "R.drawable.two_desert_three"
+		"spritePath": "R.drawable.two_desert_three",
+		"evolutions": ["3Desert2", "3Bad3"]
 	},
 	"2Bad3": {
 		"stats": {
@@ -125,7 +132,8 @@
 			"speed": 52,
 			"agility": 50
 		},
-		"spritePath": "R.drawable.two_bad_three"
+		"spritePath": "R.drawable.two_bad_three",
+		"evolutions": ["3Desert1", "3Bad3"]
 	},
 	"3Aquan1": {
 		"stats": {
@@ -133,7 +141,8 @@
 			"speed": 62,
 			"agility": 63
 		},
-		"spritePath": "R.drawable.three_aquan_one"
+		"spritePath": "R.drawable.three_aquan_one",
+		"evolutions": []
 	},
 	"3Aquan2": {
 		"stats": {
@@ -141,7 +150,8 @@
 			"speed": 63,
 			"agility": 75
 		},
-		"spritePath": "R.drawable.three_aquan_two"
+		"spritePath": "R.drawable.three_aquan_two",
+		"evolutions": []
 	},
 	"3Bad1": {
 		"stats": {
@@ -149,7 +159,8 @@
 			"speed": 66,
 			"agility": 66
 		},
-		"spritePath": "R.drawable.three_bad_one"
+		"spritePath": "R.drawable.three_bad_one",
+		"evolutions": []
 	},
 	"3Forest1": {
 		"stats": {
@@ -157,7 +168,8 @@
 			"speed": 63,
 			"agility": 64
 		},
-		"spritePath": "R.drawable.three_forest_one"
+		"spritePath": "R.drawable.three_forest_one",
+		"evolutions": []
 	},
 	"3Forest2": {
 		"stats": {
@@ -165,7 +177,8 @@
 			"speed": 63,
 			"agility": 73
 		},
-		"spritePath": "R.drawable.three_forest_two"
+		"spritePath": "R.drawable.three_forest_two",
+		"evolutions": []
 	},
 	"3Bad2": {
 		"stats": {
@@ -173,7 +186,8 @@
 			"speed": 66,
 			"agility": 68
 		},
-		"spritePath": "R.drawable.three_bad_two"
+		"spritePath": "R.drawable.three_bad_two",
+		"evolutions": []
 	},
 	"3Desert1": {
 		"stats": {
@@ -181,7 +195,8 @@
 			"speed": 66,
 			"agility": 63
 		},
-		"spritePath": "R.drawable.three_desert_one"
+		"spritePath": "R.drawable.three_desert_one",
+		"evolutions": []
 	},
 	"3Desert2": {
 		"stats": {
@@ -189,7 +204,8 @@
 			"speed": 63,
 			"agility": 71
 		},
-		"spritePath": "R.drawable.three_desert_two"
+		"spritePath": "R.drawable.three_desert_two",
+		"evolutions": []
 	},
 	"3Bad3": {
 		"stats": {
@@ -197,6 +213,7 @@
 			"speed": 69,
 			"agility": 65
 		},
-		"spritePath": "R.drawable.three_bad_three"
+		"spritePath": "R.drawable.three_bad_three",
+		"evolutions": []
 	}
 }
