@@ -18,6 +18,8 @@ public abstract class Monster {
     }
 
     public boolean setSprite(int sprite) {
+        this.sprite = sprite;
+
         return true;
     }
 
