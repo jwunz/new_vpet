@@ -10,9 +10,13 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
+
+import static android.R.attr.animation;
 
 public class StartupMenu extends AppCompatActivity {
     private static final boolean AUTO_HIDE = false;
@@ -82,7 +86,7 @@ public class StartupMenu extends AppCompatActivity {
         activateAnimation(view);
     }
 
-    public void activateAnimation(View view){
+    public void activateAnimation(final View view){
         findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
         final ImageView img = (ImageView) findViewById(R.id.petSprite);
         final Animation walkright = AnimationUtils.loadAnimation(this, R.anim.walkingright);
