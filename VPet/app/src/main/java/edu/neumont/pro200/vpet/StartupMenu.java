@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.ToggleButton;
@@ -20,6 +21,7 @@ public class StartupMenu extends AppCompatActivity {
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
+    private int ticks = 0;
     private View mContentView;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -93,6 +95,7 @@ public class StartupMenu extends AppCompatActivity {
             }
             public void onAnimationRepeat(Animation a){}
             public void onAnimationEnd(Animation a) {
+                img.setBackgroundResource(pet.getSprite());
                 img.setRotationY(180);
                 img.startAnimation(walkleft);
             }
@@ -103,12 +106,29 @@ public class StartupMenu extends AppCompatActivity {
             }
             public void onAnimationRepeat(Animation a){}
             public void onAnimationEnd(Animation a) {
+                img.setBackgroundResource(pet.getSprite());
                 img.setRotationY(0);
+                incrementTime();
                 img.startAnimation(walkright);
             }
         });
 
         img.startAnimation(walkright);
+    }
+
+    public void incrementTime(){
+        ticks+=1;
+        increaseAge();
+    }
+
+    public boolean increaseAge(){
+        if(ticks>=2){
+            pet.setAge(pet.getAge()+1);
+            pet.setSprite(R.drawable.two_aquan_one);
+            findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
+            return true;
+        }
+        return false;
     }
 
     public void chooseAquanPet(View view){

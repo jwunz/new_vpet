@@ -9,8 +9,6 @@
             android:interpolator="@android:anim/accelerate_decelerate_interpolator"
             android:fromXDelta="0%"
             android:toXDelta="250%"
-            android:duration="1000"
-            android:fillAfter="true"
-            android:fillEnabled="true"/>
+            android:duration="1000" />
     </set>
 </set>
