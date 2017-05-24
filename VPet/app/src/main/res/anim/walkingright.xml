@@ -9,6 +9,6 @@
             android:interpolator="@android:anim/accelerate_decelerate_interpolator"
             android:fromXDelta="0%"
             android:toXDelta="250%"
-            android:duration="1000" />
+            android:duration="1500" />
     </set>
 </set>

@@ -19,7 +19,6 @@ public abstract class Monster {
 
     public boolean setSprite(int sprite) {
         this.sprite = sprite;
-
         return true;
     }
 
@@ -55,11 +54,11 @@ public abstract class Monster {
         return true;
     }
 
-    public Monster(int sprite, int power, int speed, int agility) {
+    public Monster(int sprite, int power, int speed, int agility, List<Monster> evolutions) {
         this.sprite = sprite;
         this.power = power;
         this.speed = speed;
         this.agility = agility;
-     //   this.evolutions = evolutions;
+        this.evolutions = evolutions;
     }
 }

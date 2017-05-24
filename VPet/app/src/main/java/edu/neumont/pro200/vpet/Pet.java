@@ -195,10 +195,11 @@ public class Pet extends Monster {
     }
 
     public boolean evolve() {
+        this.setSprite(R.drawable.two_aquan_one);
         return true;
     }
 
-    public Pet(int sprite, int power, int speed, int agility) {
-        super(sprite, power, speed, agility);
+    public Pet(int sprite, int power, int speed, int agility, List<Monster> evolutions) {
+        super(sprite, power, speed, agility, evolutions);
     }
 }
