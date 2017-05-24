@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.ToggleButton;
 
+import java.util.List;
+
 public class StartupMenu extends AppCompatActivity {
     private static final boolean AUTO_HIDE = false;
     private Pet pet;
@@ -98,6 +100,7 @@ public class StartupMenu extends AppCompatActivity {
                 img.setBackgroundResource(pet.getSprite());
                 img.setRotationY(180);
                 img.startAnimation(walkleft);
+                incrementTime();
             }
         });
 
@@ -108,7 +111,6 @@ public class StartupMenu extends AppCompatActivity {
             public void onAnimationEnd(Animation a) {
                 img.setBackgroundResource(pet.getSprite());
                 img.setRotationY(0);
-                incrementTime();
                 img.startAnimation(walkright);
             }
         });
@@ -119,12 +121,20 @@ public class StartupMenu extends AppCompatActivity {
     public void incrementTime(){
         ticks+=1;
         increaseAge();
+        evolvePet();
     }
 
     public boolean increaseAge(){
-        if(ticks>=2){
+        if(ticks>=1){
             pet.setAge(pet.getAge()+1);
-            pet.setSprite(R.drawable.two_aquan_one);
+            evolvePet();
+            return true;
+        }
+        return false;
+    }
+    public boolean evolvePet(){
+        if(pet.getAge()>=5){
+            pet.evolve();
             findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
             return true;
         }
@@ -132,7 +142,9 @@ public class StartupMenu extends AppCompatActivity {
     }
 
     public void chooseAquanPet(View view){
-        this.pet = new Pet(R.drawable.one_aquan_one, 32, 30, 38);
+        List<Monster> evolutions;
+        addEvolution("two_aquan_one");
+        this.pet = new Pet(R.drawable.one_aquan_one, 32, 30, 38, evolutions);
         changeMenu(view);
     }
 
@@ -145,6 +157,10 @@ public class StartupMenu extends AppCompatActivity {
         this.pet = new Pet(R.drawable.one_desert_one, 38, 30, 32);
         changeMenu(view);
 
+    }
+
+    public void addEvolution(String monsterName){
+        
     }
 
     @Override
