@@ -13,6 +13,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
@@ -84,7 +85,8 @@ public class StartupMenu extends AppCompatActivity {
 
     public void IncreaseHungerBar(View view) {
         if (pet.getHunger() < 5) {
-            pet.setHunger(1);
+            pet.setHunger(pet.getHunger()+1);
+            pet.setWeight(pet.getWeight()+.5);
         }
     }
 
@@ -105,11 +107,11 @@ public class StartupMenu extends AppCompatActivity {
             }
             public void onAnimationRepeat(Animation a){
                 img.setBackgroundResource(pet.getSprite());
-                incrementTime();
             }
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(180);
-                img.startAnimation(walkLeft);
+                incrementTime();
+                img.startAnimation(walkleft);
             }
         });
 
@@ -143,7 +145,7 @@ public class StartupMenu extends AppCompatActivity {
         return false;
     }
     public boolean evolvePet(){
-        if(pet.getAge()>=5){
+        if(pet.getAge()%5==0){
             pet.evolve();
             findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
             return true;
