@@ -1,5 +1,12 @@
 package edu.neumont.pro200.vpet;
 
+import android.content.res.AssetManager;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.AccessController;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -195,7 +202,7 @@ public class Pet extends Monster {
         return true;
     }
 
-    public boolean evolve() {
+    public boolean evolve(String JSON) {
         int power = this.getPower();
         int agility = this.getAgility();
         int speed = this.getSpeed();
@@ -204,7 +211,7 @@ public class Pet extends Monster {
         final int FINAL_EVOLUTION_BRANCH = 2;
 
         String[] evolArray = this.getEvolutions();
-        String evolution = "";
+        String evolution = evolArray[0];
 
         if(evolArray.length != 0){
             if(this.getCareMistakes()>MISTAKE_THRESHOLD){
@@ -219,16 +226,26 @@ public class Pet extends Monster {
             else if(speed > power && speed > agility){
                 evolution = evolArray[2];
             }
-            readJSON(evolution);
+            readJSON(evolution, JSON);
             return true;
         }
-        this.setSprite(R.drawable.two_aquan_one);
         return false;
     }
 
-    public void readJSON(String evolution){
-        
+    public boolean readJSON(String evolution, String JSON){
+
+        try{
+            JSONObject jsonObject = new JSONObject(JSON);
+            jsonObject = jsonObject.getJSONObject(evolution);
+            String spritePathString = jsonObject.getString("spritePath");
+            int spritePath = Integer.parseInt(spritePathString);
+            this.setSprite(spritePath);
+        }catch(Exception e){
+            return false;
+        }
+        return true;
     }
+
 
     public Pet(int sprite, int power, int speed, int agility) {
         super(sprite, power, speed, agility);

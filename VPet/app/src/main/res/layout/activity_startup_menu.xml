@@ -226,7 +226,7 @@
                 android:layout_height="400px"
                 android:layout_above="@+id/medicine_menu"
                 android:layout_centerVertical="true"
-                android:layout_marginBottom="47dp"/>
+                android:layout_marginBottom="47dp" />
 
 
         </RelativeLayout>

@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.ToggleButton;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class StartupMenu extends AppCompatActivity {
@@ -137,12 +139,29 @@ public class StartupMenu extends AppCompatActivity {
         return false;
     }
     public boolean evolvePet(){
-        if(pet.getAge()%5==0){
-            pet.evolve();
-            findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
+        if(pet.getAge() > 1){
+            pet.evolve(loadJSONFromAsset());
+            int sprite = pet.getSprite();
+            findViewById(R.id.petSprite).setBackgroundResource(sprite);
             return true;
         }
         return false;
+    }
+
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = getAssets().open("pet.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 
     public void chooseAquanPet(View view){
