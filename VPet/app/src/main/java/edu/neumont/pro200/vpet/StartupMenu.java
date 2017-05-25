@@ -17,7 +17,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 
-import org.json.JSONObject
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -97,10 +97,10 @@ public class StartupMenu extends AppCompatActivity {
     public void activateAnimation(final View view){
         findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
         final ImageView img = (ImageView) findViewById(R.id.petSprite);
-        final Animation walkright = AnimationUtils.loadAnimation(this, R.anim.walkingright);
-        final Animation walkleft = AnimationUtils.loadAnimation(this, R.anim.walkingleft);
+        final Animation walkRight = AnimationUtils.loadAnimation(this, R.anim.walkingright);
+        final Animation walkLeft = AnimationUtils.loadAnimation(this, R.anim.walkingleft);
 
-        walkright.setAnimationListener(new Animation.AnimationListener() {
+        walkRight.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a){
             }
             public void onAnimationRepeat(Animation a){
@@ -109,11 +109,11 @@ public class StartupMenu extends AppCompatActivity {
             }
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(180);
-                img.startAnimation(walkleft);
+                img.startAnimation(walkLeft);
             }
         });
 
-        walkleft.setAnimationListener(new Animation.AnimationListener() {
+        walkLeft.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a){
             }
             public void onAnimationRepeat(Animation a){
@@ -121,11 +121,11 @@ public class StartupMenu extends AppCompatActivity {
             }
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(0);
-                img.startAnimation(walkright);
+                img.startAnimation(walkRight);
             }
         });
 
-        img.startAnimation(walkright);
+        img.startAnimation(walkRight);
     }
 
     public void incrementTime(){
