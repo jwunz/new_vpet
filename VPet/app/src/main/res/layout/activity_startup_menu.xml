@@ -221,12 +221,52 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/dirtyBubble"
+                android:layout_width="300px"
+                android:layout_height="300px"
+                android:layout_above="@+id/petSprite"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="47dp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/thought_bubble_dirty" />
+
+            <ImageView
+                android:id="@+id/injuryBubble"
+                android:layout_width="300px"
+                android:layout_height="300px"
+                android:layout_above="@+id/petSprite"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="47dp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/thought_bubble_injured" />
+
+            <ImageView
+                android:id="@+id/sleepBubble"
+                android:layout_width="300px"
+                android:layout_height="300px"
+                android:layout_above="@+id/petSprite"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="47dp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/thought_bubble_sleep" />
+
+            <ImageView
+                android:id="@+id/sickBubble"
+                android:layout_width="300px"
+                android:layout_height="300px"
+                android:layout_above="@+id/petSprite"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="47dp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/thought_bubble_sick" />
+            <ImageView
                 android:id="@+id/petSprite"
                 android:layout_width="400px"
                 android:layout_height="400px"
                 android:layout_above="@+id/medicine_menu"
                 android:layout_centerVertical="true"
-                android:layout_marginBottom="47dp"/>
+                android:layout_marginBottom="47dp"
+                />
 
 
         </RelativeLayout>
