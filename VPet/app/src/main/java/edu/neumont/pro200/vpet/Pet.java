@@ -1,5 +1,6 @@
 package edu.neumont.pro200.vpet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -199,7 +200,11 @@ public class Pet extends Monster {
         return true;
     }
 
-    public Pet(int sprite, int power, int speed, int agility, List<Monster> evolutions) {
+    public Pet(int sprite, int power, int speed, int agility) {
+        super(sprite, power, speed, agility);
+    }
+
+    public Pet(int sprite, int power, int speed, int agility, String[] evolutions) {
         super(sprite, power, speed, agility, evolutions);
     }
 }

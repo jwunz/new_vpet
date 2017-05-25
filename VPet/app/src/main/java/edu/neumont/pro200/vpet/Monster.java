@@ -1,5 +1,6 @@
 package edu.neumont.pro200.vpet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ public abstract class Monster {
     private int power;
     private int speed;
     private int agility;
-    private Monster[] evolutions; //List isn't going to work because it's abstract.
+    private String[] evolutions; //List isn't going to work because it's abstract.
 
     public int getSprite(){
         return sprite;
@@ -54,7 +55,14 @@ public abstract class Monster {
         return true;
     }
 
-    public Monster(int sprite, int power, int speed, int agility, List<Monster> evolutions) {
+    public Monster(int sprite, int power, int speed, int agility) {
+        this.sprite = sprite;
+        this.power = power;
+        this.speed = speed;
+        this.agility = agility;
+    }
+
+    public Monster(int sprite, int power, int speed, int agility, String[] evolutions) {
         this.sprite = sprite;
         this.power = power;
         this.speed = speed;
