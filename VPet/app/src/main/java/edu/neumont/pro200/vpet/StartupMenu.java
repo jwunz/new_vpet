@@ -10,9 +10,12 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.ToggleButton;
+
+import java.util.List;
 
 public class StartupMenu extends AppCompatActivity {
     private static final boolean AUTO_HIDE = false;
@@ -20,6 +23,7 @@ public class StartupMenu extends AppCompatActivity {
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
+    private int ticks = 0;
     private View mContentView;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -91,7 +95,10 @@ public class StartupMenu extends AppCompatActivity {
         walkright.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a){
             }
-            public void onAnimationRepeat(Animation a){}
+            public void onAnimationRepeat(Animation a){
+                img.setBackgroundResource(pet.getSprite());
+                incrementTime();
+            }
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(180);
                 img.startAnimation(walkleft);
@@ -101,7 +108,9 @@ public class StartupMenu extends AppCompatActivity {
         walkleft.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a){
             }
-            public void onAnimationRepeat(Animation a){}
+            public void onAnimationRepeat(Animation a){
+                img.setBackgroundResource(pet.getSprite());
+            }
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(0);
                 img.startAnimation(walkright);
@@ -111,18 +120,44 @@ public class StartupMenu extends AppCompatActivity {
         img.startAnimation(walkright);
     }
 
+    public void incrementTime(){
+        ticks+=1;
+        increaseAge();
+        evolvePet();
+    }
+
+    public boolean increaseAge(){
+        if(ticks>=1){
+            pet.setAge(pet.getAge()+1);
+            evolvePet();
+            return true;
+        }
+        return false;
+    }
+    public boolean evolvePet(){
+        if(pet.getAge()>=5){
+            pet.evolve();
+            findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
+            return true;
+        }
+        return false;
+    }
+
     public void chooseAquanPet(View view){
-        this.pet = new Pet(R.drawable.one_aquan_one, 32, 30, 38);
+        String[] evolutions = new String[]{"2Aquan1", "2Aquan2", "2Aquan3"};
+        this.pet = new Pet(R.drawable.one_aquan_one, 32, 30, 38, evolutions);
         changeMenu(view);
     }
 
     public void chooseForestPet(View view){
-        this.pet = new Pet(R.drawable.one_forest_one, 30, 32, 38);
+        String[] evolutions = new String[]{"2Aquan1", "2Aquan2", "2Aquan3"};
+        this.pet = new Pet(R.drawable.one_forest_one, 30, 32, 38, evolutions);
         changeMenu(view);
     }
 
     public void chooseDesertPet(View view){
-        this.pet = new Pet(R.drawable.one_desert_one, 38, 30, 32);
+        String[] evolutions = new String[]{"2Aquan1", "2Aquan2", "2Aquan3"};
+        this.pet = new Pet(R.drawable.one_desert_one, 38, 30, 32, evolutions);
         changeMenu(view);
 
     }
