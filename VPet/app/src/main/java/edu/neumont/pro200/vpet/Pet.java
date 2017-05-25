@@ -58,7 +58,7 @@ public class Pet extends Monster {
     }
 
     public boolean setHunger(int hunger) {
-        this.hunger += hunger;
+        this.hunger = hunger;
         return true;
     }
 
@@ -196,8 +196,38 @@ public class Pet extends Monster {
     }
 
     public boolean evolve() {
+        int power = this.getPower();
+        int agility = this.getAgility();
+        int speed = this.getSpeed();
+        final int WEIGHTY = 50;
+        final int MISTAKE_THRESHOLD = 3;
+        final int FINAL_EVOLUTION_BRANCH = 2;
+
+        String[] evolArray = this.getEvolutions();
+        String evolution = "";
+
+        if(evolArray.length != 0){
+            if(this.getCareMistakes()>MISTAKE_THRESHOLD){
+                evolution = evolArray[evolArray.length-1];
+            }
+            else if(this.getWeight()>=WEIGHTY || (power > agility && power > speed) || evolArray.length == FINAL_EVOLUTION_BRANCH){
+                evolution = evolArray[0];
+            }
+            else if(agility > power && agility > speed || (agility == power && speed == agility)){
+                evolution = evolArray[1];
+            }
+            else if(speed > power && speed > agility){
+                evolution = evolArray[2];
+            }
+            readJSON(evolution);
+            return true;
+        }
         this.setSprite(R.drawable.two_aquan_one);
-        return true;
+        return false;
+    }
+
+    public void readJSON(String evolution){
+        
     }
 
     public Pet(int sprite, int power, int speed, int agility) {

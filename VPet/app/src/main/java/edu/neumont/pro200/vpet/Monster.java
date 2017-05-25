@@ -47,8 +47,8 @@ public abstract class Monster {
         return true;
     }
 
-    public List<Monster> getEvolutions() {
-        return null;
+    public String[] getEvolutions() {
+        return evolutions;
     }
 
     public boolean setEvolution(List<Monster> evolutions) {
