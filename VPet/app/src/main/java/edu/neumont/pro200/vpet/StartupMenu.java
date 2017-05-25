@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -69,21 +70,45 @@ public class StartupMenu extends AppCompatActivity {
         pet.setInjuredTime(0);
     };
 
-    public void IncreaseHungerBar() {
+    public void IncreaseHungerBar(View view) {
         if (pet.getHunger() < 5) {
             pet.setHunger(1);
         }
     }
 
     public void changeMenu(View view){
-        findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
-
         findViewById(R.id.ChoosePetMenu).setVisibility(View.GONE);
         findViewById(R.id.GameMenu).setVisibility(View.VISIBLE);
+        activateAnimation(view);
+    }
 
-        ImageView img = (ImageView) findViewById(R.id.petSprite);
-        Animation walk = AnimationUtils.loadAnimation(this, R.anim.walking);
-        img.startAnimation(walk);
+    public void activateAnimation(View view){
+        findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
+        final ImageView img = (ImageView) findViewById(R.id.petSprite);
+        final Animation walkright = AnimationUtils.loadAnimation(this, R.anim.walkingright);
+        final Animation walkleft = AnimationUtils.loadAnimation(this, R.anim.walkingleft);
+
+        walkright.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationStart(Animation a){
+            }
+            public void onAnimationRepeat(Animation a){}
+            public void onAnimationEnd(Animation a) {
+                img.setRotationY(180);
+                img.startAnimation(walkleft);
+            }
+        });
+
+        walkleft.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationStart(Animation a){
+            }
+            public void onAnimationRepeat(Animation a){}
+            public void onAnimationEnd(Animation a) {
+                img.setRotationY(0);
+                img.startAnimation(walkright);
+            }
+        });
+
+        img.startAnimation(walkright);
     }
 
     public void chooseAquanPet(View view){
