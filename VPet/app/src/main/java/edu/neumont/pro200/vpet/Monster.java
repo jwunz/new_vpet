@@ -11,7 +11,7 @@ public abstract class Monster {
     private int power;
     private int speed;
     private int agility;
-    private List<Monster> evolutions; //List isn't going to work because it's abstract.
+    private Monster[] evolutions; //List isn't going to work because it's abstract.
 
     public int getSprite(){
         return sprite;

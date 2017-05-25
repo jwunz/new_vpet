@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.JsonReader;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -16,8 +17,13 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 
+import org.json.JSONObject
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import static android.R.attr.animation;
+import static android.R.attr.data;
 
 public class StartupMenu extends AppCompatActivity {
     private static final boolean AUTO_HIDE = false;
@@ -162,7 +168,7 @@ public class StartupMenu extends AppCompatActivity {
     }
 
     public void addEvolution(String monsterName){
-        
+
     }
 
     @Override
