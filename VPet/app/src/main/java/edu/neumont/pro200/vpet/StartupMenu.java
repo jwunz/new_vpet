@@ -1,18 +1,33 @@
 package edu.neumont.pro200.vpet;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.JsonReader;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Random;
+
+import static android.R.attr.animation;
+import static android.R.attr.data;
+import static android.R.attr.switchMinWidth;
 
 public class StartupMenu extends AppCompatActivity {
     private static final boolean AUTO_HIDE = false;
@@ -20,6 +35,7 @@ public class StartupMenu extends AppCompatActivity {
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
+    private int ticks = 0;
     private View mContentView;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -61,20 +77,25 @@ public class StartupMenu extends AppCompatActivity {
     };
 
     public void healSickness(View view){
-        pet.setSick(false);
-        pet.setSickTime(0);
+        pet.setSick(false, -1);
     };
 
     public void healInjury(View view){
-        pet.setInjured(false);
-        pet.setInjuredTime(0);
+        pet.setInjured(false, -1);
+    };
+
+    public void healTiredness(View view){
+        pet.setTired(false);
+        pet.setTiredTime(0);
+        findViewById(R.id.activity_ui).setBackgroundColor(Color.DKGRAY);
     };
 
     public void IncreaseHungerBar(View view) {
         if (pet.getHunger() < 5) {
-            pet.setHunger(1);
+            pet.setHunger(pet.getHunger()+1);
+            pet.setWeight(pet.getWeight()+.5);
         }
-    }
+    };
 
     public void changeMenu(View view){
         findViewById(R.id.ChoosePetMenu).setVisibility(View.GONE);
@@ -82,47 +103,99 @@ public class StartupMenu extends AppCompatActivity {
         activateAnimation(view);
     }
 
-    public void activateAnimation(View view){
+    public void activateAnimation(final View view){
         findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
         final ImageView img = (ImageView) findViewById(R.id.petSprite);
-        final Animation walkright = AnimationUtils.loadAnimation(this, R.anim.walkingright);
-        final Animation walkleft = AnimationUtils.loadAnimation(this, R.anim.walkingleft);
+        final LinearLayout pet_condition = (LinearLayout) findViewById(R.id.pet_condition);
+        final Animation walkRight = AnimationUtils.loadAnimation(this, R.anim.walkingright);
+        final Animation walkLeft = AnimationUtils.loadAnimation(this, R.anim.walkingleft);
 
-        walkright.setAnimationListener(new Animation.AnimationListener() {
+        walkRight.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a){
             }
-            public void onAnimationRepeat(Animation a){}
+            public void onAnimationRepeat(Animation a){
+                img.setBackgroundResource(pet.getSprite());
+
+            }
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(180);
-                img.startAnimation(walkleft);
+                incrementTime();
+                pet_condition.startAnimation(walkLeft);
             }
         });
 
-        walkleft.setAnimationListener(new Animation.AnimationListener() {
+        walkLeft.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a){
             }
-            public void onAnimationRepeat(Animation a){}
+            public void onAnimationRepeat(Animation a){
+                img.setBackgroundResource(pet.getSprite());
+            }
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(0);
-                img.startAnimation(walkright);
+                pet_condition.startAnimation(walkRight);
             }
         });
 
-        img.startAnimation(walkright);
+        pet_condition.startAnimation(walkRight);
+    }
+
+    public void incrementTime(){
+        ticks+=1;
+        increaseAge();
+        evolvePet();
+        if(pet.checkStatus(ticks)) {
+
+        }
+    }
+
+    public boolean increaseAge(){
+        if(ticks>=1){
+            pet.setAge(pet.getAge()+1);
+            evolvePet();
+            return true;
+        }
+        return false;
+    }
+    public boolean evolvePet(){
+        if(pet.getAge() > 1){
+            pet.evolve(loadJSONFromAsset());
+            findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
+            return true;
+        }
+        return false;
+    }
+
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = getAssets().open("pet.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 
     public void chooseAquanPet(View view){
-        this.pet = new Pet(R.drawable.one_aquan_one, 32, 30, 38);
+        String[] evolutions = new String[]{"2Aquan1", "2Aquan2", "2Aquan3"};
+        this.pet = new Pet(R.drawable.one_aquan_one, 32, 30, 38, evolutions);
         changeMenu(view);
     }
 
     public void chooseForestPet(View view){
-        this.pet = new Pet(R.drawable.one_forest_one, 30, 32, 38);
+        String[] evolutions = new String[]{"2Forest1", "2Forest2", "2Forest3"};
+        this.pet = new Pet(R.drawable.one_forest_one, 30, 32, 38, evolutions);
         changeMenu(view);
     }
 
     public void chooseDesertPet(View view){
-        this.pet = new Pet(R.drawable.one_desert_one, 38, 30, 32);
+        String[] evolutions = new String[]{"2Desert1", "2Desert2", "2Desert3"};
+        this.pet = new Pet(R.drawable.one_desert_one, 38, 30, 32, evolutions);
         changeMenu(view);
 
     }
@@ -188,6 +261,29 @@ public class StartupMenu extends AppCompatActivity {
             findViewById(R.id.game_menu).setVisibility(View.VISIBLE);
         }else{
             findViewById(R.id.game_menu).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void gameButtonHit(View view) {
+        Random randESavage = new Random();
+        int statToIncrement = randESavage.nextInt(3);
+
+        switch (statToIncrement) {
+            case 0:
+                pet.setPower(pet.getPower() + 10);
+                break;
+            case 1:
+                pet.setSpeed(pet.getSpeed() + 10);
+                break;
+            case 2:
+                pet.setAgility(pet.getAgility() + 10);
+                break;
+        }
+
+        int getInjured = randESavage.nextInt(3);
+
+        if (getInjured >= 2) {
+            pet.setInjured(true, ticks);
         }
     }
 
