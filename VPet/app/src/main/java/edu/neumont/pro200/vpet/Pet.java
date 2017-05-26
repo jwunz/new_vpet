@@ -23,10 +23,6 @@ public class Pet extends Monster {
     private int careMistakes;
     private int age;
     private List skills;
-    private boolean isDirty;
-    private boolean isTired;
-    private boolean isSick;
-    private boolean isInjured;
     private int dirtyTime = 0;
     private int tiredTime = 0;
     private int sickTime = 0;

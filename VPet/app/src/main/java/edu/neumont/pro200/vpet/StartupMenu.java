@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -98,6 +99,7 @@ public class StartupMenu extends AppCompatActivity {
     public void activateAnimation(final View view){
         findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
         final ImageView img = (ImageView) findViewById(R.id.petSprite);
+        final LinearLayout pet_condition = (LinearLayout) findViewById(R.id.pet_condition);
         final Animation walkRight = AnimationUtils.loadAnimation(this, R.anim.walkingright);
         final Animation walkLeft = AnimationUtils.loadAnimation(this, R.anim.walkingleft);
 
@@ -110,6 +112,7 @@ public class StartupMenu extends AppCompatActivity {
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(180);
                 incrementTime();
+                pet_condition.startAnimation(walkleft);
                 img.startAnimation(walkLeft);
                 pet.checkStatus(ticks);
             }
@@ -124,10 +127,12 @@ public class StartupMenu extends AppCompatActivity {
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(0);
                 img.startAnimation(walkRight);
+                pet_condition.startAnimation(walkRight);
             }
         });
 
         img.startAnimation(walkRight);
+        pet_condition.startAnimation(walkRight);
     }
 
     public void incrementTime(){
