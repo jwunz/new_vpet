@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/activity_ui"
     android:background="#ffffff"
     tools:context="edu.neumont.pro200.vpet.StartupMenu">
 
@@ -176,6 +177,7 @@
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="gameButtonHit"
                     android:text="Star Catcher" />
 
                 <Button
@@ -183,6 +185,7 @@
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="gameButtonHit"
                     android:text="Dance Dance Evolution" />
 
                 <Button
@@ -190,6 +193,7 @@
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="gameButtonHit"
                     android:text="Sandbag Punchout" />
 
             </LinearLayout>
@@ -242,6 +246,7 @@
                     android:layout_width="90dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="healTiredness"
                     android:text="Light" />
 
                 <Button

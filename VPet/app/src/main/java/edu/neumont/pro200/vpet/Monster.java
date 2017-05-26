@@ -7,12 +7,12 @@ import java.util.List;
  * Created by JWunz on 5/13/17.
  */
 
-public abstract class Monster {
+public abstract class Monster{
     private int sprite;
     private int power;
     private int speed;
     private int agility;
-    private String[] evolutions; //List isn't going to work because it's abstract.
+    private String[] evolutions;
 
     public int getSprite(){
         return sprite;
@@ -47,12 +47,24 @@ public abstract class Monster {
         return true;
     }
 
-    public List<Monster> getEvolutions() {
-        return null;
+    public String[] getEvolutions() {
+        return evolutions;
     }
 
-    public boolean setEvolution(List<Monster> evolutions) {
+    public boolean setEvolutions(String[] evos) {
+        for (String evo :
+                evos) {
+            addEvolution(evo);
+        }
         return true;
+    }
+
+    private boolean addEvolution(String evo) {
+        if (evolutions.length < 4) {
+            evolutions[evolutions.length] = evo;
+            return true;
+        }
+        return false;
     }
 
     public Monster(int sprite, int power, int speed, int agility) {
