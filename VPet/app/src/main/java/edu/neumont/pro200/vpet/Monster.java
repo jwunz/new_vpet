@@ -51,7 +51,6 @@ public abstract class Monster{
         return evolutions;
     }
 
-    public boolean setEvolutions(List<Monster> evolutions) {
     public boolean setEvolutions(String[] evos) {
         for (String evo :
                 evos) {

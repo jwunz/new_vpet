@@ -126,6 +126,7 @@
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="gameButtonHit"
                     android:text="Star Catcher" />
 
                 <Button
@@ -133,6 +134,7 @@
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="gameButtonHit"
                     android:text="Dance Dance Evolution" />
 
                 <Button
@@ -140,6 +142,7 @@
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="gameButtonHit"
                     android:text="Sandbag Punchout" />
 
             </LinearLayout>

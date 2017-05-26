@@ -21,8 +21,11 @@ import android.widget.ToggleButton;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Random;
+
 import static android.R.attr.animation;
 import static android.R.attr.data;
+import static android.R.attr.switchMinWidth;
 
 public class StartupMenu extends AppCompatActivity {
     private static final boolean AUTO_HIDE = false;
@@ -72,13 +75,11 @@ public class StartupMenu extends AppCompatActivity {
     };
 
     public void healSickness(View view){
-        pet.setSick(false);
-        pet.setSickTime(0);
+        pet.setSick(false, -1);
     };
 
     public void healInjury(View view){
-        pet.setInjured(false);
-        pet.setInjuredTime(0);
+        pet.setInjured(false, -1);
     };
 
     public void IncreaseHungerBar(View view) {
@@ -109,7 +110,8 @@ public class StartupMenu extends AppCompatActivity {
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(180);
                 incrementTime();
-                img.startAnimation(walkleft);
+                img.startAnimation(walkLeft);
+                pet.checkStatus(ticks);
             }
         });
 
@@ -248,6 +250,29 @@ public class StartupMenu extends AppCompatActivity {
             findViewById(R.id.game_menu).setVisibility(View.VISIBLE);
         }else{
             findViewById(R.id.game_menu).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void gameButtonHit(View view) {
+        Random randESavage = new Random();
+        int statToIncrement = randESavage.nextInt(3);
+
+        switch (statToIncrement) {
+            case 0:
+                pet.setPower(pet.getPower() + 10);
+                break;
+            case 1:
+                pet.setSpeed(pet.getSpeed() + 10);
+                break;
+            case 2:
+                pet.setAgility(pet.getAgility() + 10);
+                break;
+        }
+
+        int getInjured = randESavage.nextInt(3);
+
+        if (getInjured >= 2) {
+            pet.setInjured(true, ticks);
         }
     }
 
