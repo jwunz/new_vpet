@@ -22,7 +22,7 @@ public class Pet extends Monster {
     private float discipline;
     private int careMistakes;
     private int age;
-    private List skills;
+    private int[] skills;
     private boolean isDirty;
     private boolean isTired;
     private boolean isSick;
@@ -34,7 +34,6 @@ public class Pet extends Monster {
     private int lastDirtyTime = 0;
     private int lastTiredTime = 0;
     private int lastSickTime = 0;
-    private int lastInjuredTime = 0;
 
     public int getHappiness() {
         return happiness;
@@ -90,11 +89,11 @@ public class Pet extends Monster {
         return true;
     }
 
-    public List getSkills() {
+    public int[] getSkills() {
         return skills;
     }
 
-    public boolean setSkills(List skills) {
+    public boolean setSkills(int[] skills) {
         this.skills = skills;
         return true;
     }
