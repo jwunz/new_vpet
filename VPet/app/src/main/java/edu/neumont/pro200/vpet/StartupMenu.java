@@ -1,6 +1,7 @@
 package edu.neumont.pro200.vpet;
 
 import android.annotation.SuppressLint;
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -93,6 +94,11 @@ public class StartupMenu extends AppCompatActivity {
         findViewById(R.id.ChoosePetMenu).setVisibility(View.GONE);
         findViewById(R.id.GameMenu).setVisibility(View.VISIBLE);
         activateAnimation(view);
+    }
+
+    public void playSound (View view) {
+        MediaPlayer player=MediaPlayer.create(this,R.raw.sound);
+        player.start();
     }
 
     public void activateAnimation(View view){
