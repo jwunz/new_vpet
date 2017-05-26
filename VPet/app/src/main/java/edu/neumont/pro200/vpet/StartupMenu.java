@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.JsonReader;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -16,11 +17,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Random;
+
+import static android.R.attr.animation;
+import static android.R.attr.data;
+import static android.R.attr.switchMinWidth;
 
 public class StartupMenu extends AppCompatActivity {
     private static final boolean AUTO_HIDE = false;
@@ -70,13 +77,11 @@ public class StartupMenu extends AppCompatActivity {
     };
 
     public void healSickness(View view){
-        pet.setSick(false);
-        pet.setSickTime(0);
+        pet.setSick(false, -1);
     };
 
     public void healInjury(View view){
-        pet.setInjured(false);
-        pet.setInjuredTime(0);
+        pet.setInjured(false, -1);
     };
 
     public void healTiredness(View view){
@@ -98,14 +103,14 @@ public class StartupMenu extends AppCompatActivity {
         activateAnimation(view);
     }
 
-    public void activateAnimation(View view){
+    public void activateAnimation(final View view){
         findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
         final ImageView img = (ImageView) findViewById(R.id.petSprite);
         final LinearLayout pet_condition = (LinearLayout) findViewById(R.id.pet_condition);
-        final Animation walkright = AnimationUtils.loadAnimation(this, R.anim.walkingright);
-        final Animation walkleft = AnimationUtils.loadAnimation(this, R.anim.walkingleft);
+        final Animation walkRight = AnimationUtils.loadAnimation(this, R.anim.walkingright);
+        final Animation walkLeft = AnimationUtils.loadAnimation(this, R.anim.walkingleft);
 
-        walkright.setAnimationListener(new Animation.AnimationListener() {
+        walkRight.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a){
             }
             public void onAnimationRepeat(Animation a){
@@ -115,11 +120,11 @@ public class StartupMenu extends AppCompatActivity {
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(180);
                 incrementTime();
-                pet_condition.startAnimation(walkleft);
+                pet_condition.startAnimation(walkLeft);
             }
         });
 
-        walkleft.setAnimationListener(new Animation.AnimationListener() {
+        walkLeft.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a){
             }
             public void onAnimationRepeat(Animation a){
@@ -127,17 +132,20 @@ public class StartupMenu extends AppCompatActivity {
             }
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(0);
-                pet_condition.startAnimation(walkright);
+                pet_condition.startAnimation(walkRight);
             }
         });
 
-        pet_condition.startAnimation(walkright);
+        pet_condition.startAnimation(walkRight);
     }
 
     public void incrementTime(){
         ticks+=1;
         increaseAge();
         evolvePet();
+        if(pet.checkStatus(ticks)) {
+
+        }
     }
 
     public boolean increaseAge(){
@@ -253,6 +261,29 @@ public class StartupMenu extends AppCompatActivity {
             findViewById(R.id.game_menu).setVisibility(View.VISIBLE);
         }else{
             findViewById(R.id.game_menu).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void gameButtonHit(View view) {
+        Random randESavage = new Random();
+        int statToIncrement = randESavage.nextInt(3);
+
+        switch (statToIncrement) {
+            case 0:
+                pet.setPower(pet.getPower() + 10);
+                break;
+            case 1:
+                pet.setSpeed(pet.getSpeed() + 10);
+                break;
+            case 2:
+                pet.setAgility(pet.getAgility() + 10);
+                break;
+        }
+
+        int getInjured = randESavage.nextInt(3);
+
+        if (getInjured >= 2) {
+            pet.setInjured(true, ticks);
         }
     }
 

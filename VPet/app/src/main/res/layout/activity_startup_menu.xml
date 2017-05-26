@@ -127,6 +127,7 @@
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="gameButtonHit"
                     android:text="Star Catcher" />
 
                 <Button
@@ -134,6 +135,7 @@
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="gameButtonHit"
                     android:text="Dance Dance Evolution" />
 
                 <Button
@@ -141,6 +143,7 @@
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="gameButtonHit"
                     android:text="Sandbag Punchout" />
 
             </LinearLayout>
@@ -245,7 +248,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="47dp"
                         android:adjustViewBounds="false"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:srcCompat="@drawable/thought_bubble_dirty" />
 
                     <ImageView
@@ -255,7 +258,7 @@
                         android:layout_above="@+id/petSprite"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="47dp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:srcCompat="@drawable/thought_bubble_injured" />
 
                     <ImageView
@@ -265,7 +268,7 @@
                         android:layout_above="@+id/petSprite"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="47dp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:srcCompat="@drawable/thought_bubble_sleep" />
 
                     <ImageView
@@ -275,7 +278,7 @@
                         android:layout_above="@+id/petSprite"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="47dp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:srcCompat="@drawable/thought_bubble_sick" />
 
                 </FrameLayout>

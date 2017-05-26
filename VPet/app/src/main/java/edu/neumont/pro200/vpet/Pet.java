@@ -9,14 +9,13 @@ import java.io.InputStream;
 import java.security.AccessController;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by JWunz on 5/13/17.
  */
 
 public class Pet extends Monster {
-    private int x;
-    private int y;
     private int happiness;
     private int hunger;
     private double weight;
@@ -28,28 +27,14 @@ public class Pet extends Monster {
     private boolean isTired;
     private boolean isSick;
     private boolean isInjured;
-    private int dirtyTime; // -
-    private int tiredTime; // -These may be DateTimes or something of when the pet first became dirty/tired/sick by the end
-    private int sickTime;  // -
-    private int injuredTime;
-
-    public int getX() {
-        return x;
-    }
-
-    public boolean setX(int x) {
-        this.x = x;
-        return true;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public boolean setY(int y) {
-        this.y = y;
-        return true;
-    }
+    private int dirtyTime = 0;
+    private int tiredTime = 0;
+    private int sickTime = 0;
+    private int injuredTime = 0;
+    private int lastDirtyTime = 0;
+    private int lastTiredTime = 0;
+    private int lastSickTime = 0;
+    private int lastInjuredTime = 0;
 
     public int getHappiness() {
         return happiness;
@@ -118,8 +103,9 @@ public class Pet extends Monster {
         return isDirty;
     }
 
-    public boolean setDirty(boolean dirty) {
+    public boolean setDirty(boolean dirty, int time) {
         isDirty = dirty;
+        setDirtyTime(time);
         return true;
     }
 
@@ -127,8 +113,9 @@ public class Pet extends Monster {
         return isTired;
     }
 
-    public boolean setTired(boolean tired) {
+    public boolean setTired(boolean tired, int time) {
         isTired = tired;
+        setTiredTime(time);
         return true;
     }
 
@@ -136,8 +123,9 @@ public class Pet extends Monster {
         return isSick;
     }
 
-    public boolean setSick(boolean sick) {
+    public boolean setSick(boolean sick, int time) {
         isSick = sick;
+        setSickTime(time);
         return true;
     }
 
@@ -145,8 +133,9 @@ public class Pet extends Monster {
         return isInjured;
     }
 
-    public boolean setInjured(boolean injured) {
+    public boolean setInjured(boolean injured, int time) {
         isInjured = injured;
+        setInjuredTime(time);
         return true;
     }
 
@@ -154,7 +143,7 @@ public class Pet extends Monster {
         return dirtyTime;
     }
 
-    public boolean setDirtyTime(int dirtyTime) {
+    private boolean setDirtyTime(int dirtyTime) {
         this.dirtyTime = dirtyTime;
         return true;
     }
@@ -163,7 +152,7 @@ public class Pet extends Monster {
         return tiredTime;
     }
 
-    public boolean setTiredTime(int tiredTime) {
+    private boolean setTiredTime(int tiredTime) {
         this.tiredTime = tiredTime;
         return true;
     }
@@ -172,7 +161,7 @@ public class Pet extends Monster {
         return sickTime;
     }
 
-    public boolean setSickTime(int sickTime) {
+    private boolean setSickTime(int sickTime) {
         this.sickTime = sickTime;
         return true;
     }
@@ -181,7 +170,7 @@ public class Pet extends Monster {
         return injuredTime;
     }
 
-    public boolean setInjuredTime(int injuredTime) {
+    private boolean setInjuredTime(int injuredTime) {
         this.injuredTime = injuredTime;
         return true;
     }
@@ -251,6 +240,45 @@ public class Pet extends Monster {
             return false;
         }
         return true;
+    }
+
+    public boolean checkStatus(int time) {
+        boolean changed = false;
+
+        if (!isTired() && time >= lastTiredTime + 200 ) {
+            setTired(true, time);
+            changed = true;
+        }
+
+        if (!isDirty() && time >= lastDirtyTime + 60 ) {
+            setDirty(true, time);
+            changed = true;
+        }
+
+        if (time % 50 == 0) {
+            if (hunger > 0) {
+                hunger--;
+                changed = true;
+            }
+            if (happiness > 0) {
+                happiness--;
+                changed = true;
+            }
+        }
+
+        if (!isSick() && time >= lastSickTime + 100) {
+            Random r = new Random();
+            int roll = r.nextInt(100);
+
+            if(roll > 90 - (10 * getCareMistakes())) {
+                setSick(true, time);
+                changed = true;
+            }
+
+            lastSickTime = time;
+        }
+
+        return changed;
     }
 
     public Pet(int sprite, int power, int speed, int agility, String[] evolutions) {
