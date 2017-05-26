@@ -17,10 +17,10 @@ public class Pet extends Monster {
     private int careMistakes;
     private int age;
     private List skills;
-    private boolean isDirty = true;
-    private boolean isTired = true;
-    private boolean isSick = true;
-    private boolean isInjured = true;
+    private boolean isDirty;
+    private boolean isTired;
+    private boolean isSick;
+    private boolean isInjured;
     private int dirtyTime; // -
     private int tiredTime; // -These may be DateTimes or something of when the pet first became dirty/tired/sick by the end
     private int sickTime;  // -
