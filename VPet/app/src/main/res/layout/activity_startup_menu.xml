@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/activity_ui"
     android:layout_height="match_parent"
     android:background="#ffffff"
     tools:context="edu.neumont.pro200.vpet.StartupMenu">
@@ -192,6 +193,7 @@
                     android:layout_width="90dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="healTiredness"
                     android:text="Light" />
 
                 <Button

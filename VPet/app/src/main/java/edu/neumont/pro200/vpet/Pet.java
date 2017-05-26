@@ -211,7 +211,13 @@ public class Pet extends Monster {
         final int FINAL_EVOLUTION_BRANCH = 2;
 
         String[] evolArray = this.getEvolutions();
-        String evolution = evolArray[0];
+        String evolution = "";
+
+         double weight = this.getWeight();
+        weight = weight;
+
+        int evollength = evolArray.length;
+        evollength = evollength;
 
         if(evolArray.length != 0){
             if(this.getCareMistakes()>MISTAKE_THRESHOLD){
@@ -237,18 +243,14 @@ public class Pet extends Monster {
         try{
             JSONObject jsonObject = new JSONObject(JSON);
             jsonObject = jsonObject.getJSONObject(evolution);
-            String spritePathString = jsonObject.getString("spritePath");
-            int spritePath = Integer.parseInt(spritePathString);
-            this.setSprite(spritePath);
+            this.setSprite(jsonObject.getInt("spritePath"));
+            this.setPower((this.getPower()+jsonObject.getInt("power"))/2);
+            this.setAgility((this.getAgility()+jsonObject.getInt("agility"))/2);
+            this.setSpeed((this.getSpeed()+jsonObject.getInt("speed"))/2);
         }catch(Exception e){
             return false;
         }
         return true;
-    }
-
-
-    public Pet(int sprite, int power, int speed, int agility) {
-        super(sprite, power, speed, agility);
     }
 
     public Pet(int sprite, int power, int speed, int agility, String[] evolutions) {

@@ -1,6 +1,7 @@
 package edu.neumont.pro200.vpet;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -77,12 +78,18 @@ public class StartupMenu extends AppCompatActivity {
         pet.setInjuredTime(0);
     };
 
+    public void healTiredness(View view){
+        pet.setTired(false);
+        pet.setTiredTime(0);
+        findViewById(R.id.activity_ui).setBackgroundColor(Color.GRAY);
+    };
+
     public void IncreaseHungerBar(View view) {
         if (pet.getHunger() < 5) {
             pet.setHunger(pet.getHunger()+1);
             pet.setWeight(pet.getWeight()+.5);
         }
-    }
+    };
 
     public void changeMenu(View view){
         findViewById(R.id.ChoosePetMenu).setVisibility(View.GONE);
@@ -117,6 +124,7 @@ public class StartupMenu extends AppCompatActivity {
             }
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(0);
+                incrementTime();
                 img.startAnimation(walkright);
             }
         });
@@ -141,8 +149,7 @@ public class StartupMenu extends AppCompatActivity {
     public boolean evolvePet(){
         if(pet.getAge() > 1){
             pet.evolve(loadJSONFromAsset());
-            int sprite = pet.getSprite();
-            findViewById(R.id.petSprite).setBackgroundResource(sprite);
+            findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
             return true;
         }
         return false;
@@ -171,13 +178,13 @@ public class StartupMenu extends AppCompatActivity {
     }
 
     public void chooseForestPet(View view){
-        String[] evolutions = new String[]{"2Aquan1", "2Aquan2", "2Aquan3"};
+        String[] evolutions = new String[]{"2Forest1", "2Forest2", "2Forest3"};
         this.pet = new Pet(R.drawable.one_forest_one, 30, 32, 38, evolutions);
         changeMenu(view);
     }
 
     public void chooseDesertPet(View view){
-        String[] evolutions = new String[]{"2Aquan1", "2Aquan2", "2Aquan3"};
+        String[] evolutions = new String[]{"2Desert1", "2Desert2", "2Desert3"};
         this.pet = new Pet(R.drawable.one_desert_one, 38, 30, 32, evolutions);
         changeMenu(view);
 

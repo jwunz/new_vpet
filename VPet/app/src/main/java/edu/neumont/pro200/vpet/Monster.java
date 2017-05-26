@@ -55,12 +55,6 @@ public abstract class Monster {
         return true;
     }
 
-    public Monster(int sprite, int power, int speed, int agility) {
-        this.sprite = sprite;
-        this.power = power;
-        this.speed = speed;
-        this.agility = agility;
-    }
 
     public Monster(int sprite, int power, int speed, int agility, String[] evolutions) {
         this.sprite = sprite;
