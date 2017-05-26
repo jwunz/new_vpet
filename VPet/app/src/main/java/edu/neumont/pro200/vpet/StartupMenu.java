@@ -76,6 +76,13 @@ public class StartupMenu extends AppCompatActivity {
         pet.setInjuredTime(0);
     };
 
+    public void healDirtiness(View view){
+        pet.setDirty(false);
+        pet.setDirtyTime(ticks);
+        findViewById(R.id.mess).setVisibility(View.GONE);
+
+    };
+
     public void IncreaseHungerBar(View view) {
         if (pet.getHunger() < 5) {
             pet.setHunger(1);
