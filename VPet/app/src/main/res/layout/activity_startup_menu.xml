@@ -246,7 +246,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="47dp"
                         android:adjustViewBounds="false"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:srcCompat="@drawable/thought_bubble_dirty" />
 
                     <ImageView
@@ -256,7 +256,7 @@
                         android:layout_above="@+id/petSprite"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="47dp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:srcCompat="@drawable/thought_bubble_injured" />
 
                     <ImageView
@@ -266,7 +266,7 @@
                         android:layout_above="@+id/petSprite"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="47dp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:srcCompat="@drawable/thought_bubble_sleep" />
 
                     <ImageView
@@ -276,7 +276,7 @@
                         android:layout_above="@+id/petSprite"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="47dp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:srcCompat="@drawable/thought_bubble_sick" />
 
                 </FrameLayout>

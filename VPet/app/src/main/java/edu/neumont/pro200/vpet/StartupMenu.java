@@ -112,9 +112,7 @@ public class StartupMenu extends AppCompatActivity {
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(180);
                 incrementTime();
-                pet_condition.startAnimation(walkleft);
-                img.startAnimation(walkLeft);
-                pet.checkStatus(ticks);
+                pet_condition.startAnimation(walkLeft);
             }
         });
 
@@ -126,12 +124,10 @@ public class StartupMenu extends AppCompatActivity {
             }
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(0);
-                img.startAnimation(walkRight);
                 pet_condition.startAnimation(walkRight);
             }
         });
 
-        img.startAnimation(walkRight);
         pet_condition.startAnimation(walkRight);
     }
 
@@ -139,6 +135,9 @@ public class StartupMenu extends AppCompatActivity {
         ticks+=1;
         increaseAge();
         evolvePet();
+        if(pet.checkStatus(ticks)) {
+
+        }
     }
 
     public boolean increaseAge(){

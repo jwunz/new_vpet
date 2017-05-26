@@ -23,6 +23,10 @@ public class Pet extends Monster {
     private int careMistakes;
     private int age;
     private List skills;
+    private boolean isDirty;
+    private boolean isTired;
+    private boolean isSick;
+    private boolean isInjured;
     private int dirtyTime = 0;
     private int tiredTime = 0;
     private int sickTime = 0;
@@ -226,21 +230,27 @@ public class Pet extends Monster {
         return true;
     }
 
-    public void checkStatus(int time) {
+    public boolean checkStatus(int time) {
+        boolean changed = false;
+
         if (!isTired() && time >= lastTiredTime + 200 ) {
             setTired(true, time);
+            changed = true;
         }
 
         if (!isDirty() && time >= lastDirtyTime + 60 ) {
             setDirty(true, time);
+            changed = true;
         }
 
         if (time % 50 == 0) {
             if (hunger > 0) {
                 hunger--;
+                changed = true;
             }
             if (happiness > 0) {
                 happiness--;
+                changed = true;
             }
         }
 
@@ -250,10 +260,13 @@ public class Pet extends Monster {
 
             if(roll > 90 - (10 * getCareMistakes())) {
                 setSick(true, time);
+                changed = true;
             }
 
             lastSickTime = time;
         }
+
+        return changed;
     }
 
     public Pet(int sprite, int power, int speed, int agility) {
