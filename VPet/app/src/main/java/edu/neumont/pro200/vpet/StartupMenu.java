@@ -86,14 +86,12 @@ public class StartupMenu extends AppCompatActivity {
     };
 
     public void healTiredness(View view){
-        pet.setTired(false);
-        pet.setTiredTime(0);
+        pet.setTired(false, 0);
         findViewById(R.id.activity_ui).setBackgroundColor(Color.DKGRAY);
     };
 
     public void healDirtiness(View view){
-        pet.setDirty(false);
-        pet.setDirtyTime(ticks);
+        pet.setDirty(false, 0);
         findViewById(R.id.mess).setVisibility(View.GONE);
 
     };
@@ -102,7 +100,7 @@ public class StartupMenu extends AppCompatActivity {
         if (pet.getHunger() < 5) {
             pet.setHunger(pet.getHunger()+1);
             pet.setWeight(pet.getWeight()+.5);
-        }
+    }
     };
 
     public void changeMenu(View view){
@@ -111,7 +109,7 @@ public class StartupMenu extends AppCompatActivity {
         activateAnimation(view);
     }
 
-    public void playSound (View view) {
+    public void playSound () {
         MediaPlayer player=MediaPlayer.create(this,R.raw.sound);
         player.start();
     }
@@ -156,6 +154,7 @@ public class StartupMenu extends AppCompatActivity {
         ticks+=1;
         increaseAge();
         evolvePet();
+        checkForAilment();
         if(pet.checkStatus(ticks)) {
 
         }
@@ -176,6 +175,13 @@ public class StartupMenu extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public void checkForAilment() {
+        if ((pet.getHunger() <=1) || (pet.isDirty()) || (pet.isInjured()) || (pet.isTired()) || (pet.isSick())) {
+            playSound();
+        }
+
     }
 
     public String loadJSONFromAsset() {
@@ -325,5 +331,14 @@ public class StartupMenu extends AppCompatActivity {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    public void battleAftermath() {
+        //increase money
+        Random r = new Random();
+        int randomInt = r.nextInt(100) + 1;
+        if (randomInt >= 30 && randomInt <= 50) {
+            pet.setInjured(true, 0);
+        }
     }
 }

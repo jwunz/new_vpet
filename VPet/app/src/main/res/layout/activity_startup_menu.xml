@@ -350,7 +350,7 @@
                 android:layout_alignBottom="@+id/pet_condition"
                 android:layout_alignLeft="@+id/game_menu"
                 android:layout_alignStart="@+id/game_menu"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:srcCompat="@drawable/poo" />
 
 
