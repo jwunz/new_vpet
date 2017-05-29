@@ -3,6 +3,7 @@ package edu.neumont.pro200.vpet;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Message;
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -82,20 +83,23 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         pet.setInjured(false, -1);
     }
 
-    ;
 
     public void healTiredness(View view) {
         pet.setTired(false, -1);
         findViewById(R.id.activity_ui).setBackgroundColor(Color.DKGRAY);
     }
 
-    ;
+    public void healDirtiness(View view){
+        pet.setDirty(false, 0);
+        findViewById(R.id.mess).setVisibility(View.GONE);
+
+    };
 
     public void IncreaseHungerBar(View view) {
         if (pet.getHunger() < 5) {
             pet.setHunger(pet.getHunger() + 1);
             pet.setWeight(pet.getWeight() + .5);
-        }
+    }
     }
 
     ;
@@ -106,7 +110,12 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         activateAnimation(view);
     }
 
-    public void activateAnimation(final View view) {
+    public void playSound () {
+        MediaPlayer player=MediaPlayer.create(this,R.raw.sound);
+        player.start();
+    }
+
+    public void activateAnimation(View view){
         findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
         final ImageView img = (ImageView) findViewById(R.id.petSprite);
         final LinearLayout pet_condition = (LinearLayout) findViewById(R.id.pet_condition);
@@ -182,7 +191,14 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         return false;
     }
 
-    public String loadJSONFromAsset(String file) {
+    public void checkForAilment() {
+        if ((pet.getHunger() <=1) || (pet.isDirty()) || (pet.isInjured()) || (pet.isTired()) || (pet.isSick())) {
+            playSound();
+        }
+
+    }
+
+    public String loadJSONFromAsset() {
         String json = null;
         try {
             InputStream is = getAssets().open(file);
@@ -331,6 +347,14 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
+    public void battleAftermath() {
+        //increase money
+        Random r = new Random();
+        int randomInt = r.nextInt(100) + 1;
+        if (randomInt >= 30 && randomInt <= 50) {
+            pet.setInjured(true, 0);
+        }
+    }
     //JSON WRITE CODE IS BELOW
     //
     //

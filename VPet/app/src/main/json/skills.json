@@ -1,0 +1,70 @@
+1: {
+    "name": "Piledriver",
+    "power": 3,
+    "speed": 4,
+    "agility": 2,
+    "price": 300
+},
+2: {
+    "name": "Suplex",
+    "power": 3,
+    "speed": 3,
+    "agility": 2,
+    "price": 200
+},
+3: {
+    "name": "Roundhouse",
+    "power": 5,
+    "speed": 3,
+    "agility": 4,
+    "price": 250
+},
+4: {
+    "name": "Megafist",
+    "power": 6,
+    "speed": 2,
+    "agility": 2,
+    "price": 350
+},
+5: {
+    "name": "Powerslap",
+    "power": 4,
+    "speed": 4,
+    "agility": 4,
+    "price": 300
+},
+6: {
+    "name": "Bulldozer",
+    "power": 5,
+    "speed": 3,
+    "agility": 2,
+    "price": 400
+},
+7: {
+    "name": "Superjump",
+    "power": 1,
+    "speed": 4,
+    "agility": 7,
+    "price": 250
+},
+8: {
+    "name": "Lightsprint",
+    "power": 1,
+    "speed": 6,
+    "agility": 4,
+    "price": 250
+},
+9: {
+    "name": "Shinsplint",
+    "power": 6,
+    "speed": 2,
+    "agility": 3,
+    "price": 500
+},
+10: {
+    "name": "Phaseshift",
+    "power": 2,
+    "speed": 3,
+    "agility": 6,
+    "price": 350
+}
