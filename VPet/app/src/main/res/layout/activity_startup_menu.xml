@@ -113,7 +113,7 @@
                     android:layout_width="90dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:onClick="onToggle"
+                    android:onClick="toggleShopMenu"
                     android:text="Shop"
                     android:textOff="Shop"
                     android:textOn="Shop" />
@@ -130,6 +130,42 @@
 
             </RadioGroup>
 
+            <LinearLayout
+                android:id="@+id/shop_menu"
+                android:layout_width="155dp"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/medicine_menu"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/menu_group"
+                android:orientation="vertical"
+                android:visibility="invisible">
+
+                <Button
+                    android:id="@+id/skill1"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:onClick="addSkillToList"
+                    android:text="" />
+
+                <Button
+                    android:id="@+id/skill2"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:onClick="addSkillToList"
+                    android:text="" />
+
+                <Button
+                    android:id="@+id/skill3"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:onClick="addSkillToList"
+                    android:text="" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/hand_menu"
