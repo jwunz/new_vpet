@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessController;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -22,7 +23,7 @@ public class Pet extends Monster {
     private float discipline;
     private int careMistakes;
     private int age;
-    private int[] skills;
+    private int[] skills = new int[2];
     private boolean isDirty;
     private boolean isTired;
     private boolean isSick;

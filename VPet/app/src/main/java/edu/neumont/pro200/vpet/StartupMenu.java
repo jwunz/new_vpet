@@ -3,6 +3,7 @@ package edu.neumont.pro200.vpet;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Message;
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,26 +13,32 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.ToggleButton;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class StartupMenu extends AppCompatActivity implements Serializable {
     private static final boolean AUTO_HIDE = false;
     private Pet pet;
+    private int money = 0;
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
     private int ticks = 0;
+    private Random r = new Random();
     private View mContentView;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -82,14 +89,17 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         pet.setInjured(false, -1);
     }
 
-    ;
 
     public void healTiredness(View view) {
         pet.setTired(false, -1);
         findViewById(R.id.activity_ui).setBackgroundColor(Color.DKGRAY);
     }
 
-    ;
+    public void healDirtiness(View view){
+        pet.setDirty(false, -1);
+        findViewById(R.id.mess).setVisibility(View.GONE);
+
+    };
 
     public void IncreaseHungerBar(View view) {
         if (pet.getHunger() < 5) {
@@ -103,10 +113,16 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     public void changeMenu(View view) {
         findViewById(R.id.ChoosePetMenu).setVisibility(View.GONE);
         findViewById(R.id.GameMenu).setVisibility(View.VISIBLE);
+        updateSkillShop();
         activateAnimation(view);
     }
 
-    public void activateAnimation(final View view) {
+    public void playSound () {
+        MediaPlayer player=MediaPlayer.create(this,R.raw.sound);
+        player.start();
+    }
+
+    public void activateAnimation(View view){
         findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
         final ImageView img = (ImageView) findViewById(R.id.petSprite);
         final LinearLayout pet_condition = (LinearLayout) findViewById(R.id.pet_condition);
@@ -165,21 +181,70 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     }
 
     public boolean increaseAge() {
-        if (ticks >= 1) {
+        if (ticks >= 200) {
             pet.setAge(pet.getAge() + 1);
             evolvePet();
+            updateSkillShop();
             return true;
         }
         return false;
     }
 
-    public boolean evolvePet() {
-        if (pet.getAge() > 1) {
+    private boolean evolvePet() {
+        if (pet.getAge() > 5) {
             pet.evolve(loadJSONFromAsset("pet.json"));
             findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
             return true;
         }
         return false;
+    }
+
+    private void updateSkillShop(){
+        Button[] skills = new Button[]{(Button)findViewById(R.id.skill1), (Button)findViewById(R.id.skill2), (Button)findViewById(R.id.skill3)};
+        for(int i = 0; i < skills.length; i++){
+            readSkillJson(skills[i]);
+        }
+    }
+
+    private boolean readSkillJson(Button skill){
+        try{
+            JSONObject jsonObject = new JSONObject(loadJSONFromAsset("skills.json"));
+            int randomIndexNum = r.nextInt(jsonObject.length()-1);
+            String randomIndex = Integer.toString(randomIndexNum);
+            jsonObject = jsonObject.getJSONObject(randomIndex);
+
+            String skillName = jsonObject.getString("name");
+            int skillPower = jsonObject.getInt("power");
+            int skillAgility = jsonObject.getInt("agility");
+            int skillSpeed = jsonObject.getInt("speed");
+            int skillPrice = jsonObject.getInt("price");
+
+            String skillBuilder = "#" + randomIndex + " " + skillName + "\n" + "Power: " + skillPower + "\n Agility: " + skillAgility + "\n Speed: " + skillSpeed + "\n Price: $" + skillPrice;
+            skill.setText(skillBuilder);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
+    }
+
+    public void addSkillToList(View view){
+        Button button = (Button) view;
+        int index = button.getText().charAt(1);
+        int price = Integer.parseInt(button.getText().toString().substring(button.getText().toString().indexOf('$')+1));
+        for(int i = 0; i < pet.getSkills().length; i++){
+            if(pet.getSkills()[i] == i){
+                pet.getSkills()[i] = index;
+                money -= price;
+                break;
+            }
+        }
+    }
+
+    public void checkForAilment() {
+        if ((pet.getHunger() <=1) || (pet.isDirty()) || (pet.isInjured()) || (pet.isTired()) || (pet.isSick())) {
+            playSound();
+        }
+
     }
 
     public String loadJSONFromAsset(String file) {
@@ -242,12 +307,24 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     public void toggleAllMenusOff(View view) {
         findViewById(R.id.hand_menu).setVisibility(View.INVISIBLE);
         findViewById(R.id.game_menu).setVisibility(View.INVISIBLE);
+        findViewById(R.id.shop_menu).setVisibility(View.INVISIBLE);
     }
 
     public void onToggle(View view) {
         ((RadioGroup) view.getParent()).check(view.getId());
         toggleHandMenu(view);
         toggleGameMenu(view);
+    }
+
+    public void toggleShopMenu(View view) {
+        toggleAllMenusOff(view);
+        ((RadioGroup) view.getParent()).check(view.getId());
+        ToggleButton shop_button = (ToggleButton) findViewById(R.id.shop_button);
+        if (shop_button.isChecked()) {
+            findViewById(R.id.shop_menu).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.shop_menu).setVisibility(View.INVISIBLE);
+        }
     }
 
     public void toggleMedicineMenu(View view) {
@@ -282,8 +359,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     }
 
     public void gameButtonHit(View view) {
-        Random randESavage = new Random();
-        int statToIncrement = randESavage.nextInt(3);
+        int statToIncrement = r.nextInt(3);
 
         switch (statToIncrement) {
             case 0:
@@ -296,12 +372,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
                 pet.setAgility(pet.getAgility() + 10);
                 break;
         }
-
-        int getInjured = randESavage.nextInt(3);
-
-        if (getInjured >= 2) {
-            pet.setInjured(true, ticks);
-        }
+        setPetInjury();
     }
 
     private void hide() {
@@ -331,6 +402,21 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
+    public void battleAftermath() {
+        //increase money
+        money += 20;
+        setPetInjury();
+    }
+
+    private boolean setPetInjury(){
+        int getInjured = r.nextInt(3);
+        if (getInjured >= 2) {
+            pet.setInjured(true, ticks);
+            return true;
+        }
+        return false;
+
+    }
     //JSON WRITE CODE IS BELOW
     //
     //

@@ -13,6 +13,56 @@
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
+
+    <RelativeLayout
+        android:id="@+id/ChoosePetMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/ChoosePetText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="82dp"
+            android:text="Choose Pet"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="400px"
+            android:layout_height="400px"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/imageButton3"
+            android:onClick="chooseAquanPet"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/one_aquan_one" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="400px"
+            android:layout_height="400px"
+            android:layout_alignTop="@+id/imageButton"
+            android:layout_centerHorizontal="true"
+            android:onClick="chooseForestPet"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/one_forest_one" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="400px"
+            android:layout_height="400px"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:onClick="chooseDesertPet"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/one_desert_one" />
+    </RelativeLayout>
+
     <FrameLayout
         android:id="@+id/GameMenu"
         android:layout_width="match_parent"
@@ -63,7 +113,7 @@
                     android:layout_width="90dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:onClick="onToggle"
+                    android:onClick="toggleShopMenu"
                     android:text="Shop"
                     android:textOff="Shop"
                     android:textOn="Shop" />
@@ -80,6 +130,42 @@
 
             </RadioGroup>
 
+            <LinearLayout
+                android:id="@+id/shop_menu"
+                android:layout_width="155dp"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/medicine_menu"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/menu_group"
+                android:orientation="vertical"
+                android:visibility="invisible">
+
+                <Button
+                    android:id="@+id/skill1"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:onClick="addSkillToList"
+                    android:text="" />
+
+                <Button
+                    android:id="@+id/skill2"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:onClick="addSkillToList"
+                    android:text="" />
+
+                <Button
+                    android:id="@+id/skill3"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:onClick="addSkillToList"
+                    android:text="" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/hand_menu"
@@ -204,6 +290,7 @@
                     android:layout_width="90dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="healDirtiness"
                     android:text="Soap" />
 
                 <Button
@@ -292,57 +379,18 @@
                     android:layout_marginBottom="47dp" />
             </LinearLayout>
 
+            <ImageView
+                android:id="@+id/mess"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignBottom="@+id/pet_condition"
+                android:layout_alignLeft="@+id/game_menu"
+                android:layout_alignStart="@+id/game_menu"
+                android:visibility="gone"
+                app:srcCompat="@drawable/poo" />
+
 
         </RelativeLayout>
     </FrameLayout>
-
-    <RelativeLayout
-        android:id="@+id/ChoosePetMenu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
-
-        <TextView
-            android:id="@+id/ChoosePetText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="82dp"
-            android:text="Choose Pet"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
-
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="400px"
-            android:layout_height="400px"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/imageButton3"
-            android:onClick="chooseAquanPet"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/one_aquan_one" />
-
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="400px"
-            android:layout_height="400px"
-            android:layout_alignTop="@+id/imageButton"
-            android:layout_centerHorizontal="true"
-            android:onClick="chooseForestPet"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/one_forest_one" />
-
-        <ImageButton
-            android:id="@+id/imageButton3"
-            android:layout_width="400px"
-            android:layout_height="400px"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:onClick="chooseDesertPet"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/one_desert_one" />
-    </RelativeLayout>
 
 </FrameLayout>
