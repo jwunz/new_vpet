@@ -80,7 +80,6 @@
             android:weightSum="1"
             tools:ignore="UselessParent">
 
-
             <RadioGroup
                 android:id="@+id/menu_group"
                 android:layout_width="match_parent"
@@ -88,15 +87,16 @@
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
+
                 <ToggleButton
-                    android:id="@+id/stats_button"
+                    android:id="@+id/pill_button"
                     android:layout_width="90dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:onClick="onToggle"
-                    android:text="Stats"
-                    android:textOff="Stats"
-                    android:textOn="Stats" />
+                    android:onClick="toggleMedicineMenu"
+                    android:text="Pill"
+                    android:textOff="Pill"
+                    android:textOn="Pill" />
 
                 <ToggleButton
                     android:id="@+id/hand_button"
@@ -122,6 +122,7 @@
                     android:id="@+id/games_button"
                     android:layout_width="90dip"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/menu_group"
                     android:layout_marginTop="0dp"
                     android:onClick="toggleGameMenu"
                     android:text="Games"
@@ -130,12 +131,19 @@
 
             </RadioGroup>
 
+            <Button
+                android:id="@+id/stats_menu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:onClick="toggleAllMenusOff"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:visibility="gone" />
+
             <LinearLayout
                 android:id="@+id/shop_menu"
                 android:layout_width="155dp"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/medicine_menu"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentEnd="false"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/menu_group"
                 android:orientation="vertical"
@@ -200,8 +208,7 @@
             <LinearLayout
                 android:id="@+id/game_menu"
                 android:layout_width="155dp"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/medicine_menu"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/menu_group"
@@ -238,15 +245,14 @@
                 android:id="@+id/medicine_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/linearLayout"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_column="0"
-                android:layout_row="0"
-                android:gravity="bottom|right|center"
+                android:layout_below="@+id/menu_group"
+                android:gravity="top|left|center_horizontal"
                 android:orientation="horizontal"
                 android:paddingTop="0dp"
                 android:visibility="invisible">
+
 
                 <Button
                     android:id="@+id/medicine_button"
@@ -301,15 +307,15 @@
                     android:onClick="IncreaseHungerBar"
                     android:text="Food" />
 
-                <ToggleButton
-                    android:id="@+id/pill_button"
+                <Button
+                    android:id="@+id/stats_button"
                     android:layout_width="90dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:onClick="toggleMedicineMenu"
-                    android:text="Pill"
-                    android:textOff="Pill"
-                    android:textOn="Pill" />
+                    android:onClick="displayStats"
+                    android:text="Stats"
+                    android:textOff="Stats"
+                    android:textOn="Stats" />
             </LinearLayout>
 
             <LinearLayout
