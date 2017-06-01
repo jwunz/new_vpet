@@ -75,14 +75,19 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
 
     public void healSickness(View view) {
         pet.setSick(false, ticks);
+        pet.setIsEating(true);
+        findViewById(R.id.pill).setVisibility(View.VISIBLE);
+        toggleAllButtons(false);
         findViewById(R.id.sickBubble).setVisibility(View.GONE);
     }
 
     public void healInjury(View view) {
         pet.setInjured(false, ticks);
+        pet.setIsEating(true);
+        findViewById(R.id.bandage).setVisibility(View.VISIBLE);
+        toggleAllButtons(false);
         findViewById(R.id.injuryBubble).setVisibility(View.GONE);
     }
-
 
     public void healTiredness(View view) {
         pet.setTired(false, ticks);
@@ -100,6 +105,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     public void IncreaseHungerBar(View view) {
         if (pet.getHunger() < 5) {
             pet.setIsEating(true);
+            findViewById(R.id.meat).setVisibility(View.VISIBLE);
             toggleAllButtons(false);
             pet.setHunger(pet.getHunger() + 1);
             pet.setWeight(pet.getWeight() + .5);
@@ -122,8 +128,8 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     }
 
     public void playSound () {
-        MediaPlayer player=MediaPlayer.create(this,R.raw.sound);
-        player.start();
+   //     MediaPlayer player=MediaPlayer.create(this,R.raw.sound);
+    //    player.start();
     }
 
     public void displayStats(View view){
@@ -160,12 +166,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(180);
                 incrementTime();
-                if(pet.getIsEating()) {
-                    img.startAnimation(eat);
-                    toggleAllButtons(true);
-                }else{
-                    pet_condition.startAnimation(walkLeft);
-                }
+                pet_condition.startAnimation(walkLeft);
             }
         });
 
@@ -178,7 +179,12 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
             }
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(0);
-                pet_condition.startAnimation(walkRight);
+                if(pet.getIsEating()) {
+                    img.startAnimation(eat);
+                    toggleAllButtons(true);
+                }else {
+                    pet_condition.startAnimation(walkRight);
+                }
             }
         });
 
@@ -191,11 +197,18 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
             }
             public void onAnimationEnd(Animation a) {
                 pet.setIsEating(false);
-                pet_condition.startAnimation(walkLeft);
+                toggleOffConsumable();
+                pet_condition.startAnimation(walkRight);
             }
         });
 
         pet_condition.startAnimation(walkRight);
+    }
+
+    private void toggleOffConsumable(){
+        findViewById(R.id.meat).setVisibility(View.GONE);
+        findViewById(R.id.pill).setVisibility(View.GONE);
+        findViewById(R.id.bandage).setVisibility(View.GONE);
     }
 
     public void incrementTime() {
@@ -404,6 +417,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
 
     public void toggleAllButtons(boolean bool){
         findViewById(R.id.pill_button).setEnabled(bool);
+        findViewById(R.id.bandage_button).setEnabled(bool);
         findViewById(R.id.medicine_button).setEnabled(bool);
         findViewById(R.id.praise_button).setEnabled(bool);
         findViewById(R.id.scold_button).setEnabled(bool);
@@ -417,7 +431,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         findViewById(R.id.light_button).setEnabled(bool);
         findViewById(R.id.soap_button).setEnabled(bool);
         findViewById(R.id.food_button).setEnabled(bool);
-        findViewById(R.id.stats_menu).setEnabled(bool);
+        findViewById(R.id.stats_button).setEnabled(bool);
     }
 
     public String loadJSONFromAsset(String file) {
@@ -487,12 +501,6 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         ((RadioGroup) findViewById(R.id.menu_group)).setOnCheckedChangeListener(ToggleListener);
     }
 
-    public void onToggle(View view) {
-        ((RadioGroup) view.getParent()).check(view.getId());
-        toggleHandMenu(view);
-        toggleGameMenu(view);
-    }
-
     public void toggleShopMenu(View view) {
         toggleAllMenusOff(view);
         ((RadioGroup) view.getParent()).check(view.getId());
@@ -538,23 +546,25 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     }
 
     public void gameButtonHit(View view) {
-        int statToIncrement = r.nextInt(3);
-        pet.setHappiness(pet.getHappiness()+1);
-        if(pet.getHappiness() > 1){
-            pet.setSad(false, -1);
+        if(pet.getHappiness()<5){
+            int statToIncrement = r.nextInt(3);
+            pet.setHappiness(pet.getHappiness()+1);
+            if(pet.getHappiness() > 1){
+                pet.setSad(false, -1);
+            }
+            switch (statToIncrement) {
+                case 0:
+                    pet.setPower(pet.getPower() + 10);
+                    break;
+                case 1:
+                    pet.setSpeed(pet.getSpeed() + 10);
+                    break;
+                case 2:
+                    pet.setAgility(pet.getAgility() + 10);
+                    break;
+            }
+            setPetInjury();
         }
-        switch (statToIncrement) {
-            case 0:
-                pet.setPower(pet.getPower() + 10);
-                break;
-            case 1:
-                pet.setSpeed(pet.getSpeed() + 10);
-                break;
-            case 2:
-                pet.setAgility(pet.getAgility() + 10);
-                break;
-        }
-        setPetInjury();
     }
 
     private void hide() {

@@ -9,7 +9,7 @@
         />
     <scale
         android:fromYScale="0.8"
-        android:toYScale="1.8"
+        android:toYScale="1.0"
         android:fromXScale="1.0"
         android:toXScale="1.0"
         android:duration="500"
