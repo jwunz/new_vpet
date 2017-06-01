@@ -25,6 +25,7 @@ public abstract class Monster {
     }
 
     public boolean setPower(int power) {
+        this.power = power;
         return true;
     }
 
@@ -33,6 +34,7 @@ public abstract class Monster {
     }
 
     public boolean setSpeed(int speed) {
+        this.speed = speed;
         return true;
     }
 
@@ -41,6 +43,7 @@ public abstract class Monster {
     }
 
     public boolean setAgility(int agility) {
+        this.agility = agility;
         return true;
     }
 
