@@ -126,8 +126,8 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     }
 
     public void playSound () {
-   //     MediaPlayer player=MediaPlayer.create(this,R.raw.sound);
-    //    player.start();
+        MediaPlayer player=MediaPlayer.create(this,R.raw.sound);
+        player.start();
     }
 
     public void displayStats(View view){
@@ -361,7 +361,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
 
     public void checkForAilment() {
         if ((pet.isHungry()) || (pet.isSad()) || (pet.isDirty()) || (pet.isInjured()) || (pet.isTired()) || (pet.isSick())) {
-            playSound();
+           // playSound();
         }
 
     }
