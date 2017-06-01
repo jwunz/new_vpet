@@ -1,12 +1,14 @@
 package edu.neumont.pro200.vpet;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.JsonReader;
 import android.util.JsonWriter;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,8 +22,12 @@ import android.widget.ToggleButton;
 
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
@@ -66,15 +72,6 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         }
     };
 
-    private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS);
-            }
-            return false;
-        }
-    };
 
     public void healSickness(View view) {
         pet.setSick(false, ticks);
@@ -123,6 +120,11 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         findViewById(R.id.GameMenu).setVisibility(View.VISIBLE);
         updateSkillShop();
         activateAnimation(view);
+    }
+
+    private void showChoosePetMenu() {
+        findViewById(R.id.GameMenu).setVisibility(View.GONE);
+        findViewById(R.id.ChoosePetMenu).setVisibility(View.VISIBLE);
     }
 
     public void playSound () {
@@ -226,9 +228,13 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         boolean isInjured = petIsInflicted(pet.isInjured(), pet.getLastInjuredTime());
         boolean isHungry = petIsInflicted(pet.isHungry(), pet.getLastHungerTime());
         boolean isSad = petIsInflicted(pet.isSad(), pet.getLastSadTime());
-        if(isDirty || isTired || isSick || isInjured || isHungry || isSad){
-            pet.setCareMistakes(pet.getCareMistakes()+1);
+        if(isDirty || isTired || isSick || isInjured || isHungry || isSad) {
+            pet.setCareMistakes(pet.getCareMistakes() + 1);
             inflicted = true;
+        }
+
+        if (ticks % 20 == 0) {
+            autoSave();
         }
         return inflicted;
     }
@@ -291,19 +297,48 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         return changed;
     }
 
-    public boolean autoSave() {
-        if (ticks % 20 == 0) {
+    public void autoSave() {
+        try {
+            FileOutputStream os = openFileOutput("saves.json", Context.MODE_PRIVATE);
+            writeJsonStream(os);
+            os.flush();
+            os.close();
+            loadSave();
+        }
+        catch (FileNotFoundException fnfe) {
+            //failed to open file
+        }
+        catch (IOException ioe) {
+            //failed to write to file
+        }
+    }
 
+    public boolean loadSave() {
+        try {
+            FileInputStream is = openFileInput("save.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            pet = readJsonStream(is);
+            is.close();
             return true;
         }
-        return false;
+        catch (FileNotFoundException fnfe) {
+            fnfe.printStackTrace();
+            return false;
+        }
+        catch (IOException ioe) {
+            ioe.printStackTrace();
+            return false;
+        }
     }
 
     public boolean increaseAge() {
-        if (ticks % 200 == 0) { //200
+        if (ticks % 200 == 0) {
             pet.setAge(pet.getAge() + 1);
             evolvePet();
             updateSkillShop();
+            petDeath();
             return true;
         }
         return false;
@@ -322,6 +357,20 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         Button[] skills = new Button[]{(Button)findViewById(R.id.skill1), (Button)findViewById(R.id.skill2), (Button)findViewById(R.id.skill3)};
         for(int i = 0; i < skills.length; i++){
             readSkillJson(skills[i]);
+        }
+    }
+
+    private void petDeath() {
+        Random randESavage = new Random();
+
+        if (randESavage.nextInt(100) > pet.getCareMistakes() * pet.getAge()) {
+            healDirtiness(findViewById(R.id.petSprite));
+            healInjury(findViewById(R.id.petSprite));
+            healSickness(findViewById(R.id.petSprite));
+            healTiredness(findViewById(R.id.petSprite));
+            ticks = 0;
+
+            showChoosePetMenu();
         }
     }
 
@@ -428,8 +477,9 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         ((RadioGroup) findViewById(R.id.menu_group)).setOnCheckedChangeListener(ToggleListener);
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
-        // mContentView = findViewById(R.id.fullscreen_content);
-
+        if (loadSave()) {
+            changeMenu(findViewById(R.id.petSprite));
+        }
     }
 
     static final RadioGroup.OnCheckedChangeListener ToggleListener = new RadioGroup.OnCheckedChangeListener() {
@@ -571,6 +621,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
         writer.setIndent("  ");
         writeMessagesArray(writer);
+        writer.flush();
         writer.close();
     }
 
@@ -593,16 +644,14 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         writer.name("is_dirty").value(pet.isDirty());
         writer.name("is_tired").value(pet.isTired());
         writer.name("is_sick").value(pet.isSick());
-        writer.name("dirty_time").value(pet.getDirtyTime());
-        writer.name("tired_time").value(pet.getTiredTime());
-        writer.name("sick_time").value(pet.getSickTime());
-        writer.name("injured_time").value(pet.getInjuredTime());
+        writer.name("is_injured").value(pet.isInjured());
         writer.name("sprite_path").value(pet.getSprite());
         writer.name("power").value(pet.getPower());
         writer.name("agility").value(pet.getAgility());
         writer.name("speed").value(pet.getSpeed());
         writer.name("evolutions");
         writeStringArray(writer, pet.getEvolutions());
+        writer.endObject();
     }
 
     public void writeIntArray(JsonWriter writer, int[] ints) throws IOException {
@@ -618,5 +667,130 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
             writer.value(value);
         }
         writer.endArray();
+    }
+
+    //JSON READ CODE IS BELOW
+    //
+    //
+    //
+    //
+    //
+    //
+
+    public Pet readJsonStream(InputStream in) throws IOException {
+        JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+        Pet pet = readMessagesArray(reader);
+        reader.close();
+        return pet;
+    }
+
+    public Pet readMessagesArray(JsonReader reader) throws IOException{
+        reader.beginArray();
+        Pet pet = readAutoSave(reader);
+        reader.endArray();
+        return pet;
+    }
+
+    private Pet readAutoSave(JsonReader reader) throws IOException{
+        int sprite = 0;
+        int power = 0;
+        int speed = 0;
+        int agility = 0;
+        String[] evolutions = new String[4];
+        int happiness = 0;
+        int hunger = 0;
+        double weight = 0;
+        float discipline = 0;
+        int careMistakes = 0;
+        int age = 0;
+        int[] skills = new int[2];
+        boolean isDirty = false;
+        boolean isTired = false;
+        boolean isSick = false;
+        boolean isInjured = false;
+
+        reader.beginObject();
+        while(reader.hasNext()) {
+            String name = reader.nextName();
+            if (name == "happiness") {
+                happiness = reader.nextInt();
+            }
+            else if (name == "hunger") {
+                hunger = reader.nextInt();
+            }
+            else if (name == "weight") {
+                weight = reader.nextDouble();
+            }
+            else if (name == "discipline") {
+                discipline = (float)reader.nextDouble();
+            }
+            else if (name == "care_mistakes") {
+                careMistakes = reader.nextInt();
+            }
+            else if (name == "age") {
+                age = reader.nextInt();
+            }
+            else if (name == "skills") {
+                skills = readIntArray(reader);
+            }
+            else if (name == "is_dirty") {
+                isDirty = reader.nextBoolean();
+            }
+            else if (name == "is_tired") {
+                isTired = reader.nextBoolean();
+            }
+            else if (name == "is_sick") {
+                isSick = reader.nextBoolean();
+            }
+            else if (name == "is_injured") {
+                isInjured = reader.nextBoolean();
+            }
+            else if (name == "sprite_path") {
+                sprite = reader.nextInt();
+            }
+            else if (name == "power") {
+                power = reader.nextInt();
+            }
+            else if (name == "agility") {
+                agility = reader.nextInt();
+            }
+            else if (name == "speed") {
+                speed = reader.nextInt();
+            }
+            else if (name == "evolutions") {
+                evolutions = readStringArray(reader);
+            }
+        }
+        reader.endObject();
+        Pet newPet = new Pet(sprite, power, speed, agility, evolutions, happiness, hunger, weight, discipline, careMistakes, age, skills, isDirty, isTired, isSick, isInjured);
+        return newPet;
+    }
+
+    public int[] readIntArray(JsonReader reader) throws IOException{
+        int[] ints = new int[2];
+
+        reader.beginArray();
+        int i = 0;
+        while (reader.hasNext()) {
+            ints[i] = reader.nextInt();
+            i++;
+        }
+        reader.endArray();
+
+        return ints;
+    }
+
+    public String[] readStringArray(JsonReader reader) throws IOException{
+        String[] strings = new String[4];
+
+        reader.beginArray();
+        int i = 0;
+        while (reader.hasNext()) {
+            strings[i] = reader.nextString();
+            i++;
+        }
+        reader.endArray();
+
+        return strings;
     }
 }
