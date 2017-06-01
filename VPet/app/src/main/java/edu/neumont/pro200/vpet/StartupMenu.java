@@ -3,7 +3,6 @@ package edu.neumont.pro200.vpet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Message;
 import android.media.MediaPlayer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -32,8 +31,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class StartupMenu extends AppCompatActivity implements Serializable {
@@ -75,15 +72,6 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         }
     };
 
-    private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS);
-            }
-            return false;
-        }
-    };
 
     public void healSickness(View view) {
         pet.setSick(false, ticks);
@@ -101,18 +89,20 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
 
     public void healDirtiness(View view){
         pet.setDirty(false, ticks);
+        findViewById(R.id.dirtyBubble).setVisibility(View.GONE);
         findViewById(R.id.mess).setVisibility(View.GONE);
 
-    };
+    }
 
     public void IncreaseHungerBar(View view) {
         if (pet.getHunger() < 5) {
             pet.setHunger(pet.getHunger() + 1);
             pet.setWeight(pet.getWeight() + .5);
         }
+        if(pet.getHunger() > 1){
+            pet.setHungry(false, -1);
+        }
     }
-
-    ;
 
     public void changeMenu(View view) {
         findViewById(R.id.ChoosePetMenu).setVisibility(View.GONE);
@@ -121,9 +111,29 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         activateAnimation(view);
     }
 
+    private void showChoosePetMenu() {
+        findViewById(R.id.GameMenu).setVisibility(View.GONE);
+        findViewById(R.id.ChoosePetMenu).setVisibility(View.VISIBLE);
+    }
+
     public void playSound () {
         MediaPlayer player=MediaPlayer.create(this,R.raw.sound);
         player.start();
+    }
+
+    public void displayStats(View view){
+        Button tView = (Button) findViewById(R.id.stats_menu);
+        String happyS = "Happiness: " + pet.getHappiness();
+        String hungerS = "Hunger: " + pet.getHunger();
+        String ageS = "Age: " + pet.getAge();
+        String powerS = "Power: " + pet.getPower();
+        String agilityS = "Agility: " + pet.getAgility();
+        String speedS = "Speed: " + pet.getSpeed();
+        String weightS = "Weight: " + pet.getWeight();
+        String careS = "Care Mistakes: " + pet.getCareMistakes();
+        String moneyS = "Money: " + money;
+        tView.setText(happyS + "\n" + hungerS + "\n" + ageS + "\n" + powerS + "\n" + agilityS + "\n" + speedS + "\n" + weightS + "\n" + careS + "\n" + moneyS);
+        tView.setVisibility(View.VISIBLE);
     }
 
     public void activateAnimation(View view){
@@ -170,13 +180,86 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         ticks += 1;
         increaseAge();
         evolvePet();
-        if (pet.checkStatus(ticks)) {
-            //draw appropriate images for the changed status
+        checkStatus();
+        inflictCareMistake();
+        autoSave();
+    }
+
+    public boolean inflictCareMistake(){
+        boolean inflicted = false;
+        boolean isDirty = petIsInflicted(pet.isDirty(), pet.getLastDirtyTime());
+        boolean isTired = petIsInflicted(pet.isTired(), pet.getLastTiredTime());
+        boolean isSick = petIsInflicted(pet.isDirty(), pet.getLastDirtyTime());
+        boolean isInjured = petIsInflicted(pet.isInjured(), pet.getLastInjuredTime());
+        boolean isHungry = petIsInflicted(pet.isHungry(), pet.getLastHungerTime());
+        boolean isSad = petIsInflicted(pet.isSad(), pet.getLastSadTime());
+        if(isDirty || isTired || isSick || isInjured || isHungry || isSad) {
+            pet.setCareMistakes(pet.getCareMistakes() + 1);
+            playSound();
+            inflicted = true;
         }
 
         if (ticks % 20 == 0) {
             autoSave();
         }
+        return inflicted;
+    }
+
+    private boolean petIsInflicted(boolean hasAilment, int durationOfAilment){
+        int careThreshold = 20;
+        if(hasAilment && ((ticks - durationOfAilment) % careThreshold == 0)){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkStatus() {
+        boolean changed = false;
+
+        if (!pet.isTired() && ticks >= pet.getLastTiredTime() + 200 ) { //200
+            pet.setTired(true, ticks);
+            findViewById(R.id.sleepBubble).setVisibility(View.VISIBLE);
+            changed = true;
+        }
+
+        if (!pet.isDirty() && ticks >= pet.getLastDirtyTime() + 60 ) { //60
+            pet.setDirty(true, ticks);
+            findViewById(R.id.dirtyBubble).setVisibility(View.VISIBLE);
+            findViewById(R.id.mess).setVisibility(View.VISIBLE);
+            changed = true;
+        }
+
+        if (ticks % 50 == 0) { //50
+            if (pet.getHunger() > 0) {
+                pet.setHunger(pet.getHunger() - 1);
+                changed = true;
+            }
+            if(pet.getHunger() <= 1){
+                pet.setHungry(true, ticks);
+            }
+            if (pet.getHappiness() > 0) {
+                pet.setHappiness(pet.getHappiness() - 1);
+                changed = true;
+            }
+            if(pet.getHappiness() <= 1){
+                pet.setSad(true, ticks);
+            }
+        }
+
+        if (!pet.isSick() && ticks >= pet.getLastSickTime() + 100) { //100
+            Random r = new Random();
+            int roll = r.nextInt(100);
+
+            if(roll > 90 - (10 * pet.getCareMistakes())) {
+                pet.setSick(true, ticks);
+                findViewById(R.id.sickBubble).setVisibility(View.VISIBLE);
+                changed = true;
+            }
+
+            pet.setLastSickTime(ticks);
+        }
+
+        return changed;
     }
 
     public void autoSave() {
@@ -216,10 +299,11 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     }
 
     public boolean increaseAge() {
-        if (ticks >= 200) {
+        if (ticks % 200 == 0) {
             pet.setAge(pet.getAge() + 1);
             evolvePet();
             updateSkillShop();
+            petDeath();
             return true;
         }
         return false;
@@ -238,6 +322,14 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         Button[] skills = new Button[]{(Button)findViewById(R.id.skill1), (Button)findViewById(R.id.skill2), (Button)findViewById(R.id.skill3)};
         for(int i = 0; i < skills.length; i++){
             readSkillJson(skills[i]);
+        }
+    }
+
+    private void petDeath() {
+        Random randESavage = new Random();
+
+        if (randESavage.nextInt(100) * pet.getCareMistakes() * pet.getAge() > 99) {
+            showChoosePetMenu();
         }
     }
 
@@ -267,7 +359,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         int index = button.getText().charAt(1);
         int price = Integer.parseInt(button.getText().toString().substring(button.getText().toString().indexOf('$')+1));
         for(int i = 0; i < pet.getSkills().length; i++){
-            if(pet.getSkills()[i] == i){
+            if((Integer)pet.getSkills()[i] != null){
                 pet.getSkills()[i] = index;
                 money -= price;
                 break;
@@ -344,6 +436,9 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         findViewById(R.id.hand_menu).setVisibility(View.INVISIBLE);
         findViewById(R.id.game_menu).setVisibility(View.INVISIBLE);
         findViewById(R.id.shop_menu).setVisibility(View.INVISIBLE);
+        findViewById(R.id.medicine_menu).setVisibility(View.INVISIBLE);
+        findViewById(R.id.stats_menu).setVisibility(View.INVISIBLE);
+        ((RadioGroup) findViewById(R.id.menu_group)).setOnCheckedChangeListener(ToggleListener);
     }
 
     public void onToggle(View view) {
@@ -364,6 +459,8 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     }
 
     public void toggleMedicineMenu(View view) {
+        toggleAllMenusOff(view);
+        ((RadioGroup) view.getParent()).check(view.getId());
         ToggleButton pill_button = (ToggleButton) findViewById(R.id.pill_button);
         if (pill_button.isChecked()) {
             findViewById(R.id.medicine_menu).setVisibility(View.VISIBLE);
@@ -396,7 +493,10 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
 
     public void gameButtonHit(View view) {
         int statToIncrement = r.nextInt(3);
-
+        pet.setHappiness(pet.getHappiness()+1);
+        if(pet.getHappiness() > 1){
+            pet.setSad(false, -1);
+        }
         switch (statToIncrement) {
             case 0:
                 pet.setPower(pet.getPower() + 10);
