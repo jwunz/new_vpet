@@ -36,6 +36,21 @@ public class Pet extends Monster {
     private int lastTiredTime = 0;
     private int lastSickTime = 0;
 
+    public Pet(int sprite, int power, int speed, int agility, String[] evolutions, int happiness, int hunger, double weight, float discipline, int careMistakes, int age, int[] skills, boolean isDirty, boolean isTired, boolean isSick, boolean isInjured) {
+        super(sprite, power, speed, agility, evolutions);
+        this.happiness = happiness;
+        this.hunger = hunger;
+        this.weight = weight;
+        this.discipline = discipline;
+        this.careMistakes = careMistakes;
+        this.age = age;
+        this.skills = skills;
+        this.isDirty = isDirty;
+        this.isTired = isTired;
+        this.isSick = isSick;
+        this.isInjured = isInjured;
+    }
+
     public int getHappiness() {
         return happiness;
     }
@@ -284,4 +299,6 @@ public class Pet extends Monster {
     public Pet(int sprite, int power, int speed, int agility, String[] evolutions) {
         super(sprite, power, speed, agility, evolutions);
     }
+
+
 }
