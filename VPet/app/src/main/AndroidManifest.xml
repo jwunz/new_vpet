@@ -16,14 +16,18 @@
             android:name=".StartupMenu"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_startup_menu"
-            android:theme="@style/FullscreenTheme">
+            android:theme="@style/FullscreenTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".StarCatcher"></activity>
+        <activity android:name=".StarCatcher"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
