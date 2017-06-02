@@ -1,6 +1,7 @@
 package edu.neumont.pro200.vpet;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Message;
 import android.media.MediaPlayer;
@@ -358,7 +359,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         }
     }
 
-    public void gameButtonHit(View view) {
+    public void gameButtonHit() {
         int statToIncrement = r.nextInt(3);
 
         switch (statToIncrement) {
@@ -373,6 +374,13 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
                 break;
         }
         setPetInjury();
+    }
+
+    public void StartStarCatcher (View view) {
+        gameButtonHit();
+        Intent intent = new Intent(this, StarCatcher.class);
+        intent.putExtra("petSprite", pet.getSprite());
+        startActivity(intent);
     }
 
     private void hide() {

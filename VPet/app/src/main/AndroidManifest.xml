@@ -23,7 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".StarCatcher" />
+        <activity android:name=".StarCatcher">
+
+        </activity>
         <activity android:name=".Battle"></activity>
     </application>
 

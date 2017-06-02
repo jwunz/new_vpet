@@ -213,7 +213,7 @@
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:onClick="gameButtonHit"
+                    android:onClick="StartStarCatcher"
                     android:text="Star Catcher" />
 
                 <Button
