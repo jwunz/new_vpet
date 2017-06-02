@@ -2,6 +2,7 @@ package edu.neumont.pro200.vpet;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.support.v7.app.ActionBar;
@@ -376,7 +377,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     }
 
     public boolean increaseAge() {
-        if (ticks % 200 == 0) {
+        if (ticks % 200 == 0) { //200
             pet.setAge(pet.getAge() + 1);
             evolvePet();
             updateSkillShop();
@@ -588,7 +589,6 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     }
 
     public void gameButtonHit(View view) {
-        if(pet.getHappiness()<5){
             int statToIncrement = r.nextInt(3);
             pet.setHappiness(pet.getHappiness()+1);
             if(pet.getHappiness() > 1){
@@ -606,6 +606,14 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
                     break;
             }
             setPetInjury();
+    }
+
+    public void StartStarCatcher (View view) {
+        if(pet.getHappiness()<5){
+            gameButtonHit(view);
+            Intent intent = new Intent(this, StarCatcher.class);
+            intent.putExtra("petSprite", pet.getSprite());
+            startActivity(intent);
         }else{
             Toast.makeText(view.getContext(), " Pet is at maximum happiness! ", Toast.LENGTH_SHORT).show();
         }
