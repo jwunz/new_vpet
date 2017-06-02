@@ -32,6 +32,7 @@ public class Pet extends Monster {
     private boolean isHungry;
     private boolean isSad;
     private boolean isEating;
+    private boolean isSleeping;
     private int dirtyTime = 0;
 
     public boolean getIsEating(){
@@ -39,6 +40,12 @@ public class Pet extends Monster {
     }
     public void setIsEating(boolean isEating){
         this.isEating = isEating;
+    }
+    public boolean getIsSleeping(){
+        return isSleeping;
+    }
+    public void setIsSleeping(boolean isSleeping){
+        this.isSleeping = isSleeping;
     }
     public void setHungryTime(int hungryTime) {
         this.hungryTime = hungryTime;
@@ -358,6 +365,7 @@ public class Pet extends Monster {
             this.setAgility((this.getAgility()+statsObject.getInt("agility"))/2);
             this.setSpeed((this.getSpeed()+statsObject.getInt("speed"))/2);
             this.setEvolutions(toStringArray(jsonObject.getJSONArray("evolutions")));
+            this.setCareMistakes(0);
         }catch(Exception e){
             return false;
         }
