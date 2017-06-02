@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import org.json.JSONObject;
@@ -43,6 +44,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     private int ticks = 0;
     private Random r = new Random();
     private View mContentView;
+    private MediaPlayer player;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -74,32 +76,49 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
 
 
     public void healSickness(View view) {
-        pet.setSick(false, ticks);
-        pet.setIsEating(true);
-        findViewById(R.id.pill).setVisibility(View.VISIBLE);
-        toggleAllButtons(false);
-        findViewById(R.id.sickBubble).setVisibility(View.GONE);
+        if(pet.isSick()){
+            pet.setSick(false, ticks);
+            pet.setIsEating(true);
+            findViewById(R.id.pill).setVisibility(View.VISIBLE);
+            toggleAllButtons(false);
+            findViewById(R.id.sickBubble).setVisibility(View.GONE);
+        }else{
+            Toast.makeText(view.getContext(), " Pet is not currently sick ", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void healInjury(View view) {
-        pet.setInjured(false, ticks);
-        pet.setIsEating(true);
-        findViewById(R.id.bandage).setVisibility(View.VISIBLE);
-        toggleAllButtons(false);
-        findViewById(R.id.injuryBubble).setVisibility(View.GONE);
+        if(pet.isInjured()){
+            pet.setInjured(false, ticks);
+            pet.setIsEating(true);
+            findViewById(R.id.bandage).setVisibility(View.VISIBLE);
+            toggleAllButtons(false);
+            findViewById(R.id.injuryBubble).setVisibility(View.GONE);
+        }else{
+            Toast.makeText(view.getContext(), " Pet is not currently injured ", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void healTiredness(View view) {
-        pet.setTired(false, ticks);
-        findViewById(R.id.sleepBubble).setVisibility(View.GONE);
-        findViewById(R.id.activity_ui).setBackgroundColor(Color.DKGRAY);
+        if (pet.isTired()) {
+            pet.setTired(false, ticks);
+            findViewById(R.id.sleepBubble).setVisibility(View.GONE);
+            findViewById(R.id.activity_ui).setBackgroundColor(Color.DKGRAY);
+            pet.setIsSleeping(true);
+            toggleAllButtons(false);
+        }else{
+            Toast.makeText(view.getContext(), " Pet is not currently tired ", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void healDirtiness(View view){
-        pet.setDirty(false, ticks);
-        findViewById(R.id.dirtyBubble).setVisibility(View.GONE);
-        findViewById(R.id.mess).setVisibility(View.GONE);
-
+        if(pet.isDirty()){
+            pet.setDirty(false, ticks);
+            findViewById(R.id.dirtyBubble).setVisibility(View.GONE);
+            findViewById(R.id.mess).setVisibility(View.GONE);
+        }else{
+            Toast.makeText(view.getContext(), " Pet is not currently dirty ", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void IncreaseHungerBar(View view) {
@@ -109,6 +128,8 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
             toggleAllButtons(false);
             pet.setHunger(pet.getHunger() + 1);
             pet.setWeight(pet.getWeight() + .5);
+        }else{
+            Toast.makeText(view.getContext(), " Pet is not currently hungry ", Toast.LENGTH_SHORT).show();
         }
         if(pet.getHunger() > 1){
             pet.setHungry(false, -1);
@@ -127,9 +148,15 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         findViewById(R.id.ChoosePetMenu).setVisibility(View.VISIBLE);
     }
 
-    public void playSound () {
-        MediaPlayer player=MediaPlayer.create(this,R.raw.sound);
-        player.start();
+    public boolean playSound () {
+        try{
+            player.release();
+            player=MediaPlayer.create(this,R.raw.sound);
+            player.start();
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
 
     public void displayStats(View view){
@@ -154,6 +181,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         final Animation walkRight = AnimationUtils.loadAnimation(this, R.anim.walkingright);
         final Animation walkLeft = AnimationUtils.loadAnimation(this, R.anim.walkingleft);
         final Animation eat = AnimationUtils.loadAnimation(this,R.anim.eat);
+        final Animation rest = AnimationUtils.loadAnimation(this,R.anim.rest);
 
         walkRight.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a) {
@@ -181,8 +209,10 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
                 img.setRotationY(0);
                 if(pet.getIsEating()) {
                     img.startAnimation(eat);
-                    toggleAllButtons(true);
-                }else {
+                }else if(pet.getIsSleeping()){
+                    img.startAnimation(rest);
+                }
+                else {
                     pet_condition.startAnimation(walkRight);
                 }
             }
@@ -199,6 +229,22 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
                 pet.setIsEating(false);
                 toggleOffConsumable();
                 pet_condition.startAnimation(walkRight);
+                toggleAllButtons(true);
+            }
+        });
+
+        rest.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationStart(Animation a) {
+            }
+
+            public void onAnimationRepeat(Animation a) {
+                img.setBackgroundResource(pet.getSprite());
+            }
+            public void onAnimationEnd(Animation a) {
+                pet.setIsSleeping(false);
+                findViewById(R.id.activity_ui).setBackgroundColor(Color.WHITE);
+                pet_condition.startAnimation(walkRight);
+                toggleAllButtons(true);
             }
         });
 
@@ -232,17 +278,13 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
             pet.setCareMistakes(pet.getCareMistakes() + 1);
             inflicted = true;
         }
-
-        if (ticks % 20 == 0) {
-            autoSave();
-        }
         return inflicted;
     }
 
     private boolean petIsInflicted(boolean hasAilment, int endOfLastAilment){
         int careThreshold = 20; //20
-        if(hasAilment && (((ticks - endOfLastAilment) - careThreshold) >= careThreshold)){
-
+        if(hasAilment && (((ticks - endOfLastAilment)) % careThreshold == 0)){
+            String a = "a";
             return true;
         }
         return false;
@@ -410,7 +452,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
 
     public void checkForAilment() {
         if ((pet.isHungry()) || (pet.isSad()) || (pet.isDirty()) || (pet.isInjured()) || (pet.isTired()) || (pet.isSick())) {
-           // playSound();
+            playSound();
         }
 
     }
@@ -564,6 +606,8 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
                     break;
             }
             setPetInjury();
+        }else{
+            Toast.makeText(view.getContext(), " Pet is at maximum happiness! ", Toast.LENGTH_SHORT).show();
         }
     }
 
