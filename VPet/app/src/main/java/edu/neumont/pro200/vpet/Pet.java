@@ -31,8 +31,22 @@ public class Pet extends Monster {
     private boolean isInjured;
     private boolean isHungry;
     private boolean isSad;
+    private boolean isEating;
+    private boolean isSleeping;
     private int dirtyTime = 0;
 
+    public boolean getIsEating(){
+        return isEating;
+    }
+    public void setIsEating(boolean isEating){
+        this.isEating = isEating;
+    }
+    public boolean getIsSleeping(){
+        return isSleeping;
+    }
+    public void setIsSleeping(boolean isSleeping){
+        this.isSleeping = isSleeping;
+    }
     public void setHungryTime(int hungryTime) {
         this.hungryTime = hungryTime;
     }
@@ -91,6 +105,21 @@ public class Pet extends Monster {
     }
 
     private int lastInjuredTime = 0;
+
+    public Pet(int sprite, int power, int speed, int agility, String[] evolutions, int happiness, int hunger, double weight, float discipline, int careMistakes, int age, int[] skills, boolean isDirty, boolean isTired, boolean isSick, boolean isInjured) {
+        super(sprite, power, speed, agility, evolutions);
+        this.happiness = happiness;
+        this.hunger = hunger;
+        this.weight = weight;
+        this.discipline = discipline;
+        this.careMistakes = careMistakes;
+        this.age = age;
+        this.skills = skills;
+        this.isDirty = isDirty;
+        this.isTired = isTired;
+        this.isSick = isSick;
+        this.isInjured = isInjured;
+    }
 
     public int getHappiness() {
         return happiness;
@@ -159,10 +188,17 @@ public class Pet extends Monster {
         return isDirty;
     }
 
+    public int getHungryTime() {
+        return hungryTime;
+    }
+
+    public int getSadTime() {
+        return sadTime;
+    }
+
     public boolean setDirty(boolean dirty, int time) {
         isDirty = dirty;
         if(dirty){
-
             setDirtyTime(time);
         }else{
             setLastDirtyTime(time);
@@ -323,11 +359,13 @@ public class Pet extends Monster {
         try{
             JSONObject jsonObject = new JSONObject(JSON);
             jsonObject = jsonObject.getJSONObject(evolution);
+            JSONObject statsObject = jsonObject.getJSONObject("stats");
             this.setSprite(jsonObject.getInt("spritePath"));
-            this.setPower((this.getPower()+jsonObject.getInt("power"))/2);
-            this.setAgility((this.getAgility()+jsonObject.getInt("agility"))/2);
-            this.setSpeed((this.getSpeed()+jsonObject.getInt("speed"))/2);
+            this.setPower((this.getPower()+statsObject.getInt("power"))/2);
+            this.setAgility((this.getAgility()+statsObject.getInt("agility"))/2);
+            this.setSpeed((this.getSpeed()+statsObject.getInt("speed"))/2);
             this.setEvolutions(toStringArray(jsonObject.getJSONArray("evolutions")));
+            this.setCareMistakes(0);
         }catch(Exception e){
             return false;
         }
@@ -348,4 +386,6 @@ public class Pet extends Monster {
     public Pet(int sprite, int power, int speed, int agility, String[] evolutions) {
         super(sprite, power, speed, agility, evolutions);
     }
+
+
 }

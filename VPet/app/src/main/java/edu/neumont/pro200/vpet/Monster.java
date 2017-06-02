@@ -28,6 +28,7 @@ public abstract class Monster{
     }
 
     public boolean setPower(int power) {
+        this.power = power;
         return true;
     }
 
@@ -36,6 +37,7 @@ public abstract class Monster{
     }
 
     public boolean setSpeed(int speed) {
+        this.speed = speed;
         return true;
     }
 
@@ -44,6 +46,7 @@ public abstract class Monster{
     }
 
     public boolean setAgility(int agility) {
+        this.agility = agility;
         return true;
     }
 
@@ -52,19 +55,8 @@ public abstract class Monster{
     }
 
     public boolean setEvolutions(String[] evos) {
-        for (String evo :
-                evos) {
-            addEvolution(evo);
-        }
+        this.evolutions = evos;
         return true;
-    }
-
-    private boolean addEvolution(String evo) {
-        if (evolutions.length < 4) {
-            evolutions[evolutions.length] = evo;
-            return true;
-        }
-        return false;
     }
 
     public Monster(int sprite, int power, int speed, int agility) {

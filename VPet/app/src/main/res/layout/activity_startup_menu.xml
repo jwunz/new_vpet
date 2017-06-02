@@ -142,7 +142,7 @@
             <LinearLayout
                 android:id="@+id/shop_menu"
                 android:layout_width="155dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="false"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/menu_group"
@@ -220,7 +220,7 @@
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
-                    android:onClick="gameButtonHit"
+                    android:onClick="StartStarCatcher"
                     android:text="Star Catcher" />
 
                 <Button
@@ -228,14 +228,17 @@
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:enabled="false"
                     android:onClick="gameButtonHit"
-                    android:text="Dance Dance Evolution" />
+                    android:text="Dance Dance Evolution"
+                    tools:enabled="false" />
 
                 <Button
                     android:id="@+id/sandbag_button"
                     android:layout_width="150dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:enabled="false"
                     android:onClick="gameButtonHit"
                     android:text="Sandbag Punchout" />
 
@@ -385,13 +388,49 @@
                     android:layout_marginBottom="47dp" />
             </LinearLayout>
 
+            <FrameLayout
+                android:id="@+id/frameConsumables"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignBottom="@+id/pet_condition"
+                android:layout_marginLeft="19dp"
+                android:layout_marginStart="19dp"
+                android:layout_toLeftOf="@+id/game_menu"
+                android:layout_toStartOf="@+id/game_menu"
+                android:adjustViewBounds="false"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/meat"
+                    android:layout_width="250px"
+                    android:layout_height="250px"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/meat" />
+
+                <ImageView
+                    android:id="@+id/pill"
+                    android:layout_width="250px"
+                    android:layout_height="250px"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/pill" />
+
+                <ImageView
+                    android:id="@+id/bandage"
+                    android:layout_width="250px"
+                    android:layout_height="250px"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/bandage" />
+
+            </FrameLayout>
+
             <ImageView
                 android:id="@+id/mess"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignBottom="@+id/pet_condition"
-                android:layout_alignLeft="@+id/game_menu"
-                android:layout_alignStart="@+id/game_menu"
+                android:layout_toLeftOf="@+id/shop_menu"
+                android:layout_toStartOf="@+id/shop_menu"
+                android:adjustViewBounds="false"
                 android:visibility="gone"
                 app:srcCompat="@drawable/poo" />
 
