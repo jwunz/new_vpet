@@ -462,8 +462,6 @@ public class VPet extends AppCompatActivity implements Serializable {
         findViewById(R.id.skill2).setEnabled(bool);
         findViewById(R.id.skill3).setEnabled(bool);
         findViewById(R.id.star_button).setEnabled(bool);
-        findViewById(R.id.dance_button).setEnabled(bool);
-        findViewById(R.id.sandbag_button).setEnabled(bool);
         findViewById(R.id.skill1).setEnabled(bool);
         findViewById(R.id.light_button).setEnabled(bool);
         findViewById(R.id.soap_button).setEnabled(bool);
