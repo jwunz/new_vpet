@@ -66,7 +66,6 @@ public class StarCatcher extends AppCompatActivity implements View.OnTouchListen
     public void activateAnimation(RelativeLayout field){
         final RelativeLayout starField = field;
         final Animation starfall = AnimationUtils.loadAnimation(this, R.anim.starfall);
-        final RelativeLayout starField = field;
         starfall.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a) {}
             public void onAnimationRepeat(Animation a) {}
