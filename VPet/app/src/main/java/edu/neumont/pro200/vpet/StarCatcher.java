@@ -3,6 +3,7 @@ package edu.neumont.pro200.vpet;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 
 import java.util.Random;
 
-public class StarCatcher extends AppCompatActivity {
+public class StarCatcher extends AppCompatActivity implements View.OnTouchListener {
     private ImageView star;
     private int starCount = 0;
     private int score = 0;
@@ -23,6 +24,17 @@ public class StarCatcher extends AppCompatActivity {
         Intent intent = getIntent();
         int petSprite = intent.getIntExtra("petSprite", R.drawable.notfound);
         findViewById(R.id.petSprite).setBackgroundResource(petSprite);
+
+        final View touchView = findViewById(R.id.petSprite);
+        touchView.setOnTouchListener(this);
+    }
+
+    public boolean onTouch(View v, MotionEvent event){
+        if(event.getAction() == MotionEvent.ACTION_MOVE){
+            View petSprite = findViewById(R.id.petSprite);
+            petSprite.setX(event.getRawX()-petSprite.getWidth()/2);
+        }
+        return true;
     }
 
     public void startGame (View view) {
@@ -54,6 +66,7 @@ public class StarCatcher extends AppCompatActivity {
     public void activateAnimation(RelativeLayout field){
         final RelativeLayout starField = field;
         final Animation starfall = AnimationUtils.loadAnimation(this, R.anim.starfall);
+        final RelativeLayout starField = field;
         starfall.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a) {}
             public void onAnimationRepeat(Animation a) {}
