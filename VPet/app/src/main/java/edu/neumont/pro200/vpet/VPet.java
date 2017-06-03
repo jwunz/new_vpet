@@ -10,10 +10,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.test.PerformanceTestCase;
-import android.util.JsonReader;
-import android.util.JsonWriter;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -26,14 +22,8 @@ import android.widget.ToggleButton;
 
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -174,8 +164,9 @@ public class VPet extends AppCompatActivity implements Serializable {
         String speedS = "Speed: " + pet.getSpeed();
         String weightS = "Weight: " + pet.getWeight();
         String careS = "Care Mistakes: " + pet.getCareMistakes();
+        String disciplineS = "Discipline: " + pet.getDiscipline();
         String moneyS = "Money: " + money;
-        tView.setText(happyS + "\n" + hungerS + "\n" + ageS + "\n" + powerS + "\n" + agilityS + "\n" + speedS + "\n" + weightS + "\n" + careS + "\n" + moneyS);
+        tView.setText(happyS + "\n" + hungerS + "\n" + ageS + "\n" + powerS + "\n" + agilityS + "\n" + speedS + "\n" + weightS + "\n" + careS + "\n" + disciplineS + "\n" + moneyS);
         tView.setVisibility(View.VISIBLE);
     }
 
@@ -688,7 +679,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         editor.putInt("happiness", pet.getHappiness());
         editor.putInt("hunger", pet.getHunger());
         editor.putFloat("weight", (float)pet.getWeight());
-        editor.putFloat("discipline", pet.getDiscipline());
+        editor.putInt("discipline", pet.getDiscipline());
         editor.putInt("care_mistakes", pet.getCareMistakes());
         editor.putInt("age", pet.getAge());
         editor.putString("skills", pet.getSkillsString());
@@ -709,7 +700,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         int happiness = petSave.getInt("happiness", -1);
         int hunger = petSave.getInt("hunger", -1);
         double weight = petSave.getFloat("weight", -1);
-        float discipline = petSave.getFloat("discipline", -1);
+        int discipline = petSave.getInt("discipline", -1);
         int careMistakes = petSave.getInt("care_mistakes", -1);
         int age = petSave.getInt("age", -1);
         String[] skillsStr = loadArray(petSave.getString("skills", ""));

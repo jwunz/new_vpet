@@ -5,11 +5,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="edu.neumont.pro200.vpet.Battle">
+    <LinearLayout
+        android:id="@+id/Welcome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:weightSum="1">
 
-    <ImageView
-        android:id="@+id/petSprite"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        tools:layout_editor_absoluteX="53dp"
-        tools:layout_editor_absoluteY="252dp" />
+        <TextView
+            android:id="@+id/WelcomeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Welcome to the Battle Arena!"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/WelcomeSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Deplete the enemy's HP in order to win!"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="133dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_weight="0.02"
+            android:elevation="0dp"
+            android:onClick="startGame"
+            android:text="START"
+            android:textAlignment="center" />
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/GameMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/battleField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/petSprite"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:layout_weight="1" />
+        </RelativeLayout>
+
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
