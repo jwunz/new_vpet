@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/activity_ui"
     android:background="#ffffff"
-    tools:context="edu.neumont.pro200.vpet.StartupMenu">
+    tools:context="edu.neumont.pro200.vpet.VPet">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -94,9 +94,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:onClick="toggleMedicineMenu"
-                    android:text="Pill"
-                    android:textOff="Pill"
-                    android:textOn="Pill" />
+                    android:text="Heal"
+                    android:textOff="Heal"
+                    android:textOn="Heal" />
 
                 <ToggleButton
                     android:id="@+id/hand_button"
