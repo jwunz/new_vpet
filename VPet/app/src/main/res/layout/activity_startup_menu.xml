@@ -230,8 +230,7 @@
                     android:layout_marginTop="0dp"
                     android:enabled="false"
                     android:onClick="gameButtonHit"
-                    android:text="Dance Dance Evolution"
-                    tools:enabled="false" />
+                    android:text="Dance Dance Evolution" />
 
                 <Button
                     android:id="@+id/sandbag_button"
@@ -241,6 +240,14 @@
                     android:enabled="false"
                     android:onClick="gameButtonHit"
                     android:text="Sandbag Punchout" />
+
+                <Button
+                    android:id="@+id/battle_button"
+                    android:layout_width="150dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:onClick="startBattle"
+                    android:text="Battle Arena" />
 
             </LinearLayout>
 

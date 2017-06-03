@@ -6,4 +6,10 @@
     android:layout_height="match_parent"
     tools:context="edu.neumont.pro200.vpet.Battle">
 
+    <ImageView
+        android:id="@+id/petSprite"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        tools:layout_editor_absoluteX="53dp"
+        tools:layout_editor_absoluteY="252dp" />
 </android.support.constraint.ConstraintLayout>

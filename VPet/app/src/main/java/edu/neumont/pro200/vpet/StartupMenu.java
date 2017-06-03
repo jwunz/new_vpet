@@ -612,6 +612,19 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         }
     }
 
+    public void startBattle (View view) {
+        Intent intent = new Intent(this, Battle.class);
+        Bundle extras = new Bundle();
+        extras.putInt("petSprite", pet.getSprite());
+        extras.putInt("power", pet.getPower());
+        extras.putInt("agility", pet.getAgility());
+        extras.putInt("speed", pet.getSpeed());
+        extras.putIntArray("skills", pet.getSkills());
+        intent.putExtras(extras);
+        startActivity(intent);
+        battleAftermath();
+    }
+
     private void hide() {
         // Hide UI first
         ActionBar actionBar = getSupportActionBar();
