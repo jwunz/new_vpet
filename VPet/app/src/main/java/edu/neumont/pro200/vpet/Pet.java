@@ -179,6 +179,16 @@ public class Pet extends Monster {
         return skills;
     }
 
+    public String getSkillsString() {
+        String str = "";
+
+        for (int skill:skills) {
+            str += skill + ",";
+        }
+
+        return str;
+    }
+
     public boolean setSkills(int[] skills) {
         this.skills = skills;
         return true;
@@ -322,6 +332,16 @@ public class Pet extends Monster {
     private boolean setInjuredTime(int injuredTime) {
         this.injuredTime = injuredTime;
         return true;
+    }
+
+    public String getEvolutionsString() {
+        String str = "";
+
+        for (String evolution:getEvolutions()) {
+            str += evolution + ",";
+        }
+
+        return str;
     }
 
     public boolean evolve(String JSON) {

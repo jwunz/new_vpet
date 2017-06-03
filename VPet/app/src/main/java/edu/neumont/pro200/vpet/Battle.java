@@ -10,4 +10,16 @@ public class Battle extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_battle);
     }
+
+    private void gameOver() {
+
+    }
+
+    private String lossMessage() {
+        return "You lose, better luck next time.";
+    }
+
+    private String victoryMessage() {
+        return "You won and gained " + "*REPLACE WITH MONEY AMOUNT*" + " money!";
+    }
 }
