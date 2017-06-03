@@ -47,6 +47,14 @@ public class VPet extends AppCompatActivity implements Serializable {
     private int ticks = 0;
     private Random r = new Random();
     private View mContentView;
+    private final int sickIncrement = 80; //100
+    private final int tiredIncrement = 60; //80
+    private final int happyIncrement = 40; //60
+    private final int dirtyIncrement = 20; //40
+    private final int hungryIncrement = 10; //30
+    private final int careThreshold = 20; //20
+    private final int ageIncrement = 90; //90
+    private final int evolveIncrement = 5; //5;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -280,7 +288,6 @@ public class VPet extends AppCompatActivity implements Serializable {
     }
 
     private boolean petIsInflicted(boolean hasAilment, int startOfAilment){
-        int careThreshold = 20; //20
         startOfAilment -= 1;
         if(hasAilment && ((ticks - startOfAilment) % careThreshold == 0)){
             String a = "a";
@@ -292,20 +299,20 @@ public class VPet extends AppCompatActivity implements Serializable {
     public boolean checkStatus() {
         boolean changed = false;
 
-        if (!pet.isTired() && ticks >= pet.getLastTiredTime() + 80 ) { //80
+        if (!pet.isTired() && ticks >= pet.getLastTiredTime() + tiredIncrement ) {
             pet.setTired(true, ticks);
             findViewById(R.id.sleepBubble).setVisibility(View.VISIBLE);
             changed = true;
         }
 
-        if (!pet.isDirty() && ticks >= pet.getLastDirtyTime() + 40 ) { //40
+        if (!pet.isDirty() && ticks >= pet.getLastDirtyTime() + dirtyIncrement ) {
             pet.setDirty(true, ticks);
             findViewById(R.id.dirtyBubble).setVisibility(View.VISIBLE);
             findViewById(R.id.mess).setVisibility(View.VISIBLE);
             changed = true;
         }
 
-        if (ticks % 30 == 0) { //30
+        if (ticks % hungryIncrement == 0) {
             if (pet.getHunger() > 0) {
                 pet.setHunger(pet.getHunger() - 1);
                 changed = true;
@@ -313,6 +320,9 @@ public class VPet extends AppCompatActivity implements Serializable {
             if(pet.getHunger() <= 1){
                 pet.setHungry(true, ticks);
             }
+        }
+
+        if (ticks % happyIncrement == 0){
             if (pet.getHappiness() > 0) {
                 pet.setHappiness(pet.getHappiness() - 1);
                 changed = true;
@@ -322,7 +332,7 @@ public class VPet extends AppCompatActivity implements Serializable {
             }
         }
 
-        if (!pet.isSick() && ticks >= pet.getLastSickTime() + 100) { //100
+        if (!pet.isSick() && ticks >= pet.getLastSickTime() + sickIncrement) {
             Random r = new Random();
             int roll = r.nextInt(100);
 
@@ -336,8 +346,10 @@ public class VPet extends AppCompatActivity implements Serializable {
         return changed;
     }
 
+
+
     public boolean increaseAge() {
-        if (ticks % 200 == 0) { //200
+        if (ticks % ageIncrement == 0) { //200
             pet.setAge(pet.getAge() + 1);
             evolvePet();
             updateSkillShop();
@@ -349,7 +361,7 @@ public class VPet extends AppCompatActivity implements Serializable {
     }
 
     private boolean evolvePet() {
-        if (pet.getAge() % 5 == 0) { //5
+        if (pet.getAge() % evolveIncrement == 0) { //5
             pet.evolve(loadJSONFromAsset("pet.json"));
             findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
 
@@ -384,6 +396,18 @@ public class VPet extends AppCompatActivity implements Serializable {
             pet.setWeight(-1);
             savePrefs();
             showChoosePetMenu();
+        }
+    }
+
+    private void loadAilments(){
+        if(pet.isDirty()){
+            findViewById(R.id.dirtyBubble).setVisibility(View.VISIBLE);
+        }if(pet.isSick()){
+            findViewById(R.id.sickBubble).setVisibility(View.VISIBLE);
+        }if(pet.isTired()){
+            findViewById(R.id.sleepBubble).setVisibility(View.VISIBLE);
+        }if(pet.isInjured()){
+            findViewById(R.id.injuryBubble).setVisibility(View.VISIBLE);
         }
     }
 
@@ -493,6 +517,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         try {
             if (loadPrefs()) {
                 changeMenu(findViewById(R.id.petSprite));
+                loadAilments();
             }
         }
         catch (Exception e) {
@@ -708,6 +733,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         }
 
         pet = new Pet(spritePath, power, speed, agility, evolutions, happiness, hunger, weight, discipline, careMistakes, age, skills, isDirty, isTired, isSick, isInjured);
+
         return !(happiness == -1 || hunger == -1 || weight == -1 || discipline == -1 || careMistakes == -1 || age == -1 || spritePath == -1 || power == -1 || agility == -1 || speed == -1 );
     }
 
