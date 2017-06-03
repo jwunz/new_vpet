@@ -553,13 +553,12 @@ public class VPet extends AppCompatActivity implements Serializable {
         }
     }
 
-    public void gameButtonHit(int score) {
-            int statToIncrement = r.nextInt(3);
+    public void gameButtonHit(int score, int random) {
             pet.setHappiness(pet.getHappiness()+1);
             if(pet.getHappiness() > 1){
                 pet.setSad(false, -1);
             }
-            switch (statToIncrement) {
+            switch (random) {
                 case 0:
                     pet.setPower(pet.getPower() + score);
                     break;
@@ -576,7 +575,9 @@ public class VPet extends AppCompatActivity implements Serializable {
     public void StartStarCatcher (View view) {
         if(pet.getHappiness()<5){
             Intent intent = new Intent(this, StarCatcher.class);
-            intent.putExtra("petSprite", pet.getSprite());
+            Bundle extras = new Bundle();
+            extras.putInt("petSprite", pet.getSprite());
+            intent.putExtras(extras);
             startActivityForResult(intent, 1);
         }else{
             Toast.makeText(view.getContext(), " Pet is at maximum happiness! ", Toast.LENGTH_SHORT).show();
@@ -588,7 +589,8 @@ public class VPet extends AppCompatActivity implements Serializable {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 int score = data.getIntExtra("score", 0);
-                gameButtonHit(score);
+                int randomNum = data.getIntExtra("randomNum", 0);
+                gameButtonHit(score, randomNum);
             }
         }
     }
