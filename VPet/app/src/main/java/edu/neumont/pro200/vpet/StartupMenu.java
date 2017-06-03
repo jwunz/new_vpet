@@ -3,12 +3,14 @@ package edu.neumont.pro200.vpet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.test.PerformanceTestCase;
 import android.util.JsonReader;
 import android.util.JsonWriter;
 import android.view.MotionEvent;
@@ -258,7 +260,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         checkStatus();
         inflictCareMistake();
         checkForAilment();
-        autoSave();
+        savePrefs();
     }
 
     public boolean inflictCareMistake(){
@@ -273,6 +275,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
             pet.setCareMistakes(pet.getCareMistakes() + 1);
             inflicted = true;
         }
+
         return inflicted;
     }
 
@@ -328,8 +331,6 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
                 findViewById(R.id.sickBubble).setVisibility(View.VISIBLE);
                 changed = true;
             }
-
-            pet.setLastSickTime(ticks);
         }
 
         return changed;
@@ -341,7 +342,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
             writeJsonStream(os);
             os.flush();
             os.close();
-            loadSave();
+            loadPrefs();
         }
         catch (FileNotFoundException fnfe) {
             //failed to open file
@@ -377,6 +378,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
             evolvePet();
             updateSkillShop();
             petDeath();
+            findViewById(R.id.activity_ui).setBackgroundColor(Color.WHITE);
             return true;
         }
         return false;
@@ -386,6 +388,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         if (pet.getAge() % 5 == 0) { //5
             pet.evolve(loadJSONFromAsset("pet.json"));
             findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
+
             return true;
         }
         return false;
@@ -513,7 +516,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         ((RadioGroup) findViewById(R.id.menu_group)).setOnCheckedChangeListener(ToggleListener);
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
-        if (loadSave()) {
+        if (loadPrefs()) {
             changeMenu(findViewById(R.id.petSprite));
         }
     }
@@ -851,5 +854,61 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         reader.endArray();
 
         return strings;
+    }
+
+    public void savePrefs() {
+        SharedPreferences.Editor editor = getSharedPreferences("petSave", MODE_PRIVATE).edit();
+        editor.putInt("happiness", pet.getHappiness());
+        editor.putInt("hunger", pet.getHunger());
+        editor.putFloat("weight", (float)pet.getWeight());
+        editor.putFloat("discipline", pet.getDiscipline());
+        editor.putInt("care_mistakes", pet.getCareMistakes());
+        editor.putInt("age", pet.getAge());
+        editor.putString("skills", pet.getSkillsString());
+        editor.putBoolean("is_dirty", pet.isDirty());
+        editor.putBoolean("is_tired", pet.isTired());
+        editor.putBoolean("is_sick", pet.isSick());
+        editor.putBoolean("is_injured", pet.isInjured());
+        editor.putInt("sprite_path", pet.getSprite());
+        editor.putInt("power", pet.getPower());
+        editor.putInt("agility", pet.getAgility());
+        editor.putInt("speed", pet.getSpeed());
+        editor.putString("evolutions", pet.getEvolutionsString());
+        editor.apply();
+    }
+
+    public boolean loadPrefs() {
+        SharedPreferences petSave = getSharedPreferences("petSave", MODE_PRIVATE);
+        int happiness = petSave.getInt("happiness", -1);
+        int hunger = petSave.getInt("hunger", -1);
+        double weight = petSave.getFloat("weight", -1);
+        float discipline = petSave.getFloat("discipline", -1);
+        int careMistakes = petSave.getInt("care_mistakes", -1);
+        int age = petSave.getInt("age", -1);
+        String[] skillsStr = loadArray(petSave.getString("skills", ""));
+        boolean isDirty = petSave.getBoolean("is_dirty", false);
+        boolean isTired = petSave.getBoolean("is_tired", false);
+        boolean isSick = petSave.getBoolean("is_sick", false);
+        boolean isInjured = petSave.getBoolean("is_injured", false);
+        int spritePath = petSave.getInt("sprite_path", -1);
+        int power = petSave.getInt("power", -1);
+        int agility = petSave.getInt("agility", -1);
+        int speed = petSave.getInt("speed", -1);
+        String[] evolutions = loadArray(petSave.getString("evolutions", ""));
+
+        int[] skills = new int[3];
+        int i = 0;
+        for (String skill:skillsStr) {
+            skills[i] = Integer.parseInt(skill);
+            i++;
+        }
+
+        pet = new Pet(spritePath, power, speed, agility, evolutions, happiness, hunger, weight, discipline, careMistakes, age, skills, isDirty, isTired, isSick, isInjured);
+        return !(happiness == -1 || hunger == -1 || weight == -1 || discipline == -1 || careMistakes == -1 || age == -1 || spritePath == -1 || power == -1 || agility == -1 || speed == -1 );
+    }
+
+    private String[] loadArray(String str) {
+        String[] strs = str.split(",");
+        return strs;
     }
 }
