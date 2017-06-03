@@ -8,12 +8,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.Random;
 
 public class StarCatcher extends AppCompatActivity {
     private ImageView star;
     private int starCount = 0;
+    private int score = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,7 @@ public class StarCatcher extends AppCompatActivity {
         star = new ImageView(this);
         star.setBackgroundResource(R.drawable.star);
         star.setLayoutParams(new android.view.ViewGroup.LayoutParams(200,200));
-        star.setX((float)starX.nextInt(2000) + 1);
+        star.setX((float)starX.nextInt(1000) + 1);
         field.addView(star);
         if(starCount < 20){
             starCount++;
@@ -43,17 +45,38 @@ public class StarCatcher extends AppCompatActivity {
         }
     }
 
+    public void incrementScore() {
+        score++;
+        TextView scoreLabel = (TextView)findViewById(R.id.scoreNum);
+        scoreLabel.setText(Integer.toString(score));
+    }
+
     public void activateAnimation(RelativeLayout field){
+        final RelativeLayout starField = field;
         final Animation starfall = AnimationUtils.loadAnimation(this, R.anim.starfall);
         starfall.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a) {}
             public void onAnimationRepeat(Animation a) {}
             public void onAnimationEnd(Animation a) {
+                if (collidedWithPet()) {
+                    incrementScore();
+                }
+                starField.removeView(star);
                 spawnStar();
             }
         });
-        field.removeView(star);
+
         star.startAnimation(starfall);
+
+    }
+
+    private boolean collidedWithPet() {
+        ImageView pet = (ImageView)findViewById(R.id.petSprite);
+        float lowRange = star.getX() - 200;
+        float highRange = star.getX() + 200;
+        return ((pet.getX() > lowRange) && (pet.getX() < highRange));
     }
 }
+
+
 
