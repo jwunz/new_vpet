@@ -37,7 +37,7 @@ import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.util.Random;
 
-public class StartupMenu extends AppCompatActivity implements Serializable {
+public class VPet extends AppCompatActivity implements Serializable {
     private static final boolean AUTO_HIDE = false;
     private Pet pet;
     private int money = 0;
@@ -480,8 +480,13 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         ((RadioGroup) findViewById(R.id.menu_group)).setOnCheckedChangeListener(ToggleListener);
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
-        if (loadPrefs()) {
-            changeMenu(findViewById(R.id.petSprite));
+        try {
+            if (loadPrefs()) {
+                changeMenu(findViewById(R.id.petSprite));
+            }
+        }
+        catch (Exception e) {
+
         }
     }
 
