@@ -480,8 +480,13 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         ((RadioGroup) findViewById(R.id.menu_group)).setOnCheckedChangeListener(ToggleListener);
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
-        if (loadPrefs()) {
-            changeMenu(findViewById(R.id.petSprite));
+        try {
+            if (loadPrefs()) {
+                changeMenu(findViewById(R.id.petSprite));
+            }
+        }
+        catch (Exception e) {
+
         }
     }
 
