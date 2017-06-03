@@ -9,12 +9,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.Random;
 
 public class StarCatcher extends AppCompatActivity implements View.OnTouchListener {
     private ImageView star;
     private int starCount = 0;
+    private int score = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,24 +51,59 @@ public class StarCatcher extends AppCompatActivity implements View.OnTouchListen
         star.setLayoutParams(new android.view.ViewGroup.LayoutParams(200,200));
         star.setX((float)starX.nextInt(1000) + 1);
         field.addView(star);
-        if(starCount < 20){
+        if(starCount < 10){
             starCount++;
             activateAnimation(field);
+        }else{
+            finishScreen();
         }
     }
 
+    private void finishScreen(){
+        //display score
+        //display next button
+        //next button should link to the following method:
+        returnResult();
+    }
+
+    private void returnResult(){
+        Intent intent = new Intent();
+        intent.putExtra("score", score);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    public void incrementScore() {
+        score++;
+        TextView scoreLabel = (TextView)findViewById(R.id.scoreNum);
+        scoreLabel.setText(Integer.toString(score));
+    }
+
     public void activateAnimation(RelativeLayout field){
-        final Animation starfall = AnimationUtils.loadAnimation(this, R.anim.starfall);
         final RelativeLayout starField = field;
+        final Animation starfall = AnimationUtils.loadAnimation(this, R.anim.starfall);
         starfall.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a) {}
             public void onAnimationRepeat(Animation a) {}
             public void onAnimationEnd(Animation a) {
+                if (collidedWithPet()) {
+                    incrementScore();
+                }
                 starField.removeView(star);
                 spawnStar();
             }
         });
         star.startAnimation(starfall);
+
+    }
+
+    private boolean collidedWithPet() {
+        ImageView pet = (ImageView)findViewById(R.id.petSprite);
+        float lowRange = star.getX() - 200;
+        float highRange = star.getX() + 200;
+        return ((pet.getX() > lowRange) && (pet.getX() < highRange));
     }
 }
+
+
 
