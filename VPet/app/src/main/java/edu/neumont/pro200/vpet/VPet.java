@@ -3,12 +3,14 @@ package edu.neumont.pro200.vpet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.test.PerformanceTestCase;
 import android.util.JsonReader;
 import android.util.JsonWriter;
 import android.view.MotionEvent;
@@ -35,7 +37,7 @@ import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.util.Random;
 
-public class StartupMenu extends AppCompatActivity implements Serializable {
+public class VPet extends AppCompatActivity implements Serializable {
     private static final boolean AUTO_HIDE = false;
     private Pet pet;
     private int money = 0;
@@ -258,7 +260,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         checkStatus();
         inflictCareMistake();
         checkForAilment();
-        autoSave();
+        savePrefs();
     }
 
     public boolean inflictCareMistake(){
@@ -273,6 +275,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
             pet.setCareMistakes(pet.getCareMistakes() + 1);
             inflicted = true;
         }
+
         return inflicted;
     }
 
@@ -328,47 +331,9 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
                 findViewById(R.id.sickBubble).setVisibility(View.VISIBLE);
                 changed = true;
             }
-
-            pet.setLastSickTime(ticks);
         }
 
         return changed;
-    }
-
-    public void autoSave() {
-        try {
-            FileOutputStream os = openFileOutput("saves.json", Context.MODE_PRIVATE);
-            writeJsonStream(os);
-            os.flush();
-            os.close();
-            loadSave();
-        }
-        catch (FileNotFoundException fnfe) {
-            //failed to open file
-        }
-        catch (IOException ioe) {
-            //failed to write to file
-        }
-    }
-
-    public boolean loadSave() {
-        try {
-            FileInputStream is = openFileInput("save.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            pet = readJsonStream(is);
-            is.close();
-            return true;
-        }
-        catch (FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
-            return false;
-        }
-        catch (IOException ioe) {
-            ioe.printStackTrace();
-            return false;
-        }
     }
 
     public boolean increaseAge() {
@@ -377,6 +342,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
             evolvePet();
             updateSkillShop();
             petDeath();
+            findViewById(R.id.activity_ui).setBackgroundColor(Color.WHITE);
             return true;
         }
         return false;
@@ -386,6 +352,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         if (pet.getAge() % 5 == 0) { //5
             pet.evolve(loadJSONFromAsset("pet.json"));
             findViewById(R.id.petSprite).setBackgroundResource(pet.getSprite());
+
             return true;
         }
         return false;
@@ -513,8 +480,13 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         ((RadioGroup) findViewById(R.id.menu_group)).setOnCheckedChangeListener(ToggleListener);
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
-        if (loadSave()) {
-            changeMenu(findViewById(R.id.petSprite));
+        try {
+            if (loadPrefs()) {
+                changeMenu(findViewById(R.id.petSprite));
+            }
+        }
+        catch (Exception e) {
+
         }
     }
 
@@ -677,188 +649,60 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         return false;
 
     }
-    //JSON WRITE CODE IS BELOW
-    //
-    //
-    //
-    //
-    //
-    //
 
-    public void writeJsonStream(OutputStream out) throws IOException {
-        JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, "UTF-8"));
-        writer.setIndent("  ");
-        writeMessagesArray(writer);
-        writer.flush();
-        writer.close();
+    public void savePrefs() {
+        SharedPreferences.Editor editor = getSharedPreferences("petSave", MODE_PRIVATE).edit();
+        editor.putInt("happiness", pet.getHappiness());
+        editor.putInt("hunger", pet.getHunger());
+        editor.putFloat("weight", (float)pet.getWeight());
+        editor.putFloat("discipline", pet.getDiscipline());
+        editor.putInt("care_mistakes", pet.getCareMistakes());
+        editor.putInt("age", pet.getAge());
+        editor.putString("skills", pet.getSkillsString());
+        editor.putBoolean("is_dirty", pet.isDirty());
+        editor.putBoolean("is_tired", pet.isTired());
+        editor.putBoolean("is_sick", pet.isSick());
+        editor.putBoolean("is_injured", pet.isInjured());
+        editor.putInt("sprite_path", pet.getSprite());
+        editor.putInt("power", pet.getPower());
+        editor.putInt("agility", pet.getAgility());
+        editor.putInt("speed", pet.getSpeed());
+        editor.putString("evolutions", pet.getEvolutionsString());
+        editor.apply();
     }
 
-    public void writeMessagesArray(JsonWriter writer) throws IOException {
-        writer.beginArray();
-        writeAutoSave(writer);
-        writer.endArray();
-    }
+    public boolean loadPrefs() {
+        SharedPreferences petSave = getSharedPreferences("petSave", MODE_PRIVATE);
+        int happiness = petSave.getInt("happiness", -1);
+        int hunger = petSave.getInt("hunger", -1);
+        double weight = petSave.getFloat("weight", -1);
+        float discipline = petSave.getFloat("discipline", -1);
+        int careMistakes = petSave.getInt("care_mistakes", -1);
+        int age = petSave.getInt("age", -1);
+        String[] skillsStr = loadArray(petSave.getString("skills", ""));
+        boolean isDirty = petSave.getBoolean("is_dirty", false);
+        boolean isTired = petSave.getBoolean("is_tired", false);
+        boolean isSick = petSave.getBoolean("is_sick", false);
+        boolean isInjured = petSave.getBoolean("is_injured", false);
+        int spritePath = petSave.getInt("sprite_path", -1);
+        int power = petSave.getInt("power", -1);
+        int agility = petSave.getInt("agility", -1);
+        int speed = petSave.getInt("speed", -1);
+        String[] evolutions = loadArray(petSave.getString("evolutions", ""));
 
-    public void writeAutoSave(JsonWriter writer) throws IOException {
-        writer.beginObject();
-        writer.name("happiness").value(pet.getHappiness());
-        writer.name("hunger").value(pet.getHunger());
-        writer.name("weight").value(pet.getWeight());
-        writer.name("discipline").value(pet.getDiscipline());
-        writer.name("care_mistakes").value(pet.getCareMistakes());
-        writer.name("age").value(pet.getAge());
-        writer.name("skills");
-        writeIntArray(writer, pet.getSkills());
-        writer.name("is_dirty").value(pet.isDirty());
-        writer.name("is_tired").value(pet.isTired());
-        writer.name("is_sick").value(pet.isSick());
-        writer.name("is_injured").value(pet.isInjured());
-        writer.name("sprite_path").value(pet.getSprite());
-        writer.name("power").value(pet.getPower());
-        writer.name("agility").value(pet.getAgility());
-        writer.name("speed").value(pet.getSpeed());
-        writer.name("evolutions");
-        writeStringArray(writer, pet.getEvolutions());
-        writer.endObject();
-    }
-
-    public void writeIntArray(JsonWriter writer, int[] ints) throws IOException {
-        writer.beginArray();
-        for (int value : ints) {
-            writer.value(value);
-        }
-        writer.endArray();
-    }
-    public void writeStringArray(JsonWriter writer, String[] strings) throws IOException {
-        writer.beginArray();
-        for (String value : strings) {
-            writer.value(value);
-        }
-        writer.endArray();
-    }
-
-    //JSON READ CODE IS BELOW
-    //
-    //
-    //
-    //
-    //
-    //
-
-    public Pet readJsonStream(InputStream in) throws IOException {
-        JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
-        Pet pet = readMessagesArray(reader);
-        reader.close();
-        return pet;
-    }
-
-    public Pet readMessagesArray(JsonReader reader) throws IOException{
-        reader.beginArray();
-        Pet pet = readAutoSave(reader);
-        reader.endArray();
-        return pet;
-    }
-
-    private Pet readAutoSave(JsonReader reader) throws IOException{
-        int sprite = 0;
-        int power = 0;
-        int speed = 0;
-        int agility = 0;
-        String[] evolutions = new String[4];
-        int happiness = 0;
-        int hunger = 0;
-        double weight = 0;
-        float discipline = 0;
-        int careMistakes = 0;
-        int age = 0;
-        int[] skills = new int[2];
-        boolean isDirty = false;
-        boolean isTired = false;
-        boolean isSick = false;
-        boolean isInjured = false;
-
-        reader.beginObject();
-        while(reader.hasNext()) {
-            String name = reader.nextName();
-            if (name == "happiness") {
-                happiness = reader.nextInt();
-            }
-            else if (name == "hunger") {
-                hunger = reader.nextInt();
-            }
-            else if (name == "weight") {
-                weight = reader.nextDouble();
-            }
-            else if (name == "discipline") {
-                discipline = (float)reader.nextDouble();
-            }
-            else if (name == "care_mistakes") {
-                careMistakes = reader.nextInt();
-            }
-            else if (name == "age") {
-                age = reader.nextInt();
-            }
-            else if (name == "skills") {
-                skills = readIntArray(reader);
-            }
-            else if (name == "is_dirty") {
-                isDirty = reader.nextBoolean();
-            }
-            else if (name == "is_tired") {
-                isTired = reader.nextBoolean();
-            }
-            else if (name == "is_sick") {
-                isSick = reader.nextBoolean();
-            }
-            else if (name == "is_injured") {
-                isInjured = reader.nextBoolean();
-            }
-            else if (name == "sprite_path") {
-                sprite = reader.nextInt();
-            }
-            else if (name == "power") {
-                power = reader.nextInt();
-            }
-            else if (name == "agility") {
-                agility = reader.nextInt();
-            }
-            else if (name == "speed") {
-                speed = reader.nextInt();
-            }
-            else if (name == "evolutions") {
-                evolutions = readStringArray(reader);
-            }
-        }
-        reader.endObject();
-        Pet newPet = new Pet(sprite, power, speed, agility, evolutions, happiness, hunger, weight, discipline, careMistakes, age, skills, isDirty, isTired, isSick, isInjured);
-        return newPet;
-    }
-
-    public int[] readIntArray(JsonReader reader) throws IOException{
-        int[] ints = new int[2];
-
-        reader.beginArray();
+        int[] skills = new int[3];
         int i = 0;
-        while (reader.hasNext()) {
-            ints[i] = reader.nextInt();
+        for (String skill:skillsStr) {
+            skills[i] = Integer.parseInt(skill);
             i++;
         }
-        reader.endArray();
 
-        return ints;
+        pet = new Pet(spritePath, power, speed, agility, evolutions, happiness, hunger, weight, discipline, careMistakes, age, skills, isDirty, isTired, isSick, isInjured);
+        return !(happiness == -1 || hunger == -1 || weight == -1 || discipline == -1 || careMistakes == -1 || age == -1 || spritePath == -1 || power == -1 || agility == -1 || speed == -1 );
     }
 
-    public String[] readStringArray(JsonReader reader) throws IOException{
-        String[] strings = new String[4];
-
-        reader.beginArray();
-        int i = 0;
-        while (reader.hasNext()) {
-            strings[i] = reader.nextString();
-            i++;
-        }
-        reader.endArray();
-
-        return strings;
+    private String[] loadArray(String str) {
+        String[] strs = str.split(",");
+        return strs;
     }
 }

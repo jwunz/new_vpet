@@ -15,4 +15,16 @@ public class Battle extends AppCompatActivity {
         int petSprite = extras.getInt("petSprite", R.drawable.notfound);
         findViewById(R.id.petSprite).setBackgroundResource(petSprite);
     }
+
+    private void gameOver() {
+
+    }
+
+    private String lossMessage() {
+        return "You lose, better luck next time.";
+    }
+
+    private String victoryMessage() {
+        return "You won and gained " + "*REPLACE WITH MONEY AMOUNT*" + " money!";
+    }
 }
