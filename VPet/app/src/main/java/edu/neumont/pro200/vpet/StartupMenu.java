@@ -581,7 +581,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         }
     }
 
-    public void gameButtonHit(View view) {
+    public void gameButtonHit(int score) {
             int statToIncrement = r.nextInt(3);
             pet.setHappiness(pet.getHappiness()+1);
             if(pet.getHappiness() > 1){
@@ -589,13 +589,13 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
             }
             switch (statToIncrement) {
                 case 0:
-                    pet.setPower(pet.getPower() + 10);
+                    pet.setPower(pet.getPower() + score);
                     break;
                 case 1:
-                    pet.setSpeed(pet.getSpeed() + 10);
+                    pet.setSpeed(pet.getSpeed() + score);
                     break;
                 case 2:
-                    pet.setAgility(pet.getAgility() + 10);
+                    pet.setAgility(pet.getAgility() + score);
                     break;
             }
             setPetInjury();
@@ -603,12 +603,21 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
 
     public void StartStarCatcher (View view) {
         if(pet.getHappiness()<5){
-            gameButtonHit(view);
             Intent intent = new Intent(this, StarCatcher.class);
             intent.putExtra("petSprite", pet.getSprite());
-            startActivity(intent);
+            startActivityForResult(intent, 1);
         }else{
             Toast.makeText(view.getContext(), " Pet is at maximum happiness! ", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                int score = data.getIntExtra("score", 0);
+                gameButtonHit(score);
+            }
         }
     }
 
