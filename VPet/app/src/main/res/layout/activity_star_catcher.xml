@@ -89,4 +89,33 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/finishScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/finishText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Finished!"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+
+        <TextView
+            android:id="@+id/finishedDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/finishButton"
+            android:layout_width="133dp"
+            android:layout_height="wrap_content"
+            android:onClick="returnResult"
+            android:text="Back to Main" />
+    </LinearLayout>
+
 </FrameLayout>
