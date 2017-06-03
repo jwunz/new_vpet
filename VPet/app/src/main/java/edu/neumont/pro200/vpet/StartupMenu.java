@@ -263,12 +263,12 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
 
     public boolean inflictCareMistake(){
         boolean inflicted = false;
-        boolean isDirty = petIsInflicted(pet.isDirty(), pet.getLastDirtyTime());
-        boolean isTired = petIsInflicted(pet.isTired(), pet.getLastTiredTime());
-        boolean isSick = petIsInflicted(pet.isDirty(), pet.getLastDirtyTime());
-        boolean isInjured = petIsInflicted(pet.isInjured(), pet.getLastInjuredTime());
-        boolean isHungry = petIsInflicted(pet.isHungry(), pet.getLastHungerTime());
-        boolean isSad = petIsInflicted(pet.isSad(), pet.getLastSadTime());
+        boolean isDirty = petIsInflicted(pet.isDirty(), pet.getDirtyTime());
+        boolean isTired = petIsInflicted(pet.isTired(), pet.getTiredTime());
+        boolean isSick = petIsInflicted(pet.isDirty(), pet.getDirtyTime());
+        boolean isInjured = petIsInflicted(pet.isInjured(), pet.getInjuredTime());
+        boolean isHungry = petIsInflicted(pet.isHungry(), pet.getHungryTime());
+        boolean isSad = petIsInflicted(pet.isSad(), pet.getSadTime());
         if(isDirty || isTired || isSick || isInjured || isHungry || isSad) {
             pet.setCareMistakes(pet.getCareMistakes() + 1);
             inflicted = true;
@@ -276,9 +276,10 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         return inflicted;
     }
 
-    private boolean petIsInflicted(boolean hasAilment, int endOfLastAilment){
+    private boolean petIsInflicted(boolean hasAilment, int startOfAilment){
         int careThreshold = 20; //20
-        if(hasAilment && (((ticks - endOfLastAilment)) % careThreshold == 0)){
+        startOfAilment -= 1;
+        if(hasAilment && ((ticks - startOfAilment) % careThreshold == 0)){
             String a = "a";
             return true;
         }
@@ -400,11 +401,11 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     private void petDeath() {
         Random randESavage = new Random();
         if (randESavage.nextInt(100) < pet.getCareMistakes() * pet.getAge()) {
-            healDirtiness(findViewById(R.id.petSprite));
-            healInjury(findViewById(R.id.petSprite));
-            healSickness(findViewById(R.id.petSprite));
-            healTiredness(findViewById(R.id.petSprite));
-            ticks = 0;
+            findViewById(R.id.sleepBubble).setVisibility(View.GONE);
+            findViewById(R.id.sickBubble).setVisibility(View.GONE);
+            findViewById(R.id.injuryBubble).setVisibility(View.GONE);
+            findViewById(R.id.dirtyBubble).setVisibility(View.GONE);
+            ticks = 0; money = 0;
             showChoosePetMenu();
         }
     }
