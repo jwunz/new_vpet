@@ -45,7 +45,6 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     private int ticks = 0;
     private Random r = new Random();
     private View mContentView;
-    private MediaPlayer player;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -150,14 +149,9 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     }
 
     public boolean playSound () {
-        try{
-            player.release();
-            player=MediaPlayer.create(this,R.raw.sound);
+            MediaPlayer player=MediaPlayer.create(this,R.raw.sound);
             player.start();
             return true;
-        }catch(Exception e){
-            return false;
-        }
     }
 
     public void displayStats(View view){
@@ -269,12 +263,12 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
 
     public boolean inflictCareMistake(){
         boolean inflicted = false;
-        boolean isDirty = petIsInflicted(pet.isDirty(), pet.getLastDirtyTime());
-        boolean isTired = petIsInflicted(pet.isTired(), pet.getLastTiredTime());
-        boolean isSick = petIsInflicted(pet.isDirty(), pet.getLastDirtyTime());
-        boolean isInjured = petIsInflicted(pet.isInjured(), pet.getLastInjuredTime());
-        boolean isHungry = petIsInflicted(pet.isHungry(), pet.getLastHungerTime());
-        boolean isSad = petIsInflicted(pet.isSad(), pet.getLastSadTime());
+        boolean isDirty = petIsInflicted(pet.isDirty(), pet.getDirtyTime());
+        boolean isTired = petIsInflicted(pet.isTired(), pet.getTiredTime());
+        boolean isSick = petIsInflicted(pet.isDirty(), pet.getDirtyTime());
+        boolean isInjured = petIsInflicted(pet.isInjured(), pet.getInjuredTime());
+        boolean isHungry = petIsInflicted(pet.isHungry(), pet.getHungryTime());
+        boolean isSad = petIsInflicted(pet.isSad(), pet.getSadTime());
         if(isDirty || isTired || isSick || isInjured || isHungry || isSad) {
             pet.setCareMistakes(pet.getCareMistakes() + 1);
             inflicted = true;
@@ -282,9 +276,10 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
         return inflicted;
     }
 
-    private boolean petIsInflicted(boolean hasAilment, int endOfLastAilment){
+    private boolean petIsInflicted(boolean hasAilment, int startOfAilment){
         int careThreshold = 20; //20
-        if(hasAilment && (((ticks - endOfLastAilment)) % careThreshold == 0)){
+        startOfAilment -= 1;
+        if(hasAilment && ((ticks - startOfAilment) % careThreshold == 0)){
             String a = "a";
             return true;
         }
@@ -294,20 +289,20 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     public boolean checkStatus() {
         boolean changed = false;
 
-        if (!pet.isTired() && ticks >= pet.getLastTiredTime() + 200 ) { //200
+        if (!pet.isTired() && ticks >= pet.getLastTiredTime() + 80 ) { //80
             pet.setTired(true, ticks);
             findViewById(R.id.sleepBubble).setVisibility(View.VISIBLE);
             changed = true;
         }
 
-        if (!pet.isDirty() && ticks >= pet.getLastDirtyTime() + 60 ) { //60
+        if (!pet.isDirty() && ticks >= pet.getLastDirtyTime() + 40 ) { //40
             pet.setDirty(true, ticks);
             findViewById(R.id.dirtyBubble).setVisibility(View.VISIBLE);
             findViewById(R.id.mess).setVisibility(View.VISIBLE);
             changed = true;
         }
 
-        if (ticks % 50 == 0) { //50
+        if (ticks % 30 == 0) { //30
             if (pet.getHunger() > 0) {
                 pet.setHunger(pet.getHunger() - 1);
                 changed = true;
@@ -405,14 +400,12 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
 
     private void petDeath() {
         Random randESavage = new Random();
-
-        if (randESavage.nextInt(100) > pet.getCareMistakes() * pet.getAge()) {
-            healDirtiness(findViewById(R.id.petSprite));
-            healInjury(findViewById(R.id.petSprite));
-            healSickness(findViewById(R.id.petSprite));
-            healTiredness(findViewById(R.id.petSprite));
-            ticks = 0;
-
+        if (randESavage.nextInt(100) < pet.getCareMistakes() * pet.getAge()) {
+            findViewById(R.id.sleepBubble).setVisibility(View.GONE);
+            findViewById(R.id.sickBubble).setVisibility(View.GONE);
+            findViewById(R.id.injuryBubble).setVisibility(View.GONE);
+            findViewById(R.id.dirtyBubble).setVisibility(View.GONE);
+            ticks = 0; money = 0;
             showChoosePetMenu();
         }
     }
@@ -655,6 +648,7 @@ public class StartupMenu extends AppCompatActivity implements Serializable {
     private boolean setPetInjury(){
         int getInjured = r.nextInt(3);
         if (getInjured >= 2) {
+            findViewById(R.id.injuryBubble).setVisibility(View.VISIBLE);
             pet.setInjured(true, ticks);
             return true;
         }
