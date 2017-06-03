@@ -5,14 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="edu.neumont.pro200.vpet.Battle">
+
     <LinearLayout
         android:id="@+id/Welcome"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="visible"
-        android:weightSum="1">
+        android:visibility="gone"
+        android:weightSum="1"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <TextView
             android:id="@+id/WelcomeText"
@@ -43,24 +46,104 @@
             android:text="START"
             android:textAlignment="center" />
     </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/GameMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
+        android:layout_width="368dp"
+        android:layout_height="551dp"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <LinearLayout
+            android:id="@+id/skillsList"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="84dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/skill0"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="11dp"
+                android:layout_weight="1"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/skill1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="11dp"
+                android:layout_weight="1"
+                android:text="Button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/skillList2"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/skillList1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/skill3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="11dp"
+                android:layout_weight="1"
+                android:text="Button" />
+
+            <Button
+                android:id="@+id/skill4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="11dp"
+                android:layout_weight="1"
+                android:text="Button" />
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/battleField"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="1000dp">
+
+            <ImageView
+                android:id="@+id/enemySprite"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignLeft="@+id/petSprite"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/petSprite"
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/petSprite"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_alignParentBottom="true"
-                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="200dp"
                 android:layout_weight="1" />
+
         </RelativeLayout>
 
     </RelativeLayout>

@@ -30,7 +30,7 @@ import java.util.Random;
 public class VPet extends AppCompatActivity implements Serializable {
     private static final boolean AUTO_HIDE = false;
     private Pet pet;
-    private int money = 0;
+    private int money = 1000;
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
@@ -428,10 +428,12 @@ public class VPet extends AppCompatActivity implements Serializable {
         int index = button.getText().charAt(1);
         int price = Integer.parseInt(button.getText().toString().substring(button.getText().toString().indexOf('$')+1));
         for(int i = 0; i < pet.getSkills().length; i++){
-            if((Integer)pet.getSkills()[i] != null){
+            if((Integer)pet.getSkills()[i] != null && (money - price > 0)){
                 pet.getSkills()[i] = index;
                 money -= price;
                 break;
+            }else{
+                Toast.makeText(view.getContext(), " You do not have enough money for that! ", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -694,6 +696,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         editor.putInt("agility", pet.getAgility());
         editor.putInt("speed", pet.getSpeed());
         editor.putString("evolutions", pet.getEvolutionsString());
+        editor.putInt("money", money);
         editor.apply();
     }
 
@@ -714,6 +717,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         int power = petSave.getInt("power", -1);
         int agility = petSave.getInt("agility", -1);
         int speed = petSave.getInt("speed", -1);
+        int savedMoney = petSave.getInt("money", -1);
         String[] evolutions = loadArray(petSave.getString("evolutions", ""));
 
         int[] skills = new int[3];
@@ -724,7 +728,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         }
 
         pet = new Pet(spritePath, power, speed, agility, evolutions, happiness, hunger, weight, discipline, careMistakes, age, skills, isDirty, isTired, isSick, isInjured);
-
+        money = savedMoney;
         return !(happiness == -1 || hunger == -1 || weight == -1 || discipline == -1 || careMistakes == -1 || age == -1 || spritePath == -1 || power == -1 || agility == -1 || speed == -1 );
     }
 
