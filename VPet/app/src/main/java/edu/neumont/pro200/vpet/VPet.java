@@ -1,7 +1,6 @@
 package edu.neumont.pro200.vpet;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -17,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -37,14 +37,16 @@ public class VPet extends AppCompatActivity implements Serializable {
     private int ticks = 0;
     private Random r = new Random();
     private View mContentView;
-    private final int sickIncrement = 80; //100
-    private final int tiredIncrement = 60; //80
-    private final int happyIncrement = 40; //60
-    private final int dirtyIncrement = 20; //40
-    private final int hungryIncrement = 10; //30
+    private final int sickIncrement = 80; //80
+    private final int tiredIncrement = 60; //60
+    private final int happyIncrement = 40; //40
+    private final int dirtyIncrement = 30; //30
+    private final int hungryIncrement = 15; //15
+    private final int beepIncrement = 10; //10
     private final int careThreshold = 20; //20
     private final int ageIncrement = 90; //90
     private final int evolveIncrement = 5; //5;
+    private final int tickMultiplier = 1; //1;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -78,7 +80,7 @@ public class VPet extends AppCompatActivity implements Serializable {
     public void healSickness(View view) {
         if(pet.isSick()){
             pet.setSick(false, ticks);
-            pet.setIsEating(true);
+            pet.setIsAnimating(true);
             findViewById(R.id.pill).setVisibility(View.VISIBLE);
             toggleAllButtons(false);
             findViewById(R.id.sickBubble).setVisibility(View.GONE);
@@ -90,7 +92,7 @@ public class VPet extends AppCompatActivity implements Serializable {
     public void healInjury(View view) {
         if(pet.isInjured()){
             pet.setInjured(false, ticks);
-            pet.setIsEating(true);
+            pet.setIsAnimating(true);
             findViewById(R.id.bandage).setVisibility(View.VISIBLE);
             toggleAllButtons(false);
             findViewById(R.id.injuryBubble).setVisibility(View.GONE);
@@ -121,9 +123,37 @@ public class VPet extends AppCompatActivity implements Serializable {
         }
     }
 
+    public void scoldPet(View view){
+        pet.setIsAnimating(true);
+        toggleAllButtons(false);
+        if(ticks - pet.getBeepTime() <= 1){
+            pet.setBeep(false, ticks);
+            pet.setDiscipline(pet.getDiscipline()+1);
+        }else{
+            if(pet.getHappiness() != 0){
+                pet.setHappiness(pet.getHappiness()-1);
+            }
+            Toast.makeText(view.getContext(), " Your pet frowns. ", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void praisePet(View view){
+        pet.setIsAnimating(true);
+        toggleAllButtons(false);
+        if(ticks - pet.getWinTime() <= 1){
+            pet.setDiscipline(pet.getDiscipline()+1);
+        }else{
+
+            Toast.makeText(view.getContext(), " Your pet smiles. ", Toast.LENGTH_SHORT).show();
+        }
+        if(pet.getHappiness()<5){
+            pet.setHappiness(pet.getHappiness()+1);
+        }
+    }
+
     public void IncreaseHungerBar(View view) {
         if (pet.getHunger() < 5) {
-            pet.setIsEating(true);
+            pet.setIsAnimating(true);
             findViewById(R.id.meat).setVisibility(View.VISIBLE);
             toggleAllButtons(false);
             pet.setHunger(pet.getHunger() + 1);
@@ -156,6 +186,7 @@ public class VPet extends AppCompatActivity implements Serializable {
 
     public void displayStats(View view){
         Button tView = (Button) findViewById(R.id.stats_menu);
+        Button rView = (Button)  findViewById(R.id.reset_button);
         String happyS = "Happiness: " + pet.getHappiness();
         String hungerS = "Hunger: " + pet.getHunger();
         String ageS = "Age: " + pet.getAge();
@@ -168,6 +199,8 @@ public class VPet extends AppCompatActivity implements Serializable {
         String moneyS = "Money: " + money;
         tView.setText(happyS + "\n" + hungerS + "\n" + ageS + "\n" + powerS + "\n" + agilityS + "\n" + speedS + "\n" + weightS + "\n" + careS + "\n" + disciplineS + "\n" + moneyS);
         tView.setVisibility(View.VISIBLE);
+        rView.setVisibility(View.VISIBLE);
+
     }
 
     public void activateAnimation(View view){
@@ -176,8 +209,9 @@ public class VPet extends AppCompatActivity implements Serializable {
         final LinearLayout pet_condition = (LinearLayout) findViewById(R.id.pet_condition);
         final Animation walkRight = AnimationUtils.loadAnimation(this, R.anim.walkingright);
         final Animation walkLeft = AnimationUtils.loadAnimation(this, R.anim.walkingleft);
-        final Animation eat = AnimationUtils.loadAnimation(this,R.anim.eat);
+        final Animation animating = AnimationUtils.loadAnimation(this,R.anim.eat);
         final Animation rest = AnimationUtils.loadAnimation(this,R.anim.rest);
+        final Animation dying = AnimationUtils.loadAnimation(this,R.anim.dying);
 
         walkRight.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a) {
@@ -203,10 +237,12 @@ public class VPet extends AppCompatActivity implements Serializable {
             }
             public void onAnimationEnd(Animation a) {
                 img.setRotationY(0);
-                if(pet.getIsEating()) {
-                    img.startAnimation(eat);
+                if(pet.getIsAnimating()) {
+                    img.startAnimation(animating);
                 }else if(pet.getIsSleeping()){
                     img.startAnimation(rest);
+                }else if(pet.isDying()){
+                    img.startAnimation(dying);
                 }
                 else {
                     pet_condition.startAnimation(walkRight);
@@ -214,7 +250,7 @@ public class VPet extends AppCompatActivity implements Serializable {
             }
         });
 
-        eat.setAnimationListener(new Animation.AnimationListener() {
+        animating.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation a) {
             }
 
@@ -222,7 +258,7 @@ public class VPet extends AppCompatActivity implements Serializable {
                 img.setBackgroundResource(pet.getSprite());
             }
             public void onAnimationEnd(Animation a) {
-                pet.setIsEating(false);
+                pet.setIsAnimating(false);
                 toggleOffConsumable();
                 pet_condition.startAnimation(walkRight);
                 toggleAllButtons(true);
@@ -244,6 +280,19 @@ public class VPet extends AppCompatActivity implements Serializable {
             }
         });
 
+        dying.setAnimationListener(new Animation.AnimationListener() {
+            public void onAnimationStart(Animation a) {
+            }
+
+            public void onAnimationRepeat(Animation a) {
+                img.setBackgroundResource(pet.getSprite());
+            }
+            public void onAnimationEnd(Animation a) {
+                toggleAllButtons(true);
+                petReset();
+            }
+        });
+
         pet_condition.startAnimation(walkRight);
     }
 
@@ -254,7 +303,7 @@ public class VPet extends AppCompatActivity implements Serializable {
     }
 
     public void incrementTime() {
-        ticks += 1;
+        ticks += tickMultiplier;
         increaseAge();
         checkStatus();
         inflictCareMistake();
@@ -334,16 +383,22 @@ public class VPet extends AppCompatActivity implements Serializable {
             }
         }
 
+        if(ticks >= pet.getLastBeepTime() + (beepIncrement+(pet.getDiscipline()*beepIncrement))){
+            playSound();
+            pet.setBeep(true, ticks);
+            Toast.makeText(findViewById(R.id.game_menu).getContext(), " Your pet is acting up. ", Toast.LENGTH_SHORT).show();
+            changed = true;
+        }
+
         return changed;
     }
-
-
 
     public boolean increaseAge() {
         if (ticks % ageIncrement == 0) { //200
             pet.setAge(pet.getAge() + 1);
             evolvePet();
             updateSkillShop();
+
             petDeath();
             findViewById(R.id.activity_ui).setBackgroundColor(Color.WHITE);
             return true;
@@ -371,23 +426,30 @@ public class VPet extends AppCompatActivity implements Serializable {
     private void petDeath() {
         Random randESavage = new Random();
         if (randESavage.nextInt(100) < pet.getCareMistakes() * pet.getAge()) {
-            findViewById(R.id.sleepBubble).setVisibility(View.GONE);
-            findViewById(R.id.sickBubble).setVisibility(View.GONE);
-            findViewById(R.id.injuryBubble).setVisibility(View.GONE);
-            findViewById(R.id.dirtyBubble).setVisibility(View.GONE);
-            ticks = 0; money = 0;
-            pet.setHappiness(-1);
-            pet.setHunger(-1);
-            pet.setAge(-1);
-            pet.setPower(-1);
-            pet.setAgility(-1);
-            pet.setSpeed(-1);
-            pet.setCareMistakes(-1);
-            pet.setDiscipline(-1);
-            pet.setWeight(-1);
-            savePrefs();
-            showChoosePetMenu();
+            pet.setIsDying(true);
+            TextView deathMessage = (TextView) findViewById(R.id.deathMessage);
+            deathMessage.setText("Unfortunately, your previous pet has died..");
         }
+    }
+
+    private void petReset(){
+        findViewById(R.id.sleepBubble).setVisibility(View.GONE);
+        findViewById(R.id.sickBubble).setVisibility(View.GONE);
+        findViewById(R.id.injuryBubble).setVisibility(View.GONE);
+        findViewById(R.id.dirtyBubble).setVisibility(View.GONE);
+        ticks = 0; money = 0;
+        pet.setHappiness(-1);
+        pet.setHunger(-1);
+        pet.setAge(-1);
+        pet.setPower(-1);
+        pet.setAgility(-1);
+        pet.setSpeed(-1);
+        pet.setCareMistakes(-1);
+        pet.setDiscipline(-1);
+        pet.setWeight(-1);
+        savePrefs();
+
+        showChoosePetMenu();
     }
 
     private void loadAilments(){
@@ -462,8 +524,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         findViewById(R.id.soap_button).setEnabled(bool);
         findViewById(R.id.food_button).setEnabled(bool);
         findViewById(R.id.stats_button).setEnabled(bool);
-        findViewById(R.id.game_menu).setEnabled(bool);
-        findViewById(R.id.hand_menu).setEnabled(bool);
+        findViewById(R.id.battle_button).setEnabled(bool);
     }
 
     public String loadJSONFromAsset(String file) {
@@ -536,7 +597,16 @@ public class VPet extends AppCompatActivity implements Serializable {
         findViewById(R.id.shop_menu).setVisibility(View.INVISIBLE);
         findViewById(R.id.medicine_menu).setVisibility(View.INVISIBLE);
         findViewById(R.id.stats_menu).setVisibility(View.INVISIBLE);
+        findViewById(R.id.reset_button).setVisibility(View.INVISIBLE);
         ((RadioGroup) findViewById(R.id.menu_group)).setOnCheckedChangeListener(ToggleListener);
+    }
+
+    public void reset(View view){
+        pet.setAge(1);
+        pet.setCareMistakes(100);
+        findViewById(R.id.stats_menu).setVisibility(View.GONE);
+        findViewById(R.id.reset_button).setVisibility(View.GONE);
+        petDeath();
     }
 
     public void toggleShopMenu(View view) {
@@ -610,7 +680,7 @@ public class VPet extends AppCompatActivity implements Serializable {
             intent.putExtras(extras);
             startActivityForResult(intent, 1);
         }else{
-            Toast.makeText(view.getContext(), " Pet is at maximum happiness! ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), " Pet is at maximum happiness! Let it relax and then play games later. ", Toast.LENGTH_SHORT).show();
         }
     }
 

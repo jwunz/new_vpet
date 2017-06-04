@@ -61,6 +61,15 @@
             android:onClick="chooseDesertPet"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/one_desert_one" />
+
+        <TextView
+            android:id="@+id/deathMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="77dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
     </RelativeLayout>
 
     <FrameLayout
@@ -132,9 +141,19 @@
             </RadioGroup>
 
             <Button
-                android:id="@+id/stats_menu"
+                android:id="@+id/reset_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/stats_menu"
+                android:onClick="reset"
+                android:text="Reset"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/stats_menu"
+                android:layout_width="match_parent"
+                android:layout_height="505dp"
                 android:onClick="toggleAllMenusOff"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                 android:visibility="gone" />
@@ -195,6 +214,7 @@
                     android:layout_width="95dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="praisePet"
                     android:text="Praise" />
 
                 <Button
@@ -202,6 +222,7 @@
                     android:layout_width="95dip"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
+                    android:onClick="scoldPet"
                     android:text="Scold" />
             </LinearLayout>
 

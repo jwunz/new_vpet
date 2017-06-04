@@ -1,17 +1,7 @@
 package edu.neumont.pro200.vpet;
 
-import android.content.res.AssetManager;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.AccessController;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Created by JWunz on 5/13/17.
@@ -31,15 +21,18 @@ public class Pet extends Monster {
     private boolean isInjured;
     private boolean isHungry;
     private boolean isSad;
-    private boolean isEating;
+    private boolean isAnimating;
     private boolean isSleeping;
+    private boolean isBeeping;
+    private boolean isWinning;
+    private boolean isDying;
     private int dirtyTime = 0;
 
-    public boolean getIsEating(){
-        return isEating;
+    public boolean getIsAnimating(){
+        return isAnimating;
     }
-    public void setIsEating(boolean isEating){
-        this.isEating = isEating;
+    public void setIsAnimating(boolean isAnimating){
+        this.isAnimating = isAnimating;
     }
     public boolean getIsSleeping(){
         return isSleeping;
@@ -60,6 +53,8 @@ public class Pet extends Monster {
     private int injuredTime = 0;
     private int hungryTime = 0;
     private int sadTime = 0;
+    private int beepTime = 0;
+    private int winTime = 0;
 
     public int getLastDirtyTime() {
         return lastDirtyTime;
@@ -73,6 +68,14 @@ public class Pet extends Monster {
         return lastSickTime;
     }
 
+    public int getLastBeepTime(){
+        return lastBeepTime;
+    }
+
+    public int getLastWinTime(){
+        return lastWinTime;
+    }
+
     public void setLastSickTime(int lastSickTime) {
         this.lastSickTime = lastSickTime;
     }
@@ -80,6 +83,8 @@ public class Pet extends Monster {
     private int lastDirtyTime = 0;
     private int lastTiredTime = 0;
     private int lastSickTime = 0;
+    private int lastBeepTime = 0;
+    private int lastWinTime = 0;
 
     public int getLastHungerTime() {
         return lastHungerTime;
@@ -220,6 +225,13 @@ public class Pet extends Monster {
         return isHungry;
     }
 
+    public boolean isDying(){return isDying;}
+
+    public boolean setIsDying(boolean isDying){
+        this.isDying = isDying;
+        return true;
+    }
+
     public boolean setHungry(boolean hungry, int time){
         isHungry = hungry;
         if(hungry){
@@ -250,6 +262,14 @@ public class Pet extends Monster {
 
     public void setLastDirtyTime(int lastDirtyTime) {
         this.lastDirtyTime = lastDirtyTime;
+    }
+
+    public void setLastBeepTime(int lastBeepTime){
+        this.lastBeepTime = lastBeepTime;
+    }
+
+    public void setLastWinTime(int lastWinTime){
+        this.lastWinTime = lastWinTime;
     }
 
     public void setLastTiredTime(int lastTiredTime) {
@@ -284,6 +304,26 @@ public class Pet extends Monster {
         return true;
     }
 
+    public boolean setBeep(boolean beep, int time){
+        isBeeping = beep;
+        if(beep){
+            setBeepTime(time);
+        }else{
+            setLastBeepTime(time);
+        }
+        return true;
+    }
+
+    public boolean setWin(boolean win, int time){
+        isWinning = win;
+        if(win){
+            setWinTime(time);
+        }else{
+            setLastWinTime(time);
+        }
+        return true;
+    }
+
     public boolean isInjured() {
         return isInjured;
     }
@@ -314,6 +354,24 @@ public class Pet extends Monster {
     private boolean setTiredTime(int tiredTime) {
         this.tiredTime = tiredTime;
         return true;
+    }
+
+    private boolean setBeepTime(int beepTime){
+        this.beepTime = beepTime;
+        return true;
+    }
+
+    public int getBeepTime(){
+        return beepTime;
+    }
+
+    private boolean setWinTime(int winTime){
+        this.winTime = winTime;
+        return true;
+    }
+
+    public int getWinTime(){
+        return winTime;
     }
 
     public int getSickTime() {
@@ -381,9 +439,9 @@ public class Pet extends Monster {
             jsonObject = jsonObject.getJSONObject(evolution);
             JSONObject statsObject = jsonObject.getJSONObject("stats");
             this.setSprite(jsonObject.getInt("spritePath"));
-            this.setPower((this.getPower()+statsObject.getInt("power"))/2);
-            this.setAgility((this.getAgility()+statsObject.getInt("agility"))/2);
-            this.setSpeed((this.getSpeed()+statsObject.getInt("speed"))/2);
+            this.setPower(this.getPower()+statsObject.getInt("power"));
+            this.setAgility(this.getAgility()+statsObject.getInt("agility"));
+            this.setSpeed(this.getSpeed()+statsObject.getInt("speed"));
             this.setEvolutions(toStringArray(jsonObject.getJSONArray("evolutions")));
             this.setCareMistakes(0);
         }catch(Exception e){
