@@ -470,8 +470,8 @@ public class VPet extends AppCompatActivity implements Serializable {
     private boolean readSkillJson(Button skill){
         try{
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset("skills.json"));
-            int randomIndexNum = r.nextInt(1+(jsonObject.length()-2));
-            String randomIndex = Integer.toString(randomIndexNum);
+            int randomIndexNum = r.nextInt((jsonObject.length()-2));
+            String randomIndex = Integer.toString(randomIndexNum+1);
             jsonObject = jsonObject.getJSONObject(randomIndex);
 
             String skillName = jsonObject.getString("name");
@@ -493,15 +493,20 @@ public class VPet extends AppCompatActivity implements Serializable {
         int index = Character.getNumericValue(button.getText().charAt(1));
         int price = Integer.parseInt(button.getText().toString().substring(button.getText().toString().indexOf('$')+1));
         for(int i = 0; i < pet.getSkills().length; i++){
-            if((Integer)pet.getSkills()[i] == 0 && (money - price > 0)){
+            boolean skillequalzero = (Integer)pet.getSkills()[i] == 0;
+            boolean enoughmoney = money-price>=0;
+            if(skillequalzero && enoughmoney){
                 pet.getSkills()[i] = index;
                 money -= price;
                 break;
             }else{
                 if(money - price < 0){
                     Toast.makeText(view.getContext(), " You do not have enough money for that! ", Toast.LENGTH_SHORT).show();
+                }else if(i == pet.getSkills().length-1){
+                    Toast.makeText(view.getContext(), " Your skill list is full! ", Toast.LENGTH_SHORT).show();
                 }
             }
+            //break;
         }
     }
 
