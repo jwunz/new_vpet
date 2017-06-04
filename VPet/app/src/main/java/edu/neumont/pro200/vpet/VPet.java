@@ -1,11 +1,13 @@
 package edu.neumont.pro200.vpet;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,7 +32,8 @@ import java.util.Random;
 public class VPet extends AppCompatActivity implements Serializable {
     private static final boolean AUTO_HIDE = false;
     private Pet pet;
-    private int money = 1000;
+    private final int startMoney = 1000;
+    private int money = startMoney;
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
@@ -437,7 +440,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         findViewById(R.id.sickBubble).setVisibility(View.GONE);
         findViewById(R.id.injuryBubble).setVisibility(View.GONE);
         findViewById(R.id.dirtyBubble).setVisibility(View.GONE);
-        ticks = 0; money = 0;
+        ticks = 0; money = startMoney;
         pet.setHappiness(-1);
         pet.setHunger(-1);
         pet.setAge(-1);
@@ -602,11 +605,33 @@ public class VPet extends AppCompatActivity implements Serializable {
     }
 
     public void reset(View view){
-        pet.setAge(1);
-        pet.setCareMistakes(100);
         findViewById(R.id.stats_menu).setVisibility(View.GONE);
         findViewById(R.id.reset_button).setVisibility(View.GONE);
-        petDeath();
+        AlertDialog.Builder builder = new AlertDialog.Builder(VPet.this);
+        builder.setMessage("!!!Warning!!!: Are you sure you want to reset?")
+        .setTitle("Reset")
+        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                pet.setAge(1);
+                pet.setCareMistakes(100);
+                petDeath();
+            }
+        })
+        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+              @Override
+              public void onShow(DialogInterface arg0) {
+                  dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                  dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+              }
+        });
+        dialog.show();
     }
 
     public void toggleShopMenu(View view) {
@@ -693,6 +718,13 @@ public class VPet extends AppCompatActivity implements Serializable {
                 gameButtonHit(score, randomNum);
             }
         }
+        if (requestCode == 2) {
+            if(resultCode == RESULT_OK) {
+                int earnings = data.getIntExtra("earnings", 0);
+                pet.setWin(true, ticks);
+                battleAftermath(earnings);
+            }
+        }
     }
 
     public void startBattle (View view) {
@@ -704,8 +736,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         extras.putInt("speed", pet.getSpeed());
         extras.putIntArray("skills", pet.getSkills());
         intent.putExtras(extras);
-        startActivity(intent);
-        battleAftermath();
+        startActivityForResult(intent, 2);
     }
 
     private void hide() {
@@ -735,9 +766,8 @@ public class VPet extends AppCompatActivity implements Serializable {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    public void battleAftermath() {
-        //increase money
-        money += 20;
+    public void battleAftermath(int earnings) {
+        money += earnings;
         setPetInjury();
     }
 

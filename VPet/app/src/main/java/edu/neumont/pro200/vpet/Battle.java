@@ -98,7 +98,7 @@ public class Battle extends AppCompatActivity {
                 int skill = skillList[i];
                 if(skill!=0){
                     skills[i].setEnabled(true);
-                    readSkillJson(skills[i], skill, i);
+                    readSkillJson(skills[i], skill, i+1);
                 }
         }
     }
@@ -158,11 +158,63 @@ public class Battle extends AppCompatActivity {
         enemyHPText.setText(currentEnemyHP + " / " + enemyHPTotal);
     }
 
+    public void TakeDamageStep(View view) {
+        int currentButton= view.getId();
+        int turnSpeed = 0;
+        int turnAgility = 0;
+        int turnPower = 0;
+        String message = "";
+
+        switch (currentButton) {
+            case (R.id.skill0):
+                turnSpeed = petSpeed + skillSpeed[0];
+                turnAgility = petAgility + skillAgility[0];
+                turnPower = petPower + skillPower[0];
+                break;
+            case (R.id.skill1):
+                turnSpeed = petSpeed + skillSpeed[1];
+                turnAgility = petAgility + skillAgility[1];
+                turnPower = petPower + skillPower[1];
+                break;
+            case (R.id.skill2):
+                turnSpeed = petSpeed + skillSpeed[2];
+                turnAgility = petAgility + skillAgility[2];
+                turnPower = petPower + skillPower[2];
+                break;
+            case (R.id.skill3):
+                turnSpeed = petSpeed + skillSpeed[3];
+                turnAgility = petAgility + skillAgility[3];
+                turnPower = petPower + skillPower[3];
+                break;
+        }
+
+        if (turnSpeed > enemySpeed) {
+            currentEnemyHP -= turnPower;
+            if(currentPlayerHP > 0){
+                currentPlayerHP -= enemyPower;
+            }else{
+                currentPlayerHP = 0;
+            }
+            updateHealth();
+        }
+        else {
+            currentPlayerHP -= enemyPower;
+            currentEnemyHP -= turnPower;
+            updateHealth();
+        }
+    }
+
     public void initiateHP (Bundle b) {
         playerHPTotal = (b.getInt("power", 0) + b.getInt("agility", 0) + (b.getInt("speed", 0)));
         currentPlayerHP = playerHPTotal;
         currentEnemyHP = enemyHPTotal;
+    }
 
-
+    public void returnResult(View view){
+        Intent intent = new Intent();
+        intent.putExtra("earnings", enemyHPTotal/3);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
+
