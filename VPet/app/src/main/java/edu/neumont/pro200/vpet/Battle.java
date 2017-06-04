@@ -22,6 +22,7 @@ public class Battle extends AppCompatActivity {
     int enemyHPTotal = 0;
     int currentPlayerHP = 0;
     int currentEnemyHP = 0;
+    Random r = new Random();
 
 
     private int petPower;
@@ -163,6 +164,7 @@ public class Battle extends AppCompatActivity {
         int turnSpeed = 0;
         int turnAgility = 0;
         int turnPower = 0;
+        int randNum = r.nextInt(100);
         String message = "";
 
         switch (currentButton) {
@@ -189,18 +191,28 @@ public class Battle extends AppCompatActivity {
         }
 
         if (turnSpeed > enemySpeed) {
-            currentEnemyHP -= turnPower;
-            if(currentPlayerHP > 0){
-                currentPlayerHP -= enemyPower;
-            }else{
-                currentPlayerHP = 0;
+            if (randNum < turnAgility/3) {
+                currentEnemyHP -= turnPower;
+                if (currentPlayerHP > 0) {
+                    currentPlayerHP -= enemyPower;
+                }
+                else {
+                    currentPlayerHP = 0;
+                }
+                updateHealth();
             }
-            updateHealth();
         }
         else {
-            currentPlayerHP -= enemyPower;
-            currentEnemyHP -= turnPower;
-            updateHealth();
+            if (randNum < enemyAgility/3) {
+                currentPlayerHP -= enemyPower;
+                if (currentEnemyHP > 0) {
+                    currentEnemyHP -= turnPower;
+                }
+                else {
+                    currentEnemyHP = 0;
+                }
+                updateHealth();
+            }
         }
     }
 
