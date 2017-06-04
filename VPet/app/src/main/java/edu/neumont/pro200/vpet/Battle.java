@@ -16,10 +16,10 @@ import java.util.Random;
 
 public class Battle extends AppCompatActivity {
 
-    private String[] skillName = new String[3];
-    private int[] skillPower = new int[3];
-    private int[] skillAgility = new int[3];
-    private int[] skillSpeed = new int[3];
+    private String[] skillName = new String[4];
+    private int[] skillPower = new int[4];
+    private int[] skillAgility = new int[4];
+    private int[] skillSpeed = new int[4];
     private int earnings = 0;
     private int playerHPTotal = 0;
     private int enemyHPTotal = 0;
@@ -83,18 +83,6 @@ public class Battle extends AppCompatActivity {
         return true;
     }
 
-    private void gameOver() {
-
-    }
-
-    private String lossMessage() {
-        return "You lose, better luck next time.";
-    }
-
-    private String victoryMessage() {
-        return "You won and gained " + "*REPLACE WITH MONEY AMOUNT*" + " money!";
-    }
-
     private void updateSkills(Bundle extras){
         Button[] skills = new Button[]{(Button)findViewById(R.id.skill1), (Button)findViewById(R.id.skill2), (Button)findViewById(R.id.skill3)};
         fillDefaultAttack();
@@ -109,12 +97,12 @@ public class Battle extends AppCompatActivity {
     }
 
     private void fillDefaultAttack(){
-        String skillName = "Tackle";
+        skillName[0] = "Tackle";
         skillPower[0] = 1;
         skillAgility[0] = 1;
         skillSpeed[0] = 1;
         Button defaultSkill = (Button) findViewById(R.id.skill0);
-        setButtonText(skillName, skillPower[0], skillAgility[0], skillSpeed[0], defaultSkill);
+        setButtonText(skillName[0], skillPower[0], skillAgility[0], skillSpeed[0], defaultSkill);
     }
 
     private boolean readSkillJson(Button skillButton, int skill, int ind){

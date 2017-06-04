@@ -14,7 +14,7 @@ public class Pet extends Monster {
     private int discipline;
     private int careMistakes;
     private int age;
-    private int[] skills = new int[2];
+    private int[] skills = new int[3];
     private boolean isDirty;
     private boolean isTired;
     private boolean isSick;
