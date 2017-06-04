@@ -6,10 +6,163 @@
     android:layout_height="match_parent"
     tools:context="edu.neumont.pro200.vpet.Battle">
 
-    <ImageView
-        android:id="@+id/petSprite"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        tools:layout_editor_absoluteX="53dp"
-        tools:layout_editor_absoluteY="252dp" />
+    <LinearLayout
+        android:id="@+id/Welcome"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="1"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <TextView
+            android:id="@+id/WelcomeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Welcome to the Battle Arena!"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/WelcomeSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Deplete the enemy's HP in order to win!"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="133dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_weight="0.02"
+            android:elevation="0dp"
+            android:onClick="startGame"
+            android:text="START"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/GameMenu"
+        android:layout_width="368dp"
+        android:layout_height="551dp"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <LinearLayout
+            android:id="@+id/skillsList"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="84dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/skill0"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="11dp"
+                android:layout_weight="1"
+                android:text="None" />
+
+            <Button
+                android:id="@+id/skill1"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="11dp"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="None" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/skillList2"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/skill2"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="11dp"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="None" />
+
+            <Button
+                android:id="@+id/skill3"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="11dp"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="None" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/battleField"
+            android:layout_width="match_parent"
+            android:layout_height="1000dp">
+
+            <ImageView
+                android:id="@+id/enemySprite"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignLeft="@+id/petSprite"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/petSprite"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/playerHP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/petSprite"
+                android:layout_toEndOf="@+id/petSprite"
+                android:layout_toRightOf="@+id/petSprite" />
+
+            <TextView
+                android:id="@+id/enemyHP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/enemySprite"
+                android:layout_toLeftOf="@+id/enemySprite"
+                android:layout_toStartOf="@+id/enemySprite" />
+
+            <ImageView
+                android:id="@+id/petSprite"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="200dp"
+                android:layout_weight="1" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

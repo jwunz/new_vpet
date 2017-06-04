@@ -10,10 +10,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.test.PerformanceTestCase;
-import android.util.JsonReader;
-import android.util.JsonWriter;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -26,21 +22,15 @@ import android.widget.ToggleButton;
 
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.util.Random;
 
 public class VPet extends AppCompatActivity implements Serializable {
     private static final boolean AUTO_HIDE = false;
     private Pet pet;
-    private int money = 0;
+    private int money = 1000;
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
@@ -174,8 +164,9 @@ public class VPet extends AppCompatActivity implements Serializable {
         String speedS = "Speed: " + pet.getSpeed();
         String weightS = "Weight: " + pet.getWeight();
         String careS = "Care Mistakes: " + pet.getCareMistakes();
+        String disciplineS = "Discipline: " + pet.getDiscipline();
         String moneyS = "Money: " + money;
-        tView.setText(happyS + "\n" + hungerS + "\n" + ageS + "\n" + powerS + "\n" + agilityS + "\n" + speedS + "\n" + weightS + "\n" + careS + "\n" + moneyS);
+        tView.setText(happyS + "\n" + hungerS + "\n" + ageS + "\n" + powerS + "\n" + agilityS + "\n" + speedS + "\n" + weightS + "\n" + careS + "\n" + disciplineS + "\n" + moneyS);
         tView.setVisibility(View.VISIBLE);
     }
 
@@ -414,7 +405,7 @@ public class VPet extends AppCompatActivity implements Serializable {
     private boolean readSkillJson(Button skill){
         try{
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset("skills.json"));
-            int randomIndexNum = r.nextInt(jsonObject.length()-1);
+            int randomIndexNum = r.nextInt(1+(jsonObject.length()-2));
             String randomIndex = Integer.toString(randomIndexNum);
             jsonObject = jsonObject.getJSONObject(randomIndex);
 
@@ -434,13 +425,17 @@ public class VPet extends AppCompatActivity implements Serializable {
 
     public void addSkillToList(View view){
         Button button = (Button) view;
-        int index = button.getText().charAt(1);
+        int index = Character.getNumericValue(button.getText().charAt(1));
         int price = Integer.parseInt(button.getText().toString().substring(button.getText().toString().indexOf('$')+1));
         for(int i = 0; i < pet.getSkills().length; i++){
-            if((Integer)pet.getSkills()[i] != null){
+            if((Integer)pet.getSkills()[i] == 0 && (money - price > 0)){
                 pet.getSkills()[i] = index;
                 money -= price;
                 break;
+            }else{
+                if(money - price < 0){
+                    Toast.makeText(view.getContext(), " You do not have enough money for that! ", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
@@ -467,6 +462,8 @@ public class VPet extends AppCompatActivity implements Serializable {
         findViewById(R.id.soap_button).setEnabled(bool);
         findViewById(R.id.food_button).setEnabled(bool);
         findViewById(R.id.stats_button).setEnabled(bool);
+        findViewById(R.id.game_menu).setEnabled(bool);
+        findViewById(R.id.hand_menu).setEnabled(bool);
     }
 
     public String loadJSONFromAsset(String file) {
@@ -586,13 +583,12 @@ public class VPet extends AppCompatActivity implements Serializable {
         }
     }
 
-    public void gameButtonHit(int score) {
-            int statToIncrement = r.nextInt(3);
+    public void gameButtonHit(int score, int random) {
             pet.setHappiness(pet.getHappiness()+1);
             if(pet.getHappiness() > 1){
                 pet.setSad(false, -1);
             }
-            switch (statToIncrement) {
+            switch (random) {
                 case 0:
                     pet.setPower(pet.getPower() + score);
                     break;
@@ -609,7 +605,9 @@ public class VPet extends AppCompatActivity implements Serializable {
     public void StartStarCatcher (View view) {
         if(pet.getHappiness()<5){
             Intent intent = new Intent(this, StarCatcher.class);
-            intent.putExtra("petSprite", pet.getSprite());
+            Bundle extras = new Bundle();
+            extras.putInt("petSprite", pet.getSprite());
+            intent.putExtras(extras);
             startActivityForResult(intent, 1);
         }else{
             Toast.makeText(view.getContext(), " Pet is at maximum happiness! ", Toast.LENGTH_SHORT).show();
@@ -621,7 +619,8 @@ public class VPet extends AppCompatActivity implements Serializable {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK) {
                 int score = data.getIntExtra("score", 0);
-                gameButtonHit(score);
+                int randomNum = data.getIntExtra("randomNum", 0);
+                gameButtonHit(score, randomNum);
             }
         }
     }
@@ -688,7 +687,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         editor.putInt("happiness", pet.getHappiness());
         editor.putInt("hunger", pet.getHunger());
         editor.putFloat("weight", (float)pet.getWeight());
-        editor.putFloat("discipline", pet.getDiscipline());
+        editor.putInt("discipline", pet.getDiscipline());
         editor.putInt("care_mistakes", pet.getCareMistakes());
         editor.putInt("age", pet.getAge());
         editor.putString("skills", pet.getSkillsString());
@@ -701,6 +700,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         editor.putInt("agility", pet.getAgility());
         editor.putInt("speed", pet.getSpeed());
         editor.putString("evolutions", pet.getEvolutionsString());
+        editor.putInt("money", money);
         editor.apply();
     }
 
@@ -709,7 +709,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         int happiness = petSave.getInt("happiness", -1);
         int hunger = petSave.getInt("hunger", -1);
         double weight = petSave.getFloat("weight", -1);
-        float discipline = petSave.getFloat("discipline", -1);
+        int discipline = petSave.getInt("discipline", -1);
         int careMistakes = petSave.getInt("care_mistakes", -1);
         int age = petSave.getInt("age", -1);
         String[] skillsStr = loadArray(petSave.getString("skills", ""));
@@ -721,6 +721,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         int power = petSave.getInt("power", -1);
         int agility = petSave.getInt("agility", -1);
         int speed = petSave.getInt("speed", -1);
+        int savedMoney = petSave.getInt("money", -1);
         String[] evolutions = loadArray(petSave.getString("evolutions", ""));
 
         int[] skills = new int[3];
@@ -731,7 +732,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         }
 
         pet = new Pet(spritePath, power, speed, agility, evolutions, happiness, hunger, weight, discipline, careMistakes, age, skills, isDirty, isTired, isSick, isInjured);
-
+        money = savedMoney;
         return !(happiness == -1 || hunger == -1 || weight == -1 || discipline == -1 || careMistakes == -1 || age == -1 || spritePath == -1 || power == -1 || agility == -1 || speed == -1 );
     }
 

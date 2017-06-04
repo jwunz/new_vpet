@@ -21,7 +21,7 @@ public class Pet extends Monster {
     private int happiness = 3;
     private int hunger = 3;
     private double weight = 12;
-    private float discipline;
+    private int discipline;
     private int careMistakes;
     private int age;
     private int[] skills = new int[2];
@@ -106,7 +106,7 @@ public class Pet extends Monster {
 
     private int lastInjuredTime = 0;
 
-    public Pet(int sprite, int power, int speed, int agility, String[] evolutions, int happiness, int hunger, double weight, float discipline, int careMistakes, int age, int[] skills, boolean isDirty, boolean isTired, boolean isSick, boolean isInjured) {
+    public Pet(int sprite, int power, int speed, int agility, String[] evolutions, int happiness, int hunger, double weight, int discipline, int careMistakes, int age, int[] skills, boolean isDirty, boolean isTired, boolean isSick, boolean isInjured) {
         super(sprite, power, speed, agility, evolutions);
         this.happiness = happiness;
         this.hunger = hunger;
@@ -148,11 +148,11 @@ public class Pet extends Monster {
         return true;
     }
 
-    public float getDiscipline() {
+    public int getDiscipline() {
         return discipline;
     }
 
-    public boolean setDiscipline(float discipline) {
+    public boolean setDiscipline(int discipline) {
         this.discipline = discipline;
         return true;
     }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,16 +18,34 @@ public class StarCatcher extends AppCompatActivity implements View.OnTouchListen
     private ImageView star;
     private int starCount = 0;
     private int score = 0;
+    private String statToIncrease = "";
+    private int randomNum = 0;
+    private Random random = new Random();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_star_catcher);
         Intent intent = getIntent();
-        int petSprite = intent.getIntExtra("petSprite", R.drawable.notfound);
+        Bundle extras = intent.getExtras();
+        int petSprite = extras.getInt("petSprite", R.drawable.notfound);
+        statToIncrease = extras.getString("increasedStat");
         findViewById(R.id.petSprite).setBackgroundResource(petSprite);
 
         final View touchView = findViewById(R.id.petSprite);
         touchView.setOnTouchListener(this);
+
+        randomNum = random.nextInt(3);
+        switch (randomNum) {
+            case 0:
+                statToIncrease = "Power";
+                break;
+            case 1:
+                statToIncrease = "Speed";
+                break;
+            case 2:
+                statToIncrease = "Agility";
+                break;
+        }
     }
 
     public boolean onTouch(View v, MotionEvent event){
@@ -60,15 +79,22 @@ public class StarCatcher extends AppCompatActivity implements View.OnTouchListen
     }
 
     private void finishScreen(){
-        //display score
-        //display next button
-        //next button should link to the following method:
-        returnResult();
+        TextView details = (TextView) findViewById(R.id.finishedDetails);
+        RelativeLayout gameLayout = (RelativeLayout) findViewById(R.id.GameMenu);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.finishScreen);
+        gameLayout.setVisibility(View.GONE);
+        layout.setVisibility(View.VISIBLE);
+        String finishText = "You're pet's " + statToIncrease + " stat has been increased by " + score + "!" ;
+        details.setText(finishText);
+        //returnResult();
     }
 
-    private void returnResult(){
+    public void returnResult(View view){
+        Bundle extras = new Bundle();
         Intent intent = new Intent();
-        intent.putExtra("score", score);
+        extras.putInt("score", score);
+        extras.putInt("randomNum", randomNum);
+        intent.putExtras(extras);
         setResult(RESULT_OK, intent);
         finish();
     }
