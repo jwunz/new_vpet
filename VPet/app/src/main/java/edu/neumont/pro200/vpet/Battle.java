@@ -197,12 +197,32 @@ public class Battle extends AppCompatActivity {
         int[] order;
         if (turnSpeed > enemySpeed) {
             order = damageCalculation(currentPlayerHP, currentEnemyHP, turnPower, turnAgility, enemyPower, enemyAgility);
-            currentPlayerHP = order[0];
-            currentEnemyHP = order[1];
+            if(currentEnemyHP == order[1]){
+                //insert 'Your pet has used #skillNameInput. It did #turnPower damage!
+            }else{
+                currentEnemyHP = order[1];
+                //insert 'The opposing pet dodged your attack!'
+            }
+            if(currentPlayerHP == order[0]){
+                //insert 'Your pet has Dodged!'
+            }else{
+                currentPlayerHP = order[0];
+                //insert 'The opponent tackles your pet. Your pet took #enemyPower damage.'
+            }
         }else{
             order = damageCalculation(currentEnemyHP, currentPlayerHP, enemyPower, enemyAgility, turnPower, turnAgility);
-            currentPlayerHP = order[1];
-            currentEnemyHP = order[0];
+            if(currentPlayerHP == order[1]){
+                //insert 'Your pet has Dodged!'
+            }else{
+                currentPlayerHP = order[1];
+                //insert 'The opponent tackles your pet. Your pet took #enemyPower damage.'
+            }
+            if(currentEnemyHP == order[0]){
+                //insert 'Your pet has used #skillNameInput. It did #turnPower damage!
+            }else{
+                currentEnemyHP = order[0];
+                //insert 'The opposing pet dodged your attack!'
+            }
         }
         updateHealth();
     }
