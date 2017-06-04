@@ -218,9 +218,11 @@ public class Battle extends AppCompatActivity {
             }
         } else {
             theirHP = 0;
+            finishScreen();
         }
         if(yourHP < 0){
             yourHP = 0;
+            finishScreen();
         }
         return new int[]{yourHP, theirHP};
     }
@@ -236,6 +238,16 @@ public class Battle extends AppCompatActivity {
         intent.putExtra("earnings", enemyHPTotal/3);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private void finishScreen(){
+        TextView details = (TextView) findViewById(R.id.finishedDetails);
+        findViewById(R.id.skillsList).setVisibility(View.GONE);
+        findViewById(R.id.skillList2).setVisibility(View.GONE);
+        findViewById(R.id.finishScreen).setVisibility(View.VISIBLE);
+        String finishText = "";
+        details.setText(finishText);
+        //returnResult();
     }
 }
 
