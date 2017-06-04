@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 
 public class Battle extends AppCompatActivity {
 
@@ -22,6 +23,20 @@ public class Battle extends AppCompatActivity {
     int currentPlayerHP = playerHPTotal;
     int currentEnemyHP = enemyHPTotal;
 
+
+    private int petPower;
+    private int petAgility;
+    private int petSpeed;
+    private int petHP;
+
+    private int enemyPower;
+    private int enemyAgility;
+    private int enemySpeed;
+    private int enemyHP;
+
+    private final String[] enemyNames = {"1Aquan1", "1Forest1", "1Desert1", "2Bad1", "2Bad2", "2Bad3",
+            "2Aquan1", "2Aquan2", "2Aquan3", "2Forest1", "2Forest2", "2Forest3", "2Desert1", "2Desert2", "2Desert3"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,14 +45,40 @@ public class Battle extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         int petSprite = extras.getInt("petSprite", R.drawable.notfound);
         findViewById(R.id.petSprite).setBackgroundResource(petSprite);
+        petPower = extras.getInt("power", 0);
+        petAgility = extras.getInt("agility", 0);
+        petSpeed = extras.getInt("speed", 0);
+        petHP = petPower + petAgility + petSpeed;
         updateSkills(extras);
         initiateHP(extras);
         updateHealth();
+        readEnemyJSON();
     }
 
     public void startGame (View view) {
         findViewById(R.id.Welcome).setVisibility(View.GONE);
         findViewById(R.id.GameMenu).setVisibility(View.VISIBLE);
+    }
+
+    public boolean readEnemyJSON(){
+
+        try{
+            String JSON = loadJSONFromAsset("pet.json");
+            JSONObject jsonObject = new JSONObject(JSON);
+            Random random = new Random();
+            int index = random.nextInt(enemyNames.length);
+            String randomEnemyName = enemyNames[index];
+            jsonObject = jsonObject.getJSONObject(randomEnemyName);
+            JSONObject statsObject = jsonObject.getJSONObject("stats");
+            findViewById(R.id.enemySprite).setBackgroundResource(jsonObject.getInt("spritePath"));
+            enemyPower = statsObject.getInt("power");
+            enemyAgility = statsObject.getInt("agility");
+            enemySpeed = statsObject.getInt("speed");
+            enemyHP = enemyPower + enemyAgility + enemySpeed;
+        }catch(Exception e){
+            return false;
+        }
+        return true;
     }
 
     private void gameOver() {

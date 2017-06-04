@@ -5,7 +5,7 @@
 			"speed": 30,
 			"agility": 38
 		},
-		"spritePath": 2130837597, //done
+		"spritePath": 2130837600, //done
 		"evolutions": ["2Aquan1", "2Aquan2", "2Aquan3", "2Bad1"]
 	},
 	"1Forest1": {
@@ -14,7 +14,7 @@
 			"speed": 32,
 			"agility": 38
 		},
-		"spritePath": 2130837599, //done
+		"spritePath": 2130837601, //done
 		"evolutions": ["2Forest1", "2Forest2", "2Forest3", "2Bad2"]
 	},
 	"1Desert1": {
@@ -23,7 +23,7 @@
 			"speed": 30,
 			"agility": 32
 		},
-		"spritePath": 2130837598, //done
+		"spritePath": 2130837602, //done
 		"evolutions": ["2Desert1", "2Desert2", "2Desert3", "2Bad3"]
 	},
 
