@@ -67,7 +67,7 @@
 
             <Button
                 android:id="@+id/skill0"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
@@ -78,7 +78,7 @@
 
             <Button
                 android:id="@+id/skill1"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
@@ -99,8 +99,8 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/skill3"
-                android:layout_width="wrap_content"
+                android:id="@+id/skill2"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
@@ -110,8 +110,8 @@
                 android:text="Button" />
 
             <Button
-                android:id="@+id/skill4"
-                android:layout_width="wrap_content"
+                android:id="@+id/skill3"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"

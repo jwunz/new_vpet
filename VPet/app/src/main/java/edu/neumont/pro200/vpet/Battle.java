@@ -14,6 +14,9 @@ import java.io.InputStream;
 
 public class Battle extends AppCompatActivity {
 
+    private int[] skillPower = new int[3];
+    private int[] skillAgility = new int[3];
+    private int[] skillSpeed = new int[3];
     int playerHPTotal = 0;
     int enemyHPTotal = 0;
     int currentPlayerHP = playerHPTotal;
@@ -54,15 +57,31 @@ public class Battle extends AppCompatActivity {
         for(int i = 0; i < skills.length; i++){
             try{
                 int[] skillList = extras.getIntArray("skills");
+        fillDefaultAttack();
+        int[] skillList = extras.getIntArray("skills");
+            for(int i = 0; i < skillList.length; i++){
                 int skill = skillList[i];
                 readSkillJson(skills[i], skill);
             }catch(Exception e){
 
+                if(skill!=0){
+                    readSkillJson(skills[i], skill, i);
+                }
             }
         }
     }
 
     private boolean readSkillJson(Button skillButton, int skill){
+    private void fillDefaultAttack(){
+        String skillName = "Tackle";
+        skillPower[0] = 1;
+        skillAgility[0] = 1;
+        skillSpeed[0] = 1;
+        Button defaultSkill = (Button) findViewById(R.id.skill0);
+        setButtonText(skillName, skillPower[0], skillAgility[0], skillSpeed[0], defaultSkill);
+    }
+
+    private boolean readSkillJson(Button skillButton, int skill, int ind){
         try{
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset("skills.json"));
             String index = Integer.toString(skill);
@@ -72,13 +91,22 @@ public class Battle extends AppCompatActivity {
             int skillPower = jsonObject.getInt("power");
             int skillAgility = jsonObject.getInt("agility");
             int skillSpeed = jsonObject.getInt("speed");
+            skillPower[ind] = jsonObject.getInt("power");
+            skillAgility[ind] = jsonObject.getInt("agility");
+            skillSpeed[ind] = jsonObject.getInt("speed");
 
             String skillBuilder = skillName + "\n" + "Po: " + skillPower + "/Ag: " + skillAgility + "/Sp: " + skillSpeed;
             skillButton.setText(skillBuilder);
+            setButtonText(skillName, skillPower[ind], skillAgility[ind], skillSpeed[ind], skillButton);
         }catch (Exception e){
             return false;
         }
         return true;
+    }
+
+    private void setButtonText(String name, int pow, int agi, int spe, Button skillButton){
+        String skillBuilder = name + "\n" + "Pow:" + pow + " | Agi:" + agi + " | Spe:" + spe;
+        skillButton.setText(skillBuilder);
     }
 
     public String loadJSONFromAsset(String file) {
