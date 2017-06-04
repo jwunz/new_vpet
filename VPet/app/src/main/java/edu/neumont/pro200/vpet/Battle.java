@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -12,6 +13,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Battle extends AppCompatActivity {
+
+    int playerHPTotal = 0;
+    int enemyHPTotal = 0;
+    int currentPlayerHP = playerHPTotal;
+    int currentEnemyHP = enemyHPTotal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,8 @@ public class Battle extends AppCompatActivity {
         int petSprite = extras.getInt("petSprite", R.drawable.notfound);
         findViewById(R.id.petSprite).setBackgroundResource(petSprite);
         updateSkills(extras);
+        initiateHP(extras);
+        updateHealth();
     }
 
     public void startGame (View view) {
@@ -87,5 +95,19 @@ public class Battle extends AppCompatActivity {
             return null;
         }
         return json;
+    }
+
+    public void updateHealth() {
+        TextView playerHPText = (TextView) findViewById(R.id.playerHP);
+        TextView enemyHPText = (TextView) findViewById(R.id.enemyHP);
+        playerHPText.setText(currentPlayerHP + " / " + playerHPTotal);
+        enemyHPText.setText(currentEnemyHP + " / " + enemyHPTotal);
+    }
+
+    public void initiateHP (Bundle b) {
+        playerHPTotal = (b.getInt("power", 0) + b.getInt("agility", 0) + (b.getInt("speed", 0)));
+        enemyHPTotal = 0; //replace with actual math
+
+
     }
 }
