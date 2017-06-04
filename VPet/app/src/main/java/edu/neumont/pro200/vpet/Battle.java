@@ -97,6 +97,7 @@ public class Battle extends AppCompatActivity {
             for(int i = 0; i < skillList.length; i++){
                 int skill = skillList[i];
                 if(skill!=0){
+                    skills[i].setEnabled(true);
                     readSkillJson(skills[i], skill, i);
                 }
         }
