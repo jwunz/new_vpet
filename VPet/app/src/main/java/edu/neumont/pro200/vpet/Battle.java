@@ -20,19 +20,17 @@ public class Battle extends AppCompatActivity {
     private int[] skillSpeed = new int[3];
     int playerHPTotal = 0;
     int enemyHPTotal = 0;
-    int currentPlayerHP = playerHPTotal;
-    int currentEnemyHP = enemyHPTotal;
+    int currentPlayerHP = 0;
+    int currentEnemyHP = 0;
 
 
     private int petPower;
     private int petAgility;
     private int petSpeed;
-    private int petHP;
 
     private int enemyPower;
     private int enemyAgility;
     private int enemySpeed;
-    private int enemyHP;
 
     private final String[] enemyNames = {"1Aquan1", "1Forest1", "1Desert1", "2Bad1", "2Bad2", "2Bad3",
             "2Aquan1", "2Aquan2", "2Aquan3", "2Forest1", "2Forest2", "2Forest3", "2Desert1", "2Desert2", "2Desert3"};
@@ -48,11 +46,10 @@ public class Battle extends AppCompatActivity {
         petPower = extras.getInt("power", 0);
         petAgility = extras.getInt("agility", 0);
         petSpeed = extras.getInt("speed", 0);
-        petHP = petPower + petAgility + petSpeed;
         updateSkills(extras);
+        readEnemyJSON();
         initiateHP(extras);
         updateHealth();
-        readEnemyJSON();
     }
 
     public void startGame (View view) {
@@ -74,7 +71,7 @@ public class Battle extends AppCompatActivity {
             enemyPower = statsObject.getInt("power");
             enemyAgility = statsObject.getInt("agility");
             enemySpeed = statsObject.getInt("speed");
-            enemyHP = enemyPower + enemyAgility + enemySpeed;
+            enemyHPTotal = enemyPower + enemyAgility + enemySpeed;
         }catch(Exception e){
             return false;
         }
@@ -95,24 +92,16 @@ public class Battle extends AppCompatActivity {
 
     private void updateSkills(Bundle extras){
         Button[] skills = new Button[]{(Button)findViewById(R.id.skill1), (Button)findViewById(R.id.skill2), (Button)findViewById(R.id.skill3)};
-        for(int i = 0; i < skills.length; i++){
-            try{
-                int[] skillList = extras.getIntArray("skills");
         fillDefaultAttack();
         int[] skillList = extras.getIntArray("skills");
             for(int i = 0; i < skillList.length; i++){
                 int skill = skillList[i];
-                readSkillJson(skills[i], skill);
-            }catch(Exception e){
-
                 if(skill!=0){
                     readSkillJson(skills[i], skill, i);
                 }
-            }
         }
     }
 
-    private boolean readSkillJson(Button skillButton, int skill){
     private void fillDefaultAttack(){
         String skillName = "Tackle";
         skillPower[0] = 1;
@@ -129,15 +118,10 @@ public class Battle extends AppCompatActivity {
             jsonObject = jsonObject.getJSONObject(index);
 
             String skillName = jsonObject.getString("name");
-            int skillPower = jsonObject.getInt("power");
-            int skillAgility = jsonObject.getInt("agility");
-            int skillSpeed = jsonObject.getInt("speed");
             skillPower[ind] = jsonObject.getInt("power");
             skillAgility[ind] = jsonObject.getInt("agility");
             skillSpeed[ind] = jsonObject.getInt("speed");
 
-            String skillBuilder = skillName + "\n" + "Po: " + skillPower + "/Ag: " + skillAgility + "/Sp: " + skillSpeed;
-            skillButton.setText(skillBuilder);
             setButtonText(skillName, skillPower[ind], skillAgility[ind], skillSpeed[ind], skillButton);
         }catch (Exception e){
             return false;
@@ -175,7 +159,8 @@ public class Battle extends AppCompatActivity {
 
     public void initiateHP (Bundle b) {
         playerHPTotal = (b.getInt("power", 0) + b.getInt("agility", 0) + (b.getInt("speed", 0)));
-        enemyHPTotal = 0; //replace with actual math
+        currentPlayerHP = playerHPTotal;
+        currentEnemyHP = enemyHPTotal;
 
 
     }
