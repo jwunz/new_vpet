@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,13 +16,17 @@ import java.util.Random;
 
 public class Battle extends AppCompatActivity {
 
+    private String[] skillName = new String[3];
     private int[] skillPower = new int[3];
     private int[] skillAgility = new int[3];
     private int[] skillSpeed = new int[3];
-    int playerHPTotal = 0;
-    int enemyHPTotal = 0;
-    int currentPlayerHP = 0;
-    int currentEnemyHP = 0;
+    private int earnings = 0;
+    private int playerHPTotal = 0;
+    private int enemyHPTotal = 0;
+    private int currentPlayerHP = 0;
+    private int currentEnemyHP = 0;
+    private Random r = new Random();
+    private String message = "";
 
 
     private int petPower;
@@ -98,7 +103,7 @@ public class Battle extends AppCompatActivity {
                 int skill = skillList[i];
                 if(skill!=0){
                     skills[i].setEnabled(true);
-                    readSkillJson(skills[i], skill, i);
+                    readSkillJson(skills[i], skill, i+1);
                 }
         }
     }
@@ -118,12 +123,12 @@ public class Battle extends AppCompatActivity {
             String index = Integer.toString(skill);
             jsonObject = jsonObject.getJSONObject(index);
 
-            String skillName = jsonObject.getString("name");
+            skillName[ind] = jsonObject.getString("name");
             skillPower[ind] = jsonObject.getInt("power");
             skillAgility[ind] = jsonObject.getInt("agility");
             skillSpeed[ind] = jsonObject.getInt("speed");
 
-            setButtonText(skillName, skillPower[ind], skillAgility[ind], skillSpeed[ind], skillButton);
+            setButtonText(skillName[ind], skillPower[ind], skillAgility[ind], skillSpeed[ind], skillButton);
         }catch (Exception e){
             return false;
         }
@@ -158,11 +163,131 @@ public class Battle extends AppCompatActivity {
         enemyHPText.setText(currentEnemyHP + " / " + enemyHPTotal);
     }
 
+    public void TakeDamageStep(View view) {
+        int currentButton = view.getId();
+        int turnSpeed = 0;
+        int turnAgility = 0;
+        int turnPower = 0;
+        String skillNameInput ="";
+
+
+        switch (currentButton) {
+            case (R.id.skill0):
+                turnSpeed = petSpeed + skillSpeed[0];
+                turnAgility = petAgility + skillAgility[0];
+                turnPower = petPower + skillPower[0];
+                skillNameInput = "Tackle";
+                break;
+            case (R.id.skill1):
+                turnSpeed = petSpeed + skillSpeed[1];
+                turnAgility = petAgility + skillAgility[1];
+                turnPower = petPower + skillPower[1];
+                skillNameInput = skillName[1];
+                break;
+            case (R.id.skill2):
+                turnSpeed = petSpeed + skillSpeed[2];
+                turnAgility = petAgility + skillAgility[2];
+                turnPower = petPower + skillPower[2];
+                skillNameInput = skillName[2];
+                break;
+            case (R.id.skill3):
+                turnSpeed = petSpeed + skillSpeed[3];
+                turnAgility = petAgility + skillAgility[3];
+                turnPower = petPower + skillPower[3];
+                skillNameInput = skillName[3];
+                break;
+        }
+        int[] order;
+        if (turnSpeed > enemySpeed) {
+            order = damageCalculation(currentPlayerHP, currentEnemyHP, turnPower, turnAgility, enemyPower, enemyAgility);
+            if(currentEnemyHP == order[1]){
+                message += "\nThe enemy pet dodged your attack!";
+            }else{
+                currentEnemyHP = order[1];
+                message += "\nYour pet used " + skillNameInput + "." + " It did " + turnPower + " damage!";
+            }
+            if(currentPlayerHP == order[0]){
+                message += "\nYour pet has dodged their attack!";
+            }else{
+                currentPlayerHP = order[0];
+                message += "\nThe opponent attacks! It dealt " + enemyPower + " damage!";
+            }
+        }else{
+            order = damageCalculation(currentEnemyHP, currentPlayerHP, enemyPower, enemyAgility, turnPower, turnAgility);
+            if(currentPlayerHP == order[1]){
+                message += "\nYour pet has dodged their attack!";
+            }else{
+                currentPlayerHP = order[1];
+                message += "\nThe opponent attacks! It dealt " + enemyPower + " damage!";
+            }
+            if(currentEnemyHP == order[0]) {
+                message += "\nThe enemy pet dodged your attack!";
+            }
+            else {
+                currentEnemyHP = order[0];
+                message += "\nYour pet used " + skillNameInput + "." + " It did " + turnPower + " damage!";
+            }
+        }
+        if(currentEnemyHP == 0){
+            finishScreen(true);
+        }else if(currentPlayerHP == 0){
+            finishScreen(false);
+        }
+        updateHealth();
+        updateUI(message);
+    }
+
+    private void updateUI(String comment) {
+        TextView uiComments = (TextView) findViewById(R.id.statusMessages);
+        uiComments.setText(comment);
+        message = "";
+    }
+
+    private int[] damageCalculation(int yourHP, int theirHP, int yourPower, int yourAgility, int theirPower, int theirAgility){
+        int randNum = r.nextInt(100);
+        if (randNum > yourAgility / 3) {
+            theirHP -= yourPower;
+        }
+        if (theirHP > 0) {
+            if (randNum > theirAgility / 3) {
+                yourHP -= theirPower;
+            }
+        } else {
+            theirHP = 0;
+        }
+        if(yourHP < 0){
+            yourHP = 0;
+        }
+        return new int[]{yourHP, theirHP};
+    }
+
     public void initiateHP (Bundle b) {
         playerHPTotal = (b.getInt("power", 0) + b.getInt("agility", 0) + (b.getInt("speed", 0)));
         currentPlayerHP = playerHPTotal;
         currentEnemyHP = enemyHPTotal;
+    }
 
+    public void returnResult(View view){
+        Intent intent = new Intent();
+        intent.putExtra("earnings", earnings);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 
+    private void finishScreen(boolean Victory){
+        TextView details = (TextView) findViewById(R.id.finishedDetails);
+        findViewById(R.id.skillsList).setVisibility(View.GONE);
+        findViewById(R.id.skillList2).setVisibility(View.GONE);
+        findViewById(R.id.finishScreen).setVisibility(View.VISIBLE);
+        String finishText = "";
+        TextView tView = (TextView) findViewById(R.id.finishText);
+        if(Victory){
+            earnings = enemyHPTotal/3;
+            tView.setText("You Won "+ earnings + " dollars.");
+        }else{
+            tView.setText("Aw, you Lost.");
+        }
+        details.setText(finishText);
     }
 }
+
