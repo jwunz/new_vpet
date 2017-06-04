@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +16,7 @@ import java.util.Random;
 
 public class Battle extends AppCompatActivity {
 
+    private String[] skillName = new String[3];
     private int[] skillPower = new int[3];
     private int[] skillAgility = new int[3];
     private int[] skillSpeed = new int[3];
@@ -119,12 +121,12 @@ public class Battle extends AppCompatActivity {
             String index = Integer.toString(skill);
             jsonObject = jsonObject.getJSONObject(index);
 
-            String skillName = jsonObject.getString("name");
+            skillName[ind] = jsonObject.getString("name");
             skillPower[ind] = jsonObject.getInt("power");
             skillAgility[ind] = jsonObject.getInt("agility");
             skillSpeed[ind] = jsonObject.getInt("speed");
 
-            setButtonText(skillName, skillPower[ind], skillAgility[ind], skillSpeed[ind], skillButton);
+            setButtonText(skillName[ind], skillPower[ind], skillAgility[ind], skillSpeed[ind], skillButton);
         }catch (Exception e){
             return false;
         }
@@ -160,60 +162,67 @@ public class Battle extends AppCompatActivity {
     }
 
     public void TakeDamageStep(View view) {
-        int currentButton= view.getId();
+        int currentButton = view.getId();
         int turnSpeed = 0;
         int turnAgility = 0;
         int turnPower = 0;
-        int randNum = r.nextInt(100);
-        String message = "";
+        String skillNameInput;
 
         switch (currentButton) {
             case (R.id.skill0):
                 turnSpeed = petSpeed + skillSpeed[0];
                 turnAgility = petAgility + skillAgility[0];
                 turnPower = petPower + skillPower[0];
+                skillNameInput = "Tackle";
                 break;
             case (R.id.skill1):
                 turnSpeed = petSpeed + skillSpeed[1];
                 turnAgility = petAgility + skillAgility[1];
                 turnPower = petPower + skillPower[1];
+                skillNameInput = skillName[1];
                 break;
             case (R.id.skill2):
                 turnSpeed = petSpeed + skillSpeed[2];
                 turnAgility = petAgility + skillAgility[2];
                 turnPower = petPower + skillPower[2];
+                skillNameInput = skillName[2];
                 break;
             case (R.id.skill3):
                 turnSpeed = petSpeed + skillSpeed[3];
                 turnAgility = petAgility + skillAgility[3];
                 turnPower = petPower + skillPower[3];
+                skillNameInput = skillName[3];
                 break;
         }
-
+        int[] order;
         if (turnSpeed > enemySpeed) {
-            if (randNum < turnAgility/3) {
-                currentEnemyHP -= turnPower;
-                if (currentPlayerHP > 0) {
-                    currentPlayerHP -= enemyPower;
-                }
-                else {
-                    currentPlayerHP = 0;
-                }
-                updateHealth();
-            }
+            order = damageCalculation(currentPlayerHP, currentEnemyHP, turnPower, turnAgility, enemyPower, enemyAgility);
+            currentPlayerHP = order[0];
+            currentEnemyHP = order[1];
+        }else{
+            order = damageCalculation(currentEnemyHP, currentPlayerHP, enemyPower, enemyAgility, turnPower, turnAgility);
+            currentPlayerHP = order[1];
+            currentEnemyHP = order[0];
         }
-        else {
-            if (randNum < enemyAgility/3) {
-                currentPlayerHP -= enemyPower;
-                if (currentEnemyHP > 0) {
-                    currentEnemyHP -= turnPower;
-                }
-                else {
-                    currentEnemyHP = 0;
-                }
-                updateHealth();
-            }
+        updateHealth();
+    }
+
+    private int[] damageCalculation(int yourHP, int theirHP, int yourPower, int yourAgility, int theirPower, int theirAgility){
+        int randNum = r.nextInt(100);
+        if (randNum > yourAgility / 3) {
+            theirHP -= yourPower;
         }
+        if (theirHP > 0) {
+            if (randNum > theirAgility / 3) {
+                yourHP -= theirPower;
+            }
+        } else {
+            theirHP = 0;
+        }
+        if(yourHP < 0){
+            yourHP = 0;
+        }
+        return new int[]{yourHP, theirHP};
     }
 
     public void initiateHP (Bundle b) {
