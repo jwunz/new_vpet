@@ -84,7 +84,7 @@ public class StarCatcher extends AppCompatActivity implements View.OnTouchListen
         LinearLayout layout = (LinearLayout) findViewById(R.id.finishScreen);
         gameLayout.setVisibility(View.GONE);
         layout.setVisibility(View.VISIBLE);
-        String finishText = "You're pet's " + statToIncrease + " stat has been increased by " + score + "!" ;
+        String finishText = "Your pet's " + statToIncrease + " stat has been increased by " + score + "!" ;
         details.setText(finishText);
         //returnResult();
     }
