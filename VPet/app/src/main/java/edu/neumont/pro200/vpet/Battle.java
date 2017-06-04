@@ -20,12 +20,13 @@ public class Battle extends AppCompatActivity {
     private int[] skillPower = new int[3];
     private int[] skillAgility = new int[3];
     private int[] skillSpeed = new int[3];
-    int playerHPTotal = 0;
-    int enemyHPTotal = 0;
-    int currentPlayerHP = 0;
-    int currentEnemyHP = 0;
-    Random r = new Random();
-    String message = "";
+    private int earnings = 0;
+    private int playerHPTotal = 0;
+    private int enemyHPTotal = 0;
+    private int currentPlayerHP = 0;
+    private int currentEnemyHP = 0;
+    private Random r = new Random();
+    private String message = "";
 
 
     private int petPower;
@@ -200,40 +201,37 @@ public class Battle extends AppCompatActivity {
         if (turnSpeed > enemySpeed) {
             order = damageCalculation(currentPlayerHP, currentEnemyHP, turnPower, turnAgility, enemyPower, enemyAgility);
             if(currentEnemyHP == order[1]){
-                //insert 'Your pet has used #skillNameInput. It did #turnPower damage!
-                message += "\nYour pet used " + skillNameInput + "." + " It did " + turnPower + " damage!";
+                message += "\nThe enemy pet dodged your attack!";
             }else{
                 currentEnemyHP = order[1];
-                //insert 'The opposing pet dodged your attack!'
-                message += "\nThe enemy pet dodged your attack!";
+                message += "\nYour pet used " + skillNameInput + "." + " It did " + turnPower + " damage!";
             }
             if(currentPlayerHP == order[0]){
-                //insert 'Your pet has Dodged!'
                 message += "\nYour pet has dodged their attack!";
             }else{
                 currentPlayerHP = order[0];
-                //insert 'The opponent tackles your pet. Your pet took #enemyPower damage.'
                 message += "\nThe opponent attacks! It dealt " + enemyPower + " damage!";
             }
         }else{
             order = damageCalculation(currentEnemyHP, currentPlayerHP, enemyPower, enemyAgility, turnPower, turnAgility);
             if(currentPlayerHP == order[1]){
-                //insert 'Your pet has Dodged!'
                 message += "\nYour pet has dodged their attack!";
             }else{
                 currentPlayerHP = order[1];
-                //insert 'The opponent tackles your pet. Your pet took #enemyPower damage.'
                 message += "\nThe opponent attacks! It dealt " + enemyPower + " damage!";
             }
             if(currentEnemyHP == order[0]) {
-                //insert 'Your pet has used #skillNameInput. It did #turnPower damage!
-                message += "\nYour pet used " + skillNameInput + "." + " It did " + turnPower + " damage!";
+                message += "\nThe enemy pet dodged your attack!";
             }
             else {
                 currentEnemyHP = order[0];
-                //insert 'The opposing pet dodged your attack!'
-                message += "\nThe enemy pet dodged your attack!";
+                message += "\nYour pet used " + skillNameInput + "." + " It did " + turnPower + " damage!";
             }
+        }
+        if(currentEnemyHP == 0){
+            finishScreen(true);
+        }else if(currentPlayerHP == 0){
+            finishScreen(false);
         }
         updateHealth();
         updateUI(message);
@@ -256,11 +254,9 @@ public class Battle extends AppCompatActivity {
             }
         } else {
             theirHP = 0;
-            finishScreen();
         }
         if(yourHP < 0){
             yourHP = 0;
-            finishScreen();
         }
         return new int[]{yourHP, theirHP};
     }
@@ -273,19 +269,25 @@ public class Battle extends AppCompatActivity {
 
     public void returnResult(View view){
         Intent intent = new Intent();
-        intent.putExtra("earnings", enemyHPTotal/3);
+        intent.putExtra("earnings", earnings);
         setResult(RESULT_OK, intent);
         finish();
     }
 
-    private void finishScreen(){
+    private void finishScreen(boolean Victory){
         TextView details = (TextView) findViewById(R.id.finishedDetails);
         findViewById(R.id.skillsList).setVisibility(View.GONE);
         findViewById(R.id.skillList2).setVisibility(View.GONE);
         findViewById(R.id.finishScreen).setVisibility(View.VISIBLE);
         String finishText = "";
+        TextView tView = (TextView) findViewById(R.id.finishText);
+        if(Victory){
+            earnings = enemyHPTotal/3;
+            tView.setText("You Won "+ earnings + " dollars.");
+        }else{
+            tView.setText("Aw, you Lost.");
+        }
         details.setText(finishText);
-        //returnResult();
     }
 }
 
