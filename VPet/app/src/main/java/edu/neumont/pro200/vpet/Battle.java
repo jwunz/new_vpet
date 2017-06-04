@@ -167,6 +167,7 @@ public class Battle extends AppCompatActivity {
         int turnAgility = 0;
         int turnPower = 0;
         String skillNameInput;
+        String message = "";
 
         switch (currentButton) {
             case (R.id.skill0):
