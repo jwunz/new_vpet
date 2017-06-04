@@ -405,7 +405,7 @@ public class VPet extends AppCompatActivity implements Serializable {
     private boolean readSkillJson(Button skill){
         try{
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset("skills.json"));
-            int randomIndexNum = r.nextInt(jsonObject.length()-1);
+            int randomIndexNum = r.nextInt(1+(jsonObject.length()-2));
             String randomIndex = Integer.toString(randomIndexNum);
             jsonObject = jsonObject.getJSONObject(randomIndex);
 
@@ -425,15 +425,17 @@ public class VPet extends AppCompatActivity implements Serializable {
 
     public void addSkillToList(View view){
         Button button = (Button) view;
-        int index = button.getText().charAt(1);
+        int index = Character.getNumericValue(button.getText().charAt(1));
         int price = Integer.parseInt(button.getText().toString().substring(button.getText().toString().indexOf('$')+1));
         for(int i = 0; i < pet.getSkills().length; i++){
-            if((Integer)pet.getSkills()[i] != null && (money - price > 0)){
+            if((Integer)pet.getSkills()[i] == 0 && (money - price > 0)){
                 pet.getSkills()[i] = index;
                 money -= price;
                 break;
             }else{
-                Toast.makeText(view.getContext(), " You do not have enough money for that! ", Toast.LENGTH_SHORT).show();
+                if(money - price < 0){
+                    Toast.makeText(view.getContext(), " You do not have enough money for that! ", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
@@ -460,6 +462,8 @@ public class VPet extends AppCompatActivity implements Serializable {
         findViewById(R.id.soap_button).setEnabled(bool);
         findViewById(R.id.food_button).setEnabled(bool);
         findViewById(R.id.stats_button).setEnabled(bool);
+        findViewById(R.id.game_menu).setEnabled(bool);
+        findViewById(R.id.hand_menu).setEnabled(bool);
     }
 
     public String loadJSONFromAsset(String file) {
