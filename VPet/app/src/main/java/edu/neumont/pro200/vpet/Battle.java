@@ -25,6 +25,7 @@ public class Battle extends AppCompatActivity {
     int currentPlayerHP = 0;
     int currentEnemyHP = 0;
     Random r = new Random();
+    String message = "";
 
 
     private int petPower;
@@ -166,8 +167,8 @@ public class Battle extends AppCompatActivity {
         int turnSpeed = 0;
         int turnAgility = 0;
         int turnPower = 0;
-        String skillNameInput;
-        String message = "";
+        String skillNameInput ="";
+
 
         switch (currentButton) {
             case (R.id.skill0):
@@ -200,32 +201,48 @@ public class Battle extends AppCompatActivity {
             order = damageCalculation(currentPlayerHP, currentEnemyHP, turnPower, turnAgility, enemyPower, enemyAgility);
             if(currentEnemyHP == order[1]){
                 //insert 'Your pet has used #skillNameInput. It did #turnPower damage!
+                message += "\nYour pet used " + skillNameInput + "." + " It did " + turnPower + " damage!";
             }else{
                 currentEnemyHP = order[1];
                 //insert 'The opposing pet dodged your attack!'
+                message += "\nThe enemy pet dodged your attack!";
             }
             if(currentPlayerHP == order[0]){
                 //insert 'Your pet has Dodged!'
+                message += "\nYour pet has dodged their attack!";
             }else{
                 currentPlayerHP = order[0];
                 //insert 'The opponent tackles your pet. Your pet took #enemyPower damage.'
+                message += "\nThe opponent attacks! It dealt " + enemyPower + " damage!";
             }
         }else{
             order = damageCalculation(currentEnemyHP, currentPlayerHP, enemyPower, enemyAgility, turnPower, turnAgility);
             if(currentPlayerHP == order[1]){
                 //insert 'Your pet has Dodged!'
+                message += "\nYour pet has dodged their attack!";
             }else{
                 currentPlayerHP = order[1];
                 //insert 'The opponent tackles your pet. Your pet took #enemyPower damage.'
+                message += "\nThe opponent attacks! It dealt " + enemyPower + " damage!";
             }
-            if(currentEnemyHP == order[0]){
+            if(currentEnemyHP == order[0]) {
                 //insert 'Your pet has used #skillNameInput. It did #turnPower damage!
-            }else{
+                message += "\nYour pet used " + skillNameInput + "." + " It did " + turnPower + " damage!";
+            }
+            else {
                 currentEnemyHP = order[0];
                 //insert 'The opposing pet dodged your attack!'
+                message += "\nThe enemy pet dodged your attack!";
             }
         }
         updateHealth();
+        updateUI(message);
+    }
+
+    private void updateUI(String comment) {
+        TextView uiComments = (TextView) findViewById(R.id.statusMessages);
+        uiComments.setText(comment);
+        message = "";
     }
 
     private int[] damageCalculation(int yourHP, int theirHP, int yourPower, int yourAgility, int theirPower, int theirAgility){
