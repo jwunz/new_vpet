@@ -487,12 +487,14 @@ public class VPet extends AppCompatActivity implements Serializable {
         Button button = (Button) view;
         int index = Character.getNumericValue(button.getText().charAt(1));
         int price = Integer.parseInt(button.getText().toString().substring(button.getText().toString().indexOf('$')+1));
+        String skillName = button.getText().toString().substring(0, button.getText().toString().indexOf("\n"));
         for(int i = 0; i < pet.getSkills().length; i++){
             boolean skillequalzero = (Integer)pet.getSkills()[i] == 0;
             boolean enoughmoney = money-price>=0;
             if(skillequalzero && enoughmoney){
                 pet.getSkills()[i] = index;
                 money -= price;
+                Toast.makeText(view.getContext(), " Your pet has learned " + skillName + "!", Toast.LENGTH_SHORT).show();
                 break;
             }else{
                 if(money - price < 0){

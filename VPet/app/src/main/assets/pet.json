@@ -5,7 +5,7 @@
 			"speed": 30,
 			"agility": 38
 		},
-		"spritePath": 2130837600, //done
+		"spritePath": 2130837601, //done
 		"evolutions": ["2Aquan1", "2Aquan2", "2Aquan3", "2Bad1"]
 	},
 	"1Forest1": {
@@ -14,7 +14,7 @@
 			"speed": 32,
 			"agility": 38
 		},
-		"spritePath": 2130837601, //done
+		"spritePath": 2130837602, //done
 		"evolutions": ["2Forest1", "2Forest2", "2Forest3", "2Bad2"]
 	},
 	"1Desert1": {
@@ -23,7 +23,7 @@
 			"speed": 30,
 			"agility": 32
 		},
-		"spritePath": 2130837602, //done
+		"spritePath": 2130837603, //done
 		"evolutions": ["2Desert1", "2Desert2", "2Desert3", "2Bad3"]
 	},
 
@@ -33,7 +33,7 @@
 			"speed": 40,
 			"agility": 45
 		},
-		"spritePath": 2130837619,
+		"spritePath": 2130837620,
 		"evolutions": ["3Aquan2", "3Bad1"]
 	},
 	"2Aquan2": {
@@ -42,7 +42,7 @@
 			"speed": 45,
 			"agility": 65
 		},
-		"spritePath": 2130837620,
+		"spritePath": 2130837621,
 		"evolutions": ["3Aquan1", "3Bad1"]
 	},
 	"2Aquan3": {
@@ -51,7 +51,7 @@
 			"speed": 65,
 			"agility": 40
 		},
-		"spritePath": 2130837621,
+		"spritePath": 2130837622,
 		"evolutions": ["3Aquan2", "3Bad1"]
 	},
 	"2Bad1": {
@@ -60,7 +60,7 @@
 			"speed": 50,
 			"agility": 48
 		},
-		"spritePath": 2130837622, //done
+		"spritePath": 2130837623, //done
 		"evolutions": ["3Aquan1", "3Bad1"]
 	},
 	"2Forest1": {
@@ -69,7 +69,7 @@
 			"speed": 50,
 			"agility": 45
 		},
-		"spritePath": 2130837628, //done
+		"spritePath": 2130837629, //done
 		"evolutions": ["3Forest1", "3Bad2"]
 	},
 	"2Forest2": {
@@ -78,7 +78,7 @@
 			"speed": 45,
 			"agility": 55
 		},
-		"spritePath": 2130837630, //done
+		"spritePath": 2130837631, //done
 		"evolutions": ["3Forest1", "3Bad2"]
 	},
 	"2Forest3": {
@@ -87,7 +87,7 @@
 			"speed": 55,
 			"agility": 50
 		},
-		"spritePath": 2130837629, //done
+		"spritePath": 2130837630, //done
 		"evolutions": ["3Forest2", "3Bad2"]
 	},
 	"2Bad2": {
@@ -96,7 +96,7 @@
 			"speed": 48,
 			"agility": 52
 		},
-		"spritePath": 2130837624,
+		"spritePath": 2130837625,
 		"evolutions": ["3Forest1", "3Bad2"]
 	},
 	"2Desert1": {
@@ -105,7 +105,7 @@
 			"speed": 50,
 			"agility": 43
 		},
-		"spritePath": 2130837625, //done
+		"spritePath": 2130837626, //done
 		"evolutions": ["3Desert1", "3Bad3"]
 	},
 	"2Desert2": {
@@ -114,7 +114,7 @@
 			"speed": 43,
 			"agility": 57
 		},
-		"spritePath": 2130837626, //done
+		"spritePath": 2130837627, //done
 		"evolutions": ["3Desert1", "3Bad3"]
 	},
 	"2Desert3": {
@@ -123,7 +123,7 @@
 			"speed": 57,
 			"agility": 50
 		},
-		"spritePath": 2130837627, //done
+		"spritePath": 2130837628, //done
 		"evolutions": ["3Desert2", "3Bad3"]
 	},
 	"2Bad3": {
@@ -132,7 +132,7 @@
 			"speed": 52,
 			"agility": 50
 		},
-		"spritePath": 2130837623, //done
+		"spritePath": 2130837624, //done
 		"evolutions": ["3Desert1", "3Bad3"]
 	},
 	"3Aquan1": {
@@ -141,7 +141,7 @@
 			"speed": 62,
 			"agility": 63
 		},
-		"spritePath": 2130837610, //done
+		"spritePath": 2130837611, //done
 		"evolutions": []
 	},
 	"3Aquan2": {
@@ -150,7 +150,7 @@
 			"speed": 63,
 			"agility": 75
 		},
-		"spritePath": 2130837611,  //done
+		"spritePath": 2130837612,  //done
 		"evolutions": []
 	},
 	"3Bad1": {
@@ -159,7 +159,7 @@
 			"speed": 66,
 			"agility": 66
 		},
-		"spritePath": 2130837612, //done
+		"spritePath": 2130837613, //done
 		"evolutions": []
 	},
 	"3Forest1": {
@@ -168,7 +168,7 @@
 			"speed": 63,
 			"agility": 64
 		},
-		"spritePath": 2130837617, //done
+		"spritePath": 2130837618, //done
 		"evolutions": []
 	},
 	"3Forest2": {
@@ -177,7 +177,7 @@
 			"speed": 63,
 			"agility": 73
 		},
-		"spritePath": 2130837618, //done
+		"spritePath": 2130837619, //done
 		"evolutions": []
 	},
 	"3Bad2": {
@@ -186,7 +186,7 @@
 			"speed": 66,
 			"agility": 68
 		},
-		"spritePath": 2130837614, //done
+		"spritePath": 2130837615, //done
 		"evolutions": []
 	},
 	"3Desert1": {
@@ -195,7 +195,7 @@
 			"speed": 66,
 			"agility": 63
 		},
-		"spritePath": 2130837615, //done
+		"spritePath": 2130837616, //done
 		"evolutions": []
 	},
 	"3Desert2": {
@@ -204,7 +204,7 @@
 			"speed": 63,
 			"agility": 71
 		},
-		"spritePath": 2130837616, //done
+		"spritePath": 2130837617, //done
 		"evolutions": []
 	},
 	"3Bad3": {
@@ -213,7 +213,7 @@
 			"speed": 69,
 			"agility": 65
 		},
-		"spritePath": 2130837613, //done
+		"spritePath": 2130837614, //done
 		"evolutions": []
 	}
 }

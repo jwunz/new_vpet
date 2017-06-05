@@ -79,6 +79,11 @@
         android:fitsSystemWindows="true"
         android:visibility="gone">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/bg" />
 
         <RelativeLayout
             android:id="@+id/fullscreen_content_controls"
