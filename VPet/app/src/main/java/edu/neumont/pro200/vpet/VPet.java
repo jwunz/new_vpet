@@ -183,7 +183,6 @@ public class VPet extends AppCompatActivity implements Serializable {
     }
 
     public boolean playSound () {
-        player = MediaPlayer.create(this,R.raw.sound);
         player.start();
         return true;
     }
@@ -576,7 +575,7 @@ public class VPet extends AppCompatActivity implements Serializable {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        player = MediaPlayer.create(this,R.raw.sound);
         setContentView(R.layout.activity_startup_menu);
         ((RadioGroup) findViewById(R.id.menu_group)).setOnCheckedChangeListener(ToggleListener);
         mVisible = true;
