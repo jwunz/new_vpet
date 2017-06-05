@@ -809,7 +809,6 @@ public class VPet extends AppCompatActivity implements Serializable {
         editor.putInt("speed", pet.getSpeed());
         editor.putString("evolutions", pet.getEvolutionsString());
         editor.putInt("money", money);
-        editor.putInt("ticks", ticks);
         editor.apply();
     }
 
@@ -831,7 +830,6 @@ public class VPet extends AppCompatActivity implements Serializable {
         int agility = petSave.getInt("agility", -1);
         int speed = petSave.getInt("speed", -1);
         int savedMoney = petSave.getInt("money", -1);
-        int savedTicks = petSave.getInt("ticks", -1);
         String[] evolutions = loadArray(petSave.getString("evolutions", ""));
 
         int[] skills = new int[3];
@@ -843,7 +841,6 @@ public class VPet extends AppCompatActivity implements Serializable {
 
         pet = new Pet(spritePath, power, speed, agility, evolutions, happiness, hunger, weight, discipline, careMistakes, age, skills, isDirty, isTired, isSick, isInjured);
         money = savedMoney;
-        ticks = savedTicks;
         return !(happiness == -1 || hunger == -1 || weight == -1 || discipline == -1 || careMistakes == -1 || age == -1 || spritePath == -1 || power == -1 || agility == -1 || speed == -1 );
     }
 
