@@ -31,6 +31,7 @@ import java.util.Random;
 
 public class VPet extends AppCompatActivity implements Serializable {
     private static final boolean AUTO_HIDE = false;
+    private MediaPlayer player;
     private Pet pet;
     private final int startMoney = 1000;
     private int money = startMoney;
@@ -133,9 +134,6 @@ public class VPet extends AppCompatActivity implements Serializable {
             pet.setBeep(false, ticks);
             pet.setDiscipline(pet.getDiscipline()+1);
         }else{
-            if(pet.getHappiness() != 0){
-                pet.setHappiness(pet.getHappiness()-1);
-            }
             Toast.makeText(view.getContext(), " Your pet frowns. ", Toast.LENGTH_SHORT).show();
         }
     }
@@ -156,17 +154,19 @@ public class VPet extends AppCompatActivity implements Serializable {
 
     public void IncreaseHungerBar(View view) {
         if (pet.getHunger() < 5) {
-            pet.setIsAnimating(true);
-            findViewById(R.id.meat).setVisibility(View.VISIBLE);
-            toggleAllButtons(false);
             pet.setHunger(pet.getHunger() + 1);
             pet.setWeight(pet.getWeight() + .5);
         }else{
-            Toast.makeText(view.getContext(), " Pet is not currently hungry ", Toast.LENGTH_SHORT).show();
+            pet.setWeight(pet.getWeight() + 3);
+            pet.setCareMistakes(pet.getCareMistakes()+1);
+            Toast.makeText(view.getContext(), " You have overfed your pet. ", Toast.LENGTH_SHORT).show();
         }
         if(pet.getHunger() > 1){
             pet.setHungry(false, -1);
         }
+        pet.setIsAnimating(true);
+        findViewById(R.id.meat).setVisibility(View.VISIBLE);
+        toggleAllButtons(false);
     }
 
     public void changeMenu(View view) {
@@ -182,16 +182,16 @@ public class VPet extends AppCompatActivity implements Serializable {
     }
 
     public boolean playSound () {
-            MediaPlayer player=MediaPlayer.create(this,R.raw.sound);
-            player.start();
-            return true;
+        player = MediaPlayer.create(this,R.raw.sound);
+        player.start();
+        return true;
     }
 
     public void displayStats(View view){
         Button tView = (Button) findViewById(R.id.stats_menu);
         Button rView = (Button)  findViewById(R.id.reset_button);
-        String happyS = "Happiness: " + pet.getHappiness();
-        String hungerS = "Hunger: " + pet.getHunger();
+        String happyS = "Happiness: " + pet.getHappiness() + "/5";
+        String hungerS = "Hunger: " + pet.getHunger() + "/5";
         String ageS = "Age: " + pet.getAge();
         String powerS = "Power: " + pet.getPower();
         String agilityS = "Agility: " + pet.getAgility();
@@ -360,9 +360,6 @@ public class VPet extends AppCompatActivity implements Serializable {
                 pet.setHunger(pet.getHunger() - 1);
                 changed = true;
             }
-            if(pet.getHunger() <= 1){
-                pet.setHungry(true, ticks);
-            }
         }
 
         if (ticks % happyIncrement == 0){
@@ -370,9 +367,14 @@ public class VPet extends AppCompatActivity implements Serializable {
                 pet.setHappiness(pet.getHappiness() - 1);
                 changed = true;
             }
-            if(pet.getHappiness() <= 1){
-                pet.setSad(true, ticks);
-            }
+        }
+
+        if(pet.getHappiness() <= 1){
+            pet.setSad(true, ticks);
+        }
+
+        if(pet.getHunger() <= 1){
+            pet.setHungry(true, ticks);
         }
 
         if (!pet.isSick() && ticks >= pet.getLastSickTime() + sickIncrement) {
@@ -384,13 +386,6 @@ public class VPet extends AppCompatActivity implements Serializable {
                 findViewById(R.id.sickBubble).setVisibility(View.VISIBLE);
                 changed = true;
             }
-        }
-
-        if(ticks >= pet.getLastBeepTime() + (beepIncrement+(pet.getDiscipline()*beepIncrement))){
-            playSound();
-            pet.setBeep(true, ticks);
-            Toast.makeText(findViewById(R.id.game_menu).getContext(), " Your pet is acting up. ", Toast.LENGTH_SHORT).show();
-            changed = true;
         }
 
         return changed;
@@ -506,13 +501,16 @@ public class VPet extends AppCompatActivity implements Serializable {
                     Toast.makeText(view.getContext(), " Your skill list is full! ", Toast.LENGTH_SHORT).show();
                 }
             }
-            //break;
         }
     }
 
     public void checkForAilment() {
         if ((pet.isHungry()) || (pet.isSad()) || (pet.isDirty()) || (pet.isInjured()) || (pet.isTired()) || (pet.isSick())) {
             playSound();
+        }else if(ticks >= pet.getLastBeepTime() + (beepIncrement+(pet.getDiscipline()*beepIncrement))){
+            playSound();
+            pet.setBeep(true, ticks);
+            Toast.makeText(findViewById(R.id.game_menu).getContext(), " Your pet is acting up. ", Toast.LENGTH_SHORT).show();
         }
 
     }
