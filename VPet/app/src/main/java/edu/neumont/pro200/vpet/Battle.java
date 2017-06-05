@@ -233,11 +233,12 @@ public class Battle extends AppCompatActivity {
 
     private int[] damageCalculation(int yourHP, int theirHP, int yourPower, int yourAgility, int theirPower, int theirAgility){
         int randNum = r.nextInt(100);
+        int randNum2 = r.nextInt(100);
         if (randNum > yourAgility / 3) {
             theirHP -= yourPower;
         }
         if (theirHP > 0) {
-            if (randNum > theirAgility / 3) {
+            if (randNum2 > theirAgility / 3) {
                 yourHP -= theirPower;
             }
         } else {
