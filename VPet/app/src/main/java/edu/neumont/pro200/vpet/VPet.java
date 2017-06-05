@@ -437,6 +437,7 @@ public class VPet extends AppCompatActivity implements Serializable {
         findViewById(R.id.sickBubble).setVisibility(View.GONE);
         findViewById(R.id.injuryBubble).setVisibility(View.GONE);
         findViewById(R.id.dirtyBubble).setVisibility(View.GONE);
+        findViewById(R.id.mess).setVisibility(View.GONE);
         ticks = 0; money = startMoney;
         pet.setHappiness(-1);
         pet.setHunger(-1);
