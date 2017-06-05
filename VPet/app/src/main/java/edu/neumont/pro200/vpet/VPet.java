@@ -110,6 +110,7 @@ public class VPet extends AppCompatActivity implements Serializable {
             pet.setTired(false, ticks);
             findViewById(R.id.sleepBubble).setVisibility(View.GONE);
             findViewById(R.id.activity_ui).setBackgroundColor(Color.DKGRAY);
+            findViewById(R.id.bg).setVisibility(View.GONE);
             pet.setIsSleeping(true);
             toggleAllButtons(false);
         }else{
@@ -280,6 +281,7 @@ public class VPet extends AppCompatActivity implements Serializable {
                 findViewById(R.id.activity_ui).setBackgroundColor(Color.WHITE);
                 pet_condition.startAnimation(walkRight);
                 toggleAllButtons(true);
+                findViewById(R.id.bg).setVisibility(View.VISIBLE);
             }
         });
 
