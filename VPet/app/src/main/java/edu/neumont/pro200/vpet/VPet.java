@@ -49,7 +49,7 @@ public class VPet extends AppCompatActivity implements Serializable {
     private final int beepIncrement = 10; //10
     private final int careThreshold = 20; //20
     private final int ageIncrement = 90; //90
-    private final int evolveIncrement = 5; //5;
+    private final int evolveIncrement = 1; //5;
     private final int tickMultiplier = 1; //1;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -509,9 +509,10 @@ public class VPet extends AppCompatActivity implements Serializable {
     }
 
     public void checkForAilment() {
+        int lastbeep = pet.getLastBeepTime();
         if ((pet.isHungry()) || (pet.isSad()) || (pet.isDirty()) || (pet.isInjured()) || (pet.isTired()) || (pet.isSick())) {
             playSound();
-        }else if(ticks >= pet.getLastBeepTime() + (beepIncrement+(pet.getDiscipline()*beepIncrement))){
+        }else if(ticks >= lastbeep + (beepIncrement+(pet.getDiscipline()*beepIncrement))){
             playSound();
             pet.setBeep(true, ticks);
             Toast.makeText(findViewById(R.id.game_menu).getContext(), " Your pet is acting up. ", Toast.LENGTH_SHORT).show();
