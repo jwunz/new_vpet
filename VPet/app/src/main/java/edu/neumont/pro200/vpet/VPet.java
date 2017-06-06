@@ -49,7 +49,7 @@ public class VPet extends AppCompatActivity implements Serializable {
     private final int beepIncrement = 10; //10
     private final int careThreshold = 20; //20
     private final int ageIncrement = 90; //90
-    private final int evolveIncrement = 1; //5;
+    private final int evolveIncrement = 5; //5;
     private final int tickMultiplier = 1; //1;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -334,7 +334,6 @@ public class VPet extends AppCompatActivity implements Serializable {
     private boolean petIsInflicted(boolean hasAilment, int startOfAilment){
         startOfAilment -= 1;
         if(hasAilment && ((ticks - startOfAilment) % careThreshold == 0)){
-            String a = "a";
             return true;
         }
         return false;
@@ -370,11 +369,11 @@ public class VPet extends AppCompatActivity implements Serializable {
             }
         }
 
-        if(pet.getHappiness() <= 1){
+        if(!pet.isSad() && ticks >= pet.getHappiness() +happyIncrement){
             pet.setSad(true, ticks);
         }
 
-        if(pet.getHunger() <= 1){
+        if(!pet.isHungry() && ticks >= pet.getHunger() +hungryIncrement){ //pet.getHunger() <= 1
             pet.setHungry(true, ticks);
         }
 
@@ -512,12 +511,16 @@ public class VPet extends AppCompatActivity implements Serializable {
         int lastbeep = pet.getLastBeepTime();
         if ((pet.isHungry()) || (pet.isSad()) || (pet.isDirty()) || (pet.isInjured()) || (pet.isTired()) || (pet.isSick())) {
             playSound();
-        }else if(ticks >= lastbeep + (beepIncrement+(pet.getDiscipline()*beepIncrement))){
+            if(pet.isHungry()){
+                Toast.makeText(findViewById(R.id.game_menu).getContext(), " Your pet is hungry. ", Toast.LENGTH_SHORT).show();
+            }else if(pet.isSad()){
+                Toast.makeText(findViewById(R.id.game_menu).getContext(), " Your pet is feeling down. ", Toast.LENGTH_SHORT).show();
+            }
+        }else if(ticks >= lastbeep + (beepIncrement+(pet.getDiscipline()*beepIncrement))) {
             playSound();
             pet.setBeep(true, ticks);
             Toast.makeText(findViewById(R.id.game_menu).getContext(), " Your pet is acting up. ", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void toggleAllButtons(boolean bool){
@@ -556,7 +559,7 @@ public class VPet extends AppCompatActivity implements Serializable {
 
     public void chooseAquanPet(View view) {
         String[] evolutions = new String[]{"2Aquan1", "2Aquan2", "2Aquan3"};
-        this.pet = new Pet(R.drawable.one_aquan_one, 32, 30, 38, evolutions);
+        this.pet = new Pet(R.drawable.one_aquan_one, 32, 30, 38, evolutions); //32, 30, 38
         changeMenu(view);
     }
 
@@ -691,18 +694,31 @@ public class VPet extends AppCompatActivity implements Serializable {
             if(pet.getHappiness() > 1){
                 pet.setSad(false, -1);
             }
-            switch (random) {
-                case 0:
-                    pet.setPower(pet.getPower() + score);
-                    break;
-                case 1:
-                    pet.setSpeed(pet.getSpeed() + score);
-                    break;
-                case 2:
-                    pet.setAgility(pet.getAgility() + score);
-                    break;
-            }
+            increaseStat(score, random);
             setPetInjury();
+    }
+
+    public void increaseStat(int increaseNum, int statIndex) {
+        String message = "";
+        switch (statIndex) {
+            case 0:
+                pet.setPower(pet.getPower() + increaseNum);
+                message = "Your pet's power has been increased!";
+                break;
+            case 1:
+                pet.setSpeed(pet.getSpeed() + increaseNum);
+                message = "Your pet's speed has been increased!";
+                break;
+            case 2:
+                pet.setAgility(pet.getAgility() + increaseNum);
+                message = "Your pet's agility has been increased!";
+                break;
+            default: {
+                message = "Your pet is sad that it lost.";
+                break;
+            }
+        }
+        Toast.makeText(findViewById(R.id.game_menu).getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     public void StartStarCatcher (View view) {
@@ -729,8 +745,10 @@ public class VPet extends AppCompatActivity implements Serializable {
         if (requestCode == 2) {
             if(resultCode == RESULT_OK) {
                 int earnings = data.getIntExtra("earnings", 0);
+                int statIndex = data.getIntExtra("statIndex", 0);
                 pet.setWin(true, ticks);
                 battleAftermath(earnings);
+                increaseStat(5, statIndex);
             }
         }
     }

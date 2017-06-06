@@ -52,8 +52,16 @@
         android:layout_height="wrap_content"
         android:visibility="gone">
 
+        <ImageView
+            android:id="@+id/bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/bgstarcatch" />
+
         <LinearLayout
             android:id="@+id/score"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -61,6 +69,7 @@
                 android:id="@+id/scoreText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#ddd"
                 android:text="Score:"
                 android:textSize="30sp" />
 
@@ -68,6 +77,7 @@
                 android:id="@+id/scoreNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#ddd"
                 android:layout_marginLeft="5dp"
                 android:text="0"
                 android:textSize="30sp" />

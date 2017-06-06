@@ -27,6 +27,7 @@ public class Battle extends AppCompatActivity {
     private int currentEnemyHP = 0;
     private Random r = new Random();
     private String message = "";
+    private int statToIncrease = 4;
 
 
     private int petPower;
@@ -257,10 +258,26 @@ public class Battle extends AppCompatActivity {
     }
 
     public void returnResult(View view){
+
+        Bundle extras = new Bundle();
         Intent intent = new Intent();
-        intent.putExtra("earnings", earnings);
+        extras.putInt("earnings", earnings);
+        extras.putInt("statIndex", statToIncrease);
+        intent.putExtras(extras);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private int findHighestStat(int power, int speed, int agility){
+        int curStatIndex;
+        if(power > agility && power > speed){
+            curStatIndex = 0;
+        }else if(speed > power && speed>agility){
+            curStatIndex = 1;
+        }else{
+            curStatIndex = 2;
+        }
+        return curStatIndex;
     }
 
     private void finishScreen(boolean Victory){
@@ -272,6 +289,7 @@ public class Battle extends AppCompatActivity {
         TextView tView = (TextView) findViewById(R.id.finishText);
         if(Victory){
             earnings = enemyHPTotal/3;
+            statToIncrease = findHighestStat(enemyPower, enemySpeed, enemyAgility);
             tView.setText("You Won "+ earnings + " dollars.");
         }else{
             tView.setText("Aw, you Lost.");
