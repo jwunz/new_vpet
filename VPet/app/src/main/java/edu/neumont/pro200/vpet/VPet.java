@@ -45,7 +45,7 @@ public class VPet extends AppCompatActivity implements Serializable {
     private final int tiredIncrement = 65; //65
     private final int happyIncrement = 40; //40
     private final int dirtyIncrement = 30; //30
-    private final int hungryIncrement = 15; //15
+    private final int hungryIncrement = 3; //15
     private final int beepIncrement = 10; //10
     private final int careThreshold = 20; //20
     private final int ageIncrement = 90; //90
@@ -369,11 +369,11 @@ public class VPet extends AppCompatActivity implements Serializable {
             }
         }
 
-        if(!pet.isSad() && ticks >= pet.getHappiness() +happyIncrement){
+        if(!pet.isSad() && pet.getHappiness() <= 1){
             pet.setSad(true, ticks);
         }
 
-        if(!pet.isHungry() && ticks >= pet.getHunger() +hungryIncrement){ //pet.getHunger() <= 1
+        if(!pet.isHungry() && pet.getHunger() <= 1){ //pet.getHunger() <= 1
             pet.setHungry(true, ticks);
         }
 
